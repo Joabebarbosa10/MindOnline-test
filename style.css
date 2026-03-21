@@ -627,41 +627,122 @@ footer {
   color: var(--cinza-claro);
 }
  
+/* ===== MENU HAMBURGUER ===== */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 200;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--branco);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-toggle.aberto span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.menu-toggle.aberto span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.aberto span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
 /* ===== RESPONSIVO ===== */
 @media (max-width: 900px) {
   #header { padding: 0 24px; }
- 
-  .hero { padding: 120px 24px 80px; }
+
+  /* Menu hamburguer */
+  .menu-toggle { display: flex; }
+
+  nav#navMenu {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(8,8,8,0.98);
+    backdrop-filter: blur(20px);
+    z-index: 150;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 80px 24px 40px;
+  }
+
+  nav#navMenu.aberto {
+    display: flex;
+  }
+
+  nav#navMenu .nav-link {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--branco);
+    letter-spacing: -0.5px;
+  }
+
+  /* Texto hero não cortado */
+  .hero {
+    padding: 120px 24px 80px;
+    overflow: hidden;
+  }
+
+  .hero-title {
+    font-size: clamp(40px, 11vw, 80px);
+    letter-spacing: -2px;
+    word-break: break-word;
+  }
+
+  .hero-title .accent {
+    word-break: break-word;
+  }
+
   .hero-scroll { left: 24px; }
- 
+
   .sobre-grid,
   .dicas-header,
   .contato-inner {
     grid-template-columns: 1fr;
     gap: 40px;
   }
- 
+
   .sobre-text h2 { position: static; }
- 
+
   .section-sobre,
   .section-contato { padding: 80px 24px; }
   .section-dicas { padding: 80px 24px; }
- 
+
   .dicas-grid { grid-template-columns: 1fr 1fr; }
- 
+
   .sobre-stats { grid-template-columns: 1fr; }
   .stat { border-right: none; border-bottom: 1px solid var(--cinza); }
   .stat:last-child { border-bottom: none; }
- 
+
   .contato-deco { display: none; }
   .footer-inner { flex-direction: column; text-align: center; gap: 8px; }
- 
+
   .cursor, .cursor-follower { display: none; }
 }
- 
+
 @media (max-width: 600px) {
   nav { gap: 20px; }
-  .hero-title { letter-spacing: -2px; }
+  .hero-title { letter-spacing: -1px; }
   .dicas-grid { grid-template-columns: 1fr; }
 }
 /* ===== MENU HAMBURGUER ===== */
