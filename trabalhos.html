@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nossos Trabalhos — MindOnline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===== GRID DE ARTIGOS ===== */
+    .section-trabalhos {
+      padding: 140px 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .trabalhos-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: end;
+      margin-bottom: 80px;
+    }
+
+    .trabalhos-header h2 {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(36px, 4vw, 58px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -2px;
+    }
+
+    .trabalhos-header h2 em {
+      color: var(--amarelo);
+      font-style: italic;
+    }
+
+    .trabalhos-intro {
+      font-size: 18px;
+      color: #aaa;
+      line-height: 1.8;
+    }
+
+    .trabalhos-intro strong {
+      color: var(--branco);
+    }
+
+    .artigos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    /* ===== CARD DO ARTIGO ===== */
+    .artigo-card {
+      background: var(--preto-3);
+      border: 1px solid var(--cinza);
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+
+    .artigo-card:hover {
+      border-color: rgba(245,200,66,0.35);
+      transform: translateY(-6px);
+    }
+
+    .artigo-capa {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      background: var(--cinza);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Placeholder colorido quando não há imagem */
+    .artigo-capa-placeholder {
+      width: 100%;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-family: var(--fonte-titulo);
+      font-weight: 800;
+      color: rgba(0,0,0,0.3);
+      letter-spacing: -2px;
+    }
+
+    .artigo-body {
+      padding: 28px;
+    }
+
+    .artigo-tag {
+      font-family: var(--fonte-corpo);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--amarelo);
+      opacity: 0.8;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .artigo-titulo {
+      font-family: var(--fonte-titulo);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--branco);
+      line-height: 1.3;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .artigo-descricao {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+
+    .artigo-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 20px;
+      border-top: 1px solid var(--cinza);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .artigo-autor {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .autor-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--amarelo);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--fonte-titulo);
+      font-size: 13px;
+      font-weight: 800;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .autor-nome {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--branco);
+    }
+
+    .artigo-data {
+      font-family: var(--fonte-corpo);
+      font-size: 12px;
+      color: var(--cinza-claro);
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== CARD DESTAQUE (primeiro) ===== */
+    .artigo-card--destaque {
+      grid-column: span 3;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .artigo-card--destaque .artigo-capa-placeholder {
+      height: 100%;
+      min-height: 300px;
+      font-size: 80px;
+    }
+
+    .artigo-card--destaque .artigo-body {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .artigo-card--destaque .artigo-titulo {
+      font-size: 28px;
+    }
+
+    .artigo-card--destaque .artigo-descricao {
+      font-size: 15px;
+    }
+
+    /* ===== RESPONSIVO ===== */
+    @media (max-width: 900px) {
+      .section-trabalhos { padding: 80px 24px; }
+      .trabalhos-header { grid-template-columns: 1fr; gap: 24px; }
+      .artigos-grid { grid-template-columns: 1fr 1fr; }
+      .artigo-card--destaque { grid-column: span 2; grid-template-columns: 1fr; }
+      .artigo-card--destaque .artigo-capa-placeholder { min-height: 200px; }
+    }
+
+    @media (max-width: 600px) {
+      .artigos-grid { grid-template-columns: 1fr; }
+      .artigo-card--destaque { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <header id="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-dot"></span>MindOnline
+      </a>
+      <nav>
+        <a href="index.html#sobre" class="nav-link">Sobre</a>
+        <a href="index.html#dicas" class="nav-link">Dicas</a>
+        <a href="index.html#contato" class="nav-link">Contato</a>
+        <a href="privacidade.html" class="nav-link">Privacidade</a>
+        <a href="trabalhos.html" class="nav-link ativo">Nossos Trabalhos</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="topo">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">Produção Acadêmica</div>
+      <h1 class="hero-title">
+        <span class="line">Os trabalhos</span>
+        <span class="line accent">que estamos</span>
+        <span class="line">construindo.</span>
+      </h1>
+      <p class="hero-sub">Artigos, pesquisas e reflexões produzidos pelos alunos da EREMCC Petrolina sobre comunicação ética no mundo digital.</p>
+      <div class="hero-cta">
+        <a href="#artigos" class="btn-primary">Ver artigos</a>
+        <a href="index.html" class="btn-ghost">← Voltar ao início</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <main>
+    <section id="artigos" class="section-trabalhos">
+      <div class="section-label">01 — Artigos</div>
+
+      <div class="trabalhos-header animar">
+        <h2>Nossas <em>pesquisas</em><br>e reflexões</h2>
+        <p class="trabalhos-intro">Cada artigo é fruto do olhar atento de jovens que acreditam que <strong>a internet pode ser um lugar melhor</strong> — e estão fazendo algo a respeito.</p>
+      </div>
+
+      <div class="artigos-grid">
+
+        <!-- ARTIGO DESTAQUE -->
+        <a href="artigo1.html" class="artigo-card artigo-card--destaque animar" style="text-decoration:none;">
+          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #1a1500, #2a2000);">
+            🌐
+          </div>
+          <div class="artigo-body">
+            <span class="artigo-tag">Destaque</span>
+            <h3 class="artigo-titulo">Comunicação Digital: Como Nossas Palavras Constroem ou Destroem Comunidades Online</h3>
+            <p class="artigo-descricao">Uma análise sobre o impacto das interações digitais na formação de comunidades virtuais saudáveis e os mecanismos que transformam espaços de debate em ambientes hostis — e o que cada usuário pode fazer para mudar esse cenário.</p>
+            <div class="artigo-meta">
+              <div class="artigo-autor">
+                <div class="autor-avatar">AL</div>
+                <span class="autor-nome">Alunos EREMCC</span>
+              </div>
+              <span class="artigo-data">Março 2026</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ARTIGO 1 -->
+        <a href="artigo2.html" class="artigo-card animar" style="text-decoration:none;">
+          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #0d1a0d, #1a2a1a);">
+            📰
+          </div>
+          <div class="artigo-body">
+            <span class="artigo-tag">Fake News</span>
+            <h3 class="artigo-titulo">Fake News: Por Que Acreditamos no Que Queremos Acreditar?</h3>
+            <p class="artigo-descricao">Um estudo sobre os vieses cognitivos que nos tornam vulneráveis à desinformação e como desenvolver um olhar crítico sobre o que consumimos nas redes.</p>
+            <div class="artigo-meta">
+              <div class="artigo-autor">
+                <div class="autor-avatar">MJ</div>
+                <span class="autor-nome">Maria João</span>
+              </div>
+              <span class="artigo-data">Fev 2026</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ARTIGO 2 -->
+        <a href="artigo3.html" class="artigo-card animar" style="text-decoration:none;">
+          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #1a0d0d, #2a1515);">
+            🛡️
+          </div>
+          <div class="artigo-body">
+            <span class="artigo-tag">Privacidade</span>
+            <h3 class="artigo-titulo">Privacidade Digital: O Que Você Entrega Sem Perceber</h3>
+            <p class="artigo-descricao">Cada curtida, cada pesquisa, cada segundo de rolagem — tudo é dado. Este artigo explora o que as plataformas sabem sobre você e como se proteger.</p>
+            <div class="artigo-meta">
+              <div class="artigo-autor">
+                <div class="autor-avatar">PS</div>
+                <span class="autor-nome">Pedro Silva</span>
+              </div>
+              <span class="artigo-data">Fev 2026</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ARTIGO 3 -->
+        <a href="artigo4.html" class="artigo-card animar" style="text-decoration:none;">
+          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #0d0d1a, #15152a);">
+            💬
+          </div>
+          <div class="artigo-body">
+            <span class="artigo-tag">Cyberbullying</span>
+            <h3 class="artigo-titulo">Cyberbullying: A Violência Que Não Deixa Marcas Visíveis</h3>
+            <p class="artigo-descricao">Uma reflexão sobre os impactos psicológicos do assédio online na adolescência e o papel da escola e da família na prevenção e acolhimento.</p>
+            <div class="artigo-meta">
+              <div class="artigo-autor">
+                <div class="autor-avatar">AC</div>
+                <span class="autor-nome">Ana Costa</span>
+              </div>
+              <span class="artigo-data">Jan 2026</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ARTIGO 4 -->
+        <a href="artigo5.html" class="artigo-card animar" style="text-decoration:none;">
+          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #1a1a0d, #2a2a15);">
+            ⏱️
+          </div>
+          <div class="artigo-body">
+            <span class="artigo-tag">Saúde Digital</span>
+            <h3 class="artigo-titulo">Tempo de Tela: Quando o Scroll Vira Vício</h3>
+            <p class="artigo-descricao">As redes sociais são projetadas para nos manter conectados o máximo possível. Mas a que custo? Uma análise sobre o design persuasivo e seus efeitos na saúde mental.</p>
+            <div class="artigo-meta">
+              <div class="artigo-autor">
+                <div class="autor-avatar">LF</div>
+                <span class="autor-nome">Lucas Ferreira</span>
+              </div>
+              <span class="artigo-data">Jan 2026</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ARTIGO 5 -->
+        <a href="artigo6.html" class="artigo-card animar" style="text-decoration:none;">
+          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #0d1a1a, #152a2a);">
+            🤝
+          </div>
+          <div class="artigo-body">
+            <span class="artigo-tag">Ética</span>
+            <h3 class="artigo-titulo">Empatia Digital: É Possível Ser Humano Atrás de uma Tela?</h3>
+            <p class="artigo-descricao">A distância física cria uma sensação de impunidade online. Este artigo discute como cultivar empatia nas interações digitais e por que isso importa.</p>
+            <div class="artigo-meta">
+              <div class="artigo-autor">
+                <div class="autor-avatar">JO</div>
+                <span class="autor-nome">Joana Oliveira</span>
+              </div>
+              <span class="artigo-data">Dez 2025</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">MindOnline</span>
+      <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
+      <span class="footer-origin">Petrolina, PE — Brasil</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

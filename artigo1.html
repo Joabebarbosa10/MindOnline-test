@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunicação Digital — MindOnline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .section-artigo {
+      padding: 140px 48px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .artigo-voltar {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--cinza-claro);
+      text-decoration: none;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+      transition: color 0.3s;
+    }
+
+    .artigo-voltar:hover { color: var(--amarelo); }
+
+    .artigo-tag-topo {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--amarelo);
+      border: 1px solid rgba(245,200,66,0.3);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    .artigo-titulo-completo {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 32px;
+    }
+
+    .artigo-titulo-completo em {
+      color: var(--amarelo);
+      font-style: italic;
+    }
+
+    .artigo-meta-topo {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 0;
+      border-top: 1px solid var(--cinza);
+      border-bottom: 1px solid var(--cinza);
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+
+    .artigo-autor-topo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .autor-avatar-grande {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--amarelo);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--fonte-titulo);
+      font-size: 16px;
+      font-weight: 800;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .autor-info { display: flex; flex-direction: column; gap: 2px; }
+    .autor-info strong { font-size: 14px; font-weight: 500; color: var(--branco); }
+    .autor-info span { font-size: 12px; color: var(--cinza-claro); }
+
+    .artigo-data-topo {
+      font-size: 13px;
+      color: var(--cinza-claro);
+      margin-left: auto;
+    }
+
+    /* CAPA */
+    .artigo-capa-grande {
+      width: 100%;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 100px;
+      border-radius: 2px;
+      margin-bottom: 56px;
+    }
+
+    /* CONTEÚDO DO ARTIGO */
+    .artigo-conteudo h2 {
+      font-family: var(--fonte-titulo);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--branco);
+      letter-spacing: -1px;
+      margin: 48px 0 16px;
+    }
+
+    .artigo-conteudo h2:first-child { margin-top: 0; }
+
+    .artigo-conteudo p {
+      font-size: 17px;
+      color: #aaa;
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .artigo-conteudo strong { color: var(--branco); font-weight: 500; }
+
+    .artigo-conteudo blockquote {
+      border-left: 3px solid var(--amarelo);
+      padding: 16px 24px;
+      margin: 32px 0;
+      background: var(--preto-3);
+    }
+
+    .artigo-conteudo blockquote p {
+      font-size: 18px;
+      font-style: italic;
+      color: var(--branco);
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .artigo-conteudo ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0 28px;
+    }
+
+    .artigo-conteudo ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 16px;
+      color: #aaa;
+      line-height: 1.7;
+    }
+
+    .artigo-conteudo ul li::before {
+      content: '→';
+      color: var(--amarelo);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* RODAPÉ DO ARTIGO */
+    .artigo-rodape {
+      margin-top: 80px;
+      padding-top: 40px;
+      border-top: 1px solid var(--cinza);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .artigo-rodape a {
+      color: var(--amarelo);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: opacity 0.3s;
+    }
+
+    .artigo-rodape a:hover { opacity: 0.7; }
+
+    .btn-pdf {
+      background: transparent;
+      border: 1px solid var(--amarelo);
+      color: var(--amarelo);
+      font-family: var(--fonte-corpo);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 24px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .btn-pdf:hover {
+      background: var(--amarelo);
+      color: #000;
+    }
+
+    @media (max-width: 900px) {
+      .section-artigo { padding: 100px 24px; }
+      .artigo-capa-grande { height: 200px; font-size: 60px; }
+      .artigo-data-topo { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <header id="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-dot"></span>MindOnline
+      </a>
+      <nav>
+        <a href="index.html#sobre" class="nav-link">Sobre</a>
+        <a href="index.html#dicas" class="nav-link">Dicas</a>
+        <a href="index.html#contato" class="nav-link">Contato</a>
+        <a href="trabalhos.html" class="nav-link ativo">Nossos Trabalhos</a>
+        <a href="privacidade.html" class="nav-link">Privacidade</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section-artigo">
+
+      <a href="trabalhos.html" class="artigo-voltar">← Voltar para Nossos Trabalhos</a>
+
+      <span class="artigo-tag-topo">Destaque</span>
+
+      <h1 class="artigo-titulo-completo">Comunicação Digital: Como Nossas Palavras <em>Constroem ou Destroem</em> Comunidades Online</h1>
+
+      <div class="artigo-meta-topo">
+        <div class="artigo-autor-topo">
+          <img src="logo-eremcc.jpg" alt="Logo EREMCC" style="
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          object-fit: cover;
+          flex-shrink: 0;
+        ">
+          <div class="autor-info">
+            <strong>Alunos EREMCC</strong>
+            <span>Escola de Referência em Ensino Médio Clementino Coelho</span>
+          </div>
+        </div>
+        <span class="artigo-data-topo">Março de 2026</span>
+      </div>
+
+      <div class="artigo-capa-grande" style="background: linear-gradient(135deg, #1a1500, #2a2000);">
+        🌐
+      </div>
+
+      <div class="artigo-conteudo">
+
+        <h2>Introdução</h2>
+        <p>Vivemos em uma era em que a comunicação digital é parte inseparável do cotidiano. Mensagens, comentários, publicações e reações acontecem em frações de segundo, conectando pessoas de diferentes culturas, opiniões e realidades ao redor do mundo.</p>
+        <p>Mas o que muitas vezes esquecemos é que <strong>cada palavra que digitamos carrega um peso real</strong>. Por trás de cada perfil, existe um ser humano com sentimentos, histórias e vulnerabilidades. E é justamente nessa distância física — criada pela tela — que muitos comportamentos prejudiciais ganham força.</p>
+
+        <blockquote>
+          <p>"A internet que queremos começa com as escolhas que cada um de nós faz dentro dela."</p>
+        </blockquote>
+
+        <h2>O Poder das Palavras no Ambiente Digital</h2>
+        <p>Ao contrário de uma conversa presencial, as palavras escritas na internet têm uma característica única: <strong>elas permanecem</strong>. Um comentário publicado hoje pode ser lido, compartilhado e reinterpretado por anos. Isso torna a comunicação digital ao mesmo tempo mais poderosa e mais perigosa.</p>
+        <p>Estudos mostram que o anonimato — ou a simples sensação de estar protegido por uma tela — reduz a inibição social. As pessoas tendem a dizer online o que jamais diriam pessoalmente. Esse fenômeno, conhecido como efeito de desinibição online, é um dos principais fatores por trás do crescimento do cyberbullying, do discurso de ódio e da desinformação.</p>
+
+        <h2>Como as Comunidades se Formam e se Destroem</h2>
+        <p>As comunidades virtuais são construídas sobre confiança, respeito e propósito comum. Quando esses elementos estão presentes, o ambiente digital se torna um espaço poderoso de troca, aprendizado e apoio mútuo.</p>
+        <p>No entanto, basta um conjunto de comportamentos tóxicos para destruir esse equilíbrio:</p>
+        <ul>
+          <li>Comentários agressivos que intimidam novos participantes</li>
+          <li>Desinformação que divide e polariza opiniões</li>
+          <li>Exclusão e ridicularização de quem pensa diferente</li>
+          <li>Discurso de ódio que ataca identidades e grupos</li>
+        </ul>
+        <p>Quando esses comportamentos se tornam recorrentes, as pessoas deixam de participar, o debate saudável desaparece e a comunidade perde sua função original.</p>
+
+        <h2>O Papel de Cada Usuário</h2>
+        <p>A boa notícia é que o oposto também é verdade: comportamentos positivos são igualmente contagiantes. Quando alguém escolhe responder com empatia, verificar uma informação antes de compartilhar ou simplesmente ignorar uma provocação, está contribuindo ativamente para um ambiente digital mais saudável.</p>
+        <p>Não é necessário ser um especialista ou ter uma grande plataforma para fazer diferença. <strong>Cada interação conta.</strong> Cada escolha que fazemos ao nos comunicar online molda, aos poucos, a cultura digital que todos habitamos.</p>
+
+        <h2>Conclusão</h2>
+        <p>A comunicação digital não é boa nem má por natureza — ela reflete as escolhas das pessoas que a utilizam. Construir comunidades saudáveis online exige o mesmo que construir relações saudáveis na vida real: respeito, escuta, responsabilidade e empatia.</p>
+        <p>O MindOnline acredita que a educação digital é o primeiro passo para essa transformação. Entender o impacto das nossas palavras e escolhas online é fundamental para que a internet seja, de fato, um espaço melhor para todos.</p>
+
+      </div>
+
+      <div class="artigo-rodape">
+        <a href="trabalhos.html">← Ver todos os artigos</a>
+        <button onclick="baixarPDF()" class="btn-pdf">⬇ Baixar como PDF</button>
+        <a href="index.html#contato">Tem algo a acrescentar? Fale conosco →</a>
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">MindOnline</span>
+      <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
+      <a href="privacidade.html" style="font-size:13px; color:#888; text-decoration:none;">Política de Privacidade</a>
+      <span class="footer-origin">Petrolina, PE — Brasil</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <!-- jsPDF — geração de PDF no navegador -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    function baixarPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+      const margemEsq  = 20;
+      const margemDir  = 20;
+      const larguraUtil = 210 - margemEsq - margemDir;
+      let y = 20;
+
+      // Função auxiliar: quebra texto longo em linhas e avança Y
+      function escreverTexto(texto, fontSize, isBold, cor) {
+        doc.setFontSize(fontSize);
+        doc.setFont('helvetica', isBold ? 'bold' : 'normal');
+        doc.setTextColor(...cor);
+        const linhas = doc.splitTextToSize(texto, larguraUtil);
+        linhas.forEach(linha => {
+          if (y > 275) { doc.addPage(); y = 20; }
+          doc.text(linha, margemEsq, y);
+          y += fontSize * 0.45;
+        });
+        y += 4;
+      }
+
+      function pularLinha(tamanho = 6) { y += tamanho; }
+      function linha() {
+        doc.setDrawColor(60, 60, 60);
+        doc.line(margemEsq, y, 210 - margemDir, y);
+        y += 8;
+      }
+
+      // ===== CABEÇALHO =====
+      doc.setFillColor(8, 8, 8);
+      doc.rect(0, 0, 210, 40, 'F');
+      doc.setFontSize(22);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(245, 200, 66);
+      doc.text('MindOnline', margemEsq, 20);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(136, 136, 136);
+      doc.text('Comunicação Ética Digital — EREMCC Petrolina', margemEsq, 30);
+      y = 52;
+
+      // ===== TAG =====
+      escreverTexto('DESTAQUE', 9, 'bold', [245, 200, 66]);
+
+      // ===== TÍTULO =====
+      escreverTexto(
+        'Comunicação Digital: Como Nossas Palavras Constroem ou Destroem Comunidades Online',
+        20, 'bold', [245, 245, 240]
+      );
+      pularLinha(2);
+
+      // ===== META =====
+      linha();
+      escreverTexto('Autor: Alunos EREMCC — Escola de Referência em Ensino Médio Clementino Coelho', 10, 'normal', [136, 136, 136]);
+      escreverTexto('Data: Março de 2026', 10, 'normal', [136, 136, 136]);
+      linha();
+
+      // ===== CONTEÚDO =====
+      const secoes = [
+        {
+          titulo: 'Introdução',
+          texto: 'Vivemos em uma era em que a comunicação digital é parte inseparável do cotidiano. Mensagens, comentários, publicações e reações acontecem em frações de segundo, conectando pessoas de diferentes culturas, opiniões e realidades ao redor do mundo.\n\nMas o que muitas vezes esquecemos é que cada palavra que digitamos carrega um peso real. Por trás de cada perfil, existe um ser humano com sentimentos, histórias e vulnerabilidades.'
+        },
+        {
+          titulo: 'O Poder das Palavras no Ambiente Digital',
+          texto: 'Ao contrário de uma conversa presencial, as palavras escritas na internet têm uma característica única: elas permanecem. Um comentário publicado hoje pode ser lido, compartilhado e reinterpretado por anos.\n\nEstudos mostram que o anonimato reduz a inibição social. As pessoas tendem a dizer online o que jamais diriam pessoalmente. Esse fenômeno, conhecido como efeito de desinibição online, é um dos principais fatores por trás do crescimento do cyberbullying, do discurso de ódio e da desinformação.'
+        },
+        {
+          titulo: 'Como as Comunidades se Formam e se Destroem',
+          texto: 'As comunidades virtuais são construídas sobre confiança, respeito e propósito comum. Quando esses elementos estão presentes, o ambiente digital se torna um espaço poderoso de troca, aprendizado e apoio mútuo.\n\nNo entanto, basta um conjunto de comportamentos tóxicos para destruir esse equilíbrio: comentários agressivos que intimidam novos participantes, desinformação que divide e polariza opiniões, exclusão e ridicularização de quem pensa diferente, e discurso de ódio que ataca identidades e grupos.'
+        },
+        {
+          titulo: 'O Papel de Cada Usuário',
+          texto: 'A boa notícia é que comportamentos positivos são igualmente contagiantes. Quando alguém escolhe responder com empatia, verificar uma informação antes de compartilhar ou simplesmente ignorar uma provocação, está contribuindo ativamente para um ambiente digital mais saudável.\n\nNão é necessário ser um especialista ou ter uma grande plataforma para fazer diferença. Cada interação conta.'
+        },
+        {
+          titulo: 'Conclusão',
+          texto: 'A comunicação digital não é boa nem má por natureza — ela reflete as escolhas das pessoas que a utilizam. Construir comunidades saudáveis online exige o mesmo que construir relações saudáveis na vida real: respeito, escuta, responsabilidade e empatia.\n\nO MindOnline acredita que a educação digital é o primeiro passo para essa transformação. Entender o impacto das nossas palavras e escolhas online é fundamental para que a internet seja, de fato, um espaço melhor para todos.'
+        }
+      ];
+
+      secoes.forEach(secao => {
+        escreverTexto(secao.titulo, 13, 'bold', [245, 200, 66]);
+        escreverTexto(secao.texto, 11, 'normal', [170, 170, 170]);
+        pularLinha(4);
+      });
+
+      // ===== RODAPÉ DO PDF =====
+      const totalPaginas = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= totalPaginas; i++) {
+        doc.setPage(i);
+        doc.setFontSize(9);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`MindOnline — mindonline.com.br`, margemEsq, 290);
+        doc.text(`Página ${i} de ${totalPaginas}`, 210 - margemDir, 290, { align: 'right' });
+      }
+
+      doc.save('artigo-comunicacao-digital-mindonline.pdf');
+    }
+  </script>
+
+</body>
+</html>
