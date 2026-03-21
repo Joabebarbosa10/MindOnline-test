@@ -72,3 +72,53 @@ const sectionObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 
 sections.forEach(sec => sectionObserver.observe(sec));
+// ===== MENU HAMBURGUER =====
+const menuToggle = document.getElementById('menuToggle');
+const navMenu = document.getElementById('navMenu');
+
+if (menuToggle && navMenu) {
+  menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('aberto');
+    navMenu.classList.toggle('aberto');
+  });
+
+  // Fecha o menu ao clicar em um link
+  navMenu.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      menuToggle.classList.remove('aberto');
+      navMenu.classList.remove('aberto');
+    });
+  });
+}
+// ===== ENVIO DO FORMULÁRIO — Netlify + Neon =====
+const btnEnviar = document.querySelector('.btn-form');
+
+if (btnEnviar) {
+  btnEnviar.addEventListener('click', async () => {
+    const nome      = document.getElementById('nome').value.trim();
+    const telefone  = document.getElementById('telefone').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const novidades = document.querySelector('input[name="novidades"]:checked').value;
+    const mensagem  = document.getElementById('mensagem').value.trim();
+
+    if (!nome || !email || !mensagem) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    btnEnviar.textContent = 'Enviando...';
+    btnEnviar.disabled = true;
+
+    try {
+      const resposta = await fetch('/.netlify/functions/contato', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, telefone, email, novidades, mensagem })
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok) {
+        alert('✅ Mensagem enviada com sucesso!');
+        document.getElementById('nome').value     = '';
+        document.getElementById('telefone').value = '';

@@ -10,25 +10,28 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+ 
   <div class="cursor"></div>
   <div class="cursor-follower"></div>
-
+ 
   <header id="header">
     <div class="header-inner">
       <a href="#topo" class="logo">
         <span class="logo-dot"></span>MindOnline
       </a>
-      <nav>
+      <nav id="navMenu">
         <a href="#sobre" class="nav-link">Sobre</a>
         <a href="#dicas" class="nav-link">Dicas</a>
         <a href="#contato" class="nav-link">Contato</a>
         <a href="trabalhos.html" class="nav-link">Nossos Trabalhos</a>
         <a href="privacidade.html" class="nav-link">Privacidade</a>
       </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
-
+ 
   <section class="hero" id="topo">
     <div class="hero-bg">
       <div class="orb orb-1"></div>
@@ -52,9 +55,9 @@
       <div class="scroll-line"></div>
     </div>
   </section>
-
+ 
   <main>
-
+ 
     <section id="sobre" class="section-sobre">
       <div class="section-label">01 — Sobre</div>
       <div class="sobre-grid">
@@ -83,7 +86,7 @@
         </div>
       </div>
     </section>
-
+ 
     <section id="dicas" class="section-dicas">
       <div class="section-label">02 — Dicas</div>
       <div class="dicas-header">
@@ -143,7 +146,7 @@
         </div>
       </div>
     </section>
-
+ 
     <section id="contato" class="section-contato">
       <div class="section-label">03 — Contato</div>
       <div class="contato-inner">
@@ -192,18 +195,17 @@
         </div>
       </div>
     </section>
-
+ 
   </main>
-
+ 
   <footer>
     <div class="footer-inner">
       <span class="footer-logo">MindOnline</span>
       <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
-      <a href="privacidade.html" style="font-size:13px; color:#888; text-decoration:none;">Política de Privacidade</a>
       <span class="footer-origin">Petrolina, PE — Brasil</span>
     </div>
   </footer>
-
+ 
   <script src="script.js"></script>
 </body>
 </html>
