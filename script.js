@@ -72,6 +72,7 @@ const sectionObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 
 sections.forEach(sec => sectionObserver.observe(sec));
+
 // ===== MENU HAMBURGUER =====
 const menuToggle = document.getElementById('menuToggle');
 const navMenu = document.getElementById('navMenu');
@@ -82,7 +83,6 @@ if (menuToggle && navMenu) {
     navMenu.classList.toggle('aberto');
   });
 
-  // Fecha o menu ao clicar em um link
   navMenu.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
       menuToggle.classList.remove('aberto');
@@ -90,6 +90,7 @@ if (menuToggle && navMenu) {
     });
   });
 }
+
 // ===== ENVIO DO FORMULÁRIO — Netlify + Neon =====
 const btnEnviar = document.querySelector('.btn-form');
 
@@ -122,3 +123,17 @@ if (btnEnviar) {
         alert('✅ Mensagem enviada com sucesso!');
         document.getElementById('nome').value     = '';
         document.getElementById('telefone').value = '';
+        document.getElementById('email').value    = '';
+        document.getElementById('mensagem').value = '';
+      } else {
+        alert('❌ Erro: ' + dados.erro);
+      }
+
+    } catch (err) {
+      alert('❌ Não foi possível conectar. Tente novamente.');
+    } finally {
+      btnEnviar.textContent = 'Enviar →';
+      btnEnviar.disabled = false;
+    }
+  });
+} 
