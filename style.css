@@ -954,48 +954,34 @@ footer {
   .sobre-stats { grid-template-columns: 1fr; }
   .hero-cta .btn-primary,
   .hero-cta .btn-ghost { width: 100%; text-align: center; }
-
-  /* Corrige texto e formulário cortados */
-  html, body {
-    overflow-x: hidden;
-    width: 100%;
-  }
-
-  .section-contato {
-    padding: 60px 20px;
+}
+/* ===== CORRIGE TEXTO SOBRE CORTADO NO MOBILE ===== */
+@media (max-width: 600px) {
+  .sobre-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
     overflow: hidden;
   }
 
-  .contato-inner {
-    grid-template-columns: 1fr;
-    gap: 32px;
+  .sobre-body {
     width: 100%;
+    overflow: hidden;
   }
 
-  .contato-text h2 {
-    font-size: clamp(36px, 12vw, 60px);
-    letter-spacing: -2px;
+  .sobre-body p {
     word-break: break-word;
-    white-space: normal;
-  }
-
-  .contato-text p {
-    font-size: 15px;
+    overflow-wrap: break-word;
     max-width: 100%;
   }
 
-  .contato-form {
-    width: 100%;
+  .sobre-text h2 {
+    font-size: clamp(32px, 10vw, 48px);
+    word-break: break-word;
+    letter-spacing: -1px;
   }
 
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    box-sizing: border-box;
-    max-width: 100%;
-  }
-
-  .btn-form {
-    width: 100%;
+  .section-sobre {
+    padding: 60px 20px;
+    overflow: hidden;
   }
 }
