@@ -954,4 +954,48 @@ footer {
   .sobre-stats { grid-template-columns: 1fr; }
   .hero-cta .btn-primary,
   .hero-cta .btn-ghost { width: 100%; text-align: center; }
+
+  /* Corrige texto e formulário cortados */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  .section-contato {
+    padding: 60px 20px;
+    overflow: hidden;
+  }
+
+  .contato-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    width: 100%;
+  }
+
+  .contato-text h2 {
+    font-size: clamp(36px, 12vw, 60px);
+    letter-spacing: -2px;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .contato-text p {
+    font-size: 15px;
+    max-width: 100%;
+  }
+
+  .contato-form {
+    width: 100%;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  .btn-form {
+    width: 100%;
+  }
 }
