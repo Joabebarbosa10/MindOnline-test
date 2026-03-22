@@ -15,7 +15,7 @@
       max-width: 1280px;
       margin: 0 auto;
     }
-
+ 
     .trabalhos-header {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -23,7 +23,7 @@
       align-items: end;
       margin-bottom: 80px;
     }
-
+ 
     .trabalhos-header h2 {
       font-family: var(--fonte-titulo);
       font-size: clamp(36px, 4vw, 58px);
@@ -31,28 +31,28 @@
       line-height: 1.1;
       letter-spacing: -2px;
     }
-
+ 
     .trabalhos-header h2 em {
       color: var(--amarelo);
       font-style: italic;
     }
-
+ 
     .trabalhos-intro {
       font-size: 18px;
       color: #aaa;
       line-height: 1.8;
     }
-
+ 
     .trabalhos-intro strong {
       color: var(--branco);
     }
-
+ 
     .artigos-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
-
+ 
     /* ===== CARD DO ARTIGO ===== */
     .artigo-card {
       background: var(--preto-3);
@@ -61,12 +61,12 @@
       transition: border-color 0.3s, transform 0.3s;
       cursor: pointer;
     }
-
+ 
     .artigo-card:hover {
       border-color: rgba(245,200,66,0.35);
       transform: translateY(-6px);
     }
-
+ 
     .artigo-capa {
       width: 100%;
       height: 200px;
@@ -76,7 +76,7 @@
       position: relative;
       overflow: hidden;
     }
-
+ 
     /* Placeholder colorido quando não há imagem */
     .artigo-capa-placeholder {
       width: 100%;
@@ -90,11 +90,11 @@
       color: rgba(0,0,0,0.3);
       letter-spacing: -2px;
     }
-
+ 
     .artigo-body {
       padding: 28px;
     }
-
+ 
     .artigo-tag {
       font-family: var(--fonte-corpo);
       font-size: 11px;
@@ -106,7 +106,7 @@
       display: block;
       margin-bottom: 12px;
     }
-
+ 
     .artigo-titulo {
       font-family: var(--fonte-titulo);
       font-size: 20px;
@@ -116,14 +116,14 @@
       margin-bottom: 12px;
       letter-spacing: -0.5px;
     }
-
+ 
     .artigo-descricao {
       font-size: 14px;
       color: #888;
       line-height: 1.75;
       margin-bottom: 24px;
     }
-
+ 
     .artigo-meta {
       display: flex;
       align-items: center;
@@ -133,13 +133,13 @@
       gap: 12px;
       flex-wrap: wrap;
     }
-
+ 
     .artigo-autor {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
+ 
     .autor-avatar {
       width: 32px;
       height: 32px;
@@ -154,48 +154,48 @@
       color: #000;
       flex-shrink: 0;
     }
-
+ 
     .autor-nome {
       font-size: 13px;
       font-weight: 500;
       color: var(--branco);
     }
-
+ 
     .artigo-data {
       font-family: var(--fonte-corpo);
       font-size: 12px;
       color: var(--cinza-claro);
       letter-spacing: 0.5px;
     }
-
+ 
     /* ===== CARD DESTAQUE (primeiro) ===== */
     .artigo-card--destaque {
       grid-column: span 3;
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
-
+ 
     .artigo-card--destaque .artigo-capa-placeholder {
       height: 100%;
       min-height: 300px;
       font-size: 80px;
     }
-
+ 
     .artigo-card--destaque .artigo-body {
       padding: 40px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-
+ 
     .artigo-card--destaque .artigo-titulo {
       font-size: 28px;
     }
-
+ 
     .artigo-card--destaque .artigo-descricao {
       font-size: 15px;
     }
-
+ 
     /* ===== RESPONSIVO ===== */
     @media (max-width: 900px) {
       .section-trabalhos { padding: 80px 24px; }
@@ -204,7 +204,7 @@
       .artigo-card--destaque { grid-column: span 2; grid-template-columns: 1fr; }
       .artigo-card--destaque .artigo-capa-placeholder { min-height: 200px; }
     }
-
+ 
     @media (max-width: 600px) {
       .artigos-grid { grid-template-columns: 1fr; }
       .artigo-card--destaque { grid-column: span 1; }
@@ -212,25 +212,26 @@
   </style>
 </head>
 <body>
-
+ 
   <div class="cursor"></div>
   <div class="cursor-follower"></div>
-
+ 
   <header id="header">
     <div class="header-inner">
       <a href="index.html" class="logo">
         <span class="logo-dot"></span>MindOnline
       </a>
-      <nav>
+      <nav id="navMenu">
         <a href="index.html#sobre" class="nav-link">Sobre</a>
         <a href="index.html#dicas" class="nav-link">Dicas</a>
         <a href="index.html#contato" class="nav-link">Contato</a>
         <a href="privacidade.html" class="nav-link">Privacidade</a>
         <a href="trabalhos.html" class="nav-link ativo">Nossos Trabalhos</a>
       </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </header>
-
+ 
   <!-- HERO -->
   <section class="hero" id="topo">
     <div class="hero-bg">
@@ -255,18 +256,18 @@
       <div class="scroll-line"></div>
     </div>
   </section>
-
+ 
   <main>
     <section id="artigos" class="section-trabalhos">
       <div class="section-label">01 — Artigos</div>
-
+ 
       <div class="trabalhos-header animar">
         <h2>Nossas <em>pesquisas</em><br>e reflexões</h2>
         <p class="trabalhos-intro">Cada artigo é fruto do olhar atento de jovens que acreditam que <strong>a internet pode ser um lugar melhor</strong> — e estão fazendo algo a respeito.</p>
       </div>
-
+ 
       <div class="artigos-grid">
-
+ 
         <!-- ARTIGO DESTAQUE -->
         <a href="artigo1.html" class="artigo-card artigo-card--destaque animar" style="text-decoration:none;">
           <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #1a1500, #2a2000);">
@@ -285,7 +286,7 @@
             </div>
           </div>
         </a>
-
+ 
         <!-- ARTIGO 1 -->
         <a href="artigo2.html" class="artigo-card animar" style="text-decoration:none;">
           <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #0d1a0d, #1a2a1a);">
@@ -304,7 +305,7 @@
             </div>
           </div>
         </a>
-
+ 
         <!-- ARTIGO 2 -->
         <a href="artigo3.html" class="artigo-card animar" style="text-decoration:none;">
           <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #1a0d0d, #2a1515);">
@@ -323,7 +324,7 @@
             </div>
           </div>
         </a>
-
+ 
         <!-- ARTIGO 3 -->
         <a href="artigo4.html" class="artigo-card animar" style="text-decoration:none;">
           <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #0d0d1a, #15152a);">
@@ -342,7 +343,7 @@
             </div>
           </div>
         </a>
-
+ 
         <!-- ARTIGO 4 -->
         <a href="artigo5.html" class="artigo-card animar" style="text-decoration:none;">
           <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #1a1a0d, #2a2a15);">
@@ -361,7 +362,7 @@
             </div>
           </div>
         </a>
-
+ 
         <!-- ARTIGO 5 -->
         <a href="artigo6.html" class="artigo-card animar" style="text-decoration:none;">
           <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #0d1a1a, #152a2a);">
@@ -380,11 +381,11 @@
             </div>
           </div>
         </a>
-
+ 
       </div>
     </section>
   </main>
-
+ 
   <footer>
     <div class="footer-inner">
       <span class="footer-logo">MindOnline</span>
@@ -392,7 +393,7 @@
       <span class="footer-origin">Petrolina, PE — Brasil</span>
     </div>
   </footer>
-
+ 
   <script src="script.js"></script>
 </body>
 </html>
