@@ -15,7 +15,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const sql = neon(process.env.DATABASE_URL);
+  const sql = neon(process.env.NETLIFY_DATABASE_URL);
 
     await sql`
       CREATE TABLE IF NOT EXISTS mensagens (
