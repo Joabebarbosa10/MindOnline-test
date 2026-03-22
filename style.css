@@ -879,7 +879,10 @@ footer {
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
-  .menu-toggle { display: flex; }
+  .menu-toggle { 
+    display: flex;
+    margin-right: 8px;
+  }
 
   nav#navMenu {
     display: none;
@@ -907,15 +910,43 @@ footer {
     letter-spacing: -0.5px;
   }
 
-  .hero { padding: 100px 20px 60px; }
-  .hero-title {
-    font-size: clamp(40px, 12vw, 72px);
-    letter-spacing: -2px;
+  /* Remove barra preta e corrige zoom do hero */
+  .hero {
+    padding: 90px 20px 60px;
+    min-height: 100svh;
+    overflow: hidden;
   }
-  .hero-sub { font-size: 16px; }
+
+  .hero-title {
+    font-size: clamp(36px, 10vw, 60px);
+    letter-spacing: -1px;
+    word-break: break-word;
+  }
+
+  .hero-badge {
+    font-size: 11px;
+    padding: 5px 12px;
+    margin-bottom: 24px;
+  }
+
+  .hero-sub { 
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
   .hero-cta { flex-direction: column; align-items: flex-start; gap: 16px; }
   .hero-scroll { display: none; }
   .dica-card { padding: 28px; }
+
+  /* Header sem barra preta visível no topo */
+  #header {
+    padding: 0 20px;
+    background: transparent;
+  }
+
+  #header.scrolled {
+    background: rgba(8,8,8,0.97);
+  }
 }
 
 @media (max-width: 480px) {
