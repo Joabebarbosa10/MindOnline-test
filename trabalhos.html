@@ -9,218 +9,207 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ===== GRID DE ARTIGOS ===== */
-    .section-trabalhos {
-      padding: 140px 48px;
-      max-width: 1280px;
+    /* ─── WORKS PAGE ─── */
+    .works-wrap { padding-top: 64px; }
+
+    /* ─── HERO ─── */
+    .works-hero {
+      padding: 80px 48px 72px;
+      max-width: 1300px;
       margin: 0 auto;
-    }
- 
-    .trabalhos-header {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 380px;
       gap: 80px;
       align-items: end;
-      margin-bottom: 80px;
     }
- 
-    .trabalhos-header h2 {
-      font-family: var(--fonte-titulo);
-      font-size: clamp(36px, 4vw, 58px);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -2px;
+    .works-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,200,66,.1); border: 1px solid rgba(245,200,66,.2);
+      color: #f5c842; font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 999px; margin-bottom: 24px;
     }
- 
-    .trabalhos-header h2 em {
-      color: var(--amarelo);
-      font-style: italic;
+    .works-eyebrow::before { content:""; width:6px; height:6px; background:#f5c842; border-radius:50%; }
+    .works-title {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 800; line-height: 1.05; letter-spacing: -2.5px;
     }
- 
-    .trabalhos-intro {
-      font-size: 18px;
-      color: #aaa;
-      line-height: 1.8;
+    .works-title em { color: #f5c842; font-style: italic; }
+    .works-right { padding-bottom: 8px; }
+    .works-intro { font-size: 16px; color: rgba(255,255,255,.5); line-height: 1.8; margin-bottom: 28px; }
+    .works-intro strong { color: rgba(255,255,255,.8); font-weight: 500; }
+    .works-stats { display: flex; gap: 32px; }
+    .works-stat { display: flex; flex-direction: column; gap: 2px; }
+    .works-stat-n { font-family: "Syne", sans-serif; font-size: 28px; font-weight: 800; color: #f5c842; }
+    .works-stat-l { font-size: 12px; color: rgba(255,255,255,.35); }
+
+    /* ─── DIVIDER ─── */
+    .works-divider {
+      max-width: 1300px; margin: 0 auto;
+      border: none; border-top: 1px solid rgba(255,255,255,.07);
     }
- 
-    .trabalhos-intro strong {
-      color: var(--branco);
-    }
- 
-    .artigos-grid {
+
+    /* ─── MAIN GRID ─── */
+    .works-grid {
+      max-width: 1300px; margin: 0 auto;
+      padding: 64px 48px 120px;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(12, 1fr);
       gap: 24px;
     }
- 
-    /* ===== CARD DO ARTIGO ===== */
-    .artigo-card {
-      background: var(--preto-3);
-      border: 1px solid var(--cinza);
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-      cursor: pointer;
-    }
- 
-    .artigo-card:hover {
-      border-color: rgba(245,200,66,0.35);
-      transform: translateY(-6px);
-    }
- 
-    .artigo-capa {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
-      background: var(--cinza);
-      position: relative;
-      overflow: hidden;
-    }
- 
-    /* Placeholder colorido quando não há imagem */
-    .artigo-capa-placeholder {
-      width: 100%;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      font-family: var(--fonte-titulo);
-      font-weight: 800;
-      color: rgba(0,0,0,0.3);
-      letter-spacing: -2px;
-    }
- 
-    .artigo-body {
-      padding: 28px;
-    }
- 
-    .artigo-tag {
-      font-family: var(--fonte-corpo);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--amarelo);
-      opacity: 0.8;
-      display: block;
-      margin-bottom: 12px;
-    }
- 
-    .artigo-titulo {
-      font-family: var(--fonte-titulo);
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--branco);
-      line-height: 1.3;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
- 
-    .artigo-descricao {
-      font-size: 14px;
-      color: #888;
-      line-height: 1.75;
-      margin-bottom: 24px;
-    }
- 
-    .artigo-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 20px;
-      border-top: 1px solid var(--cinza);
-      gap: 12px;
-      flex-wrap: wrap;
-    }
- 
-    .artigo-autor {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
- 
-    .autor-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--amarelo);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--fonte-titulo);
-      font-size: 13px;
-      font-weight: 800;
-      color: #000;
-      flex-shrink: 0;
-    }
- 
-    .autor-nome {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--branco);
-    }
- 
-    .artigo-data {
-      font-family: var(--fonte-corpo);
-      font-size: 12px;
-      color: var(--cinza-claro);
-      letter-spacing: 0.5px;
-    }
- 
-    /* ===== CARD DESTAQUE (primeiro) ===== */
-    .artigo-card--destaque {
-      grid-column: span 3;
+
+    /* ─── DESTAQUE CARD (ocupa 8 cols) ─── */
+    .card-destaque {
+      grid-column: span 8;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr auto;
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      transition: border-color .3s, transform .3s;
+      position: relative;
     }
- 
-    .artigo-card--destaque .artigo-capa-placeholder {
-      height: 100%;
-      min-height: 300px;
-      font-size: 80px;
+    .card-destaque:hover { border-color: rgba(245,200,66,.35); transform: translateY(-4px); }
+
+    .card-destaque-img {
+      width: 100%; height: 340px; object-fit: cover; display: block;
+      position: relative;
     }
- 
-    .artigo-card--destaque .artigo-body {
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    .card-destaque-img-wrap { position: relative; overflow: hidden; }
+    .card-destaque-img-wrap::after {
+      content: "";
+      position: absolute; bottom: 0; left: 0; right: 0; height: 160px;
+      background: linear-gradient(to top, rgba(10,10,15,.95) 0%, transparent 100%);
     }
- 
-    .artigo-card--destaque .artigo-titulo {
+    .card-destaque-badge {
+      position: absolute; top: 20px; left: 20px; z-index: 2;
+      background: #f5c842; color: #000;
+      font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 4px;
+    }
+    .card-destaque-body { padding: 32px; }
+    .card-tag-sm {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: #f5c842; opacity: .8;
+      display: block; margin-bottom: 10px;
+    }
+    .card-destaque-title {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(20px, 2vw, 26px);
+      font-weight: 800; line-height: 1.2; letter-spacing: -.5px;
+      color: #eeeef2; margin-bottom: 14px;
+    }
+    .card-destaque-desc {
+      font-size: 14px; color: rgba(255,255,255,.45); line-height: 1.7; margin-bottom: 24px;
+    }
+    .card-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 20px; border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .card-autor { display: flex; align-items: center; gap: 10px; }
+    .card-av {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Syne", sans-serif; font-size: 11px; font-weight: 800;
+      color: #000; background: #f5c842; flex-shrink: 0;
+    }
+    .card-av img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+    .card-autor-nome { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.7); }
+    .card-data { font-size: 12px; color: rgba(255,255,255,.3); }
+    .card-arrow {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.4); font-size: 14px;
+      transition: all .2s; flex-shrink: 0;
+    }
+    .card-destaque:hover .card-arrow { background: #f5c842; border-color: #f5c842; color: #000; }
+
+    /* ─── SIDE STACK (4 cols) ─── */
+    .card-side-stack {
+      grid-column: span 4;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    /* ─── SMALL CARD ─── */
+    .card-sm {
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px; overflow: hidden;
+      text-decoration: none;
+      display: flex; gap: 0;
+      transition: border-color .3s, transform .3s;
+      flex: 1;
+    }
+    .card-sm:hover { border-color: rgba(245,200,66,.3); transform: translateY(-2px); }
+    .card-sm-icon {
+      width: 72px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
       font-size: 28px;
     }
- 
-    .artigo-card--destaque .artigo-descricao {
-      font-size: 15px;
+    .card-sm-body { padding: 18px 18px 18px 0; flex: 1; }
+    .card-sm-title {
+      font-family: "Syne", sans-serif;
+      font-size: 14px; font-weight: 700; color: #eeeef2;
+      line-height: 1.3; letter-spacing: -.3px; margin-bottom: 6px;
     }
- 
-    /* ===== RESPONSIVO ===== */
-    @media (max-width: 900px) {
-      .section-trabalhos { padding: 80px 24px; }
-      .trabalhos-header { grid-template-columns: 1fr; gap: 24px; }
-      .artigos-grid { grid-template-columns: 1fr 1fr; }
-      .artigo-card--destaque { grid-column: span 2; grid-template-columns: 1fr; }
-      .artigo-card--destaque .artigo-capa-placeholder { min-height: 200px; }
+    .card-sm-desc { font-size: 12px; color: rgba(255,255,255,.35); line-height: 1.5; }
+
+    /* ─── BOTTOM ROW (3 cards × 4 cols) ─── */
+    .card-md {
+      grid-column: span 4;
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px; overflow: hidden;
+      text-decoration: none;
+      transition: border-color .3s, transform .3s;
     }
- 
-    @media (max-width: 600px) {
-      .artigos-grid { grid-template-columns: 1fr; }
-      .artigo-card--destaque { grid-column: span 1; }
+    .card-md:hover { border-color: rgba(245,200,66,.3); transform: translateY(-4px); }
+    .card-md-icon {
+      height: 110px; display: flex; align-items: center; justify-content: center;
+      font-size: 40px;
+    }
+    .card-md-body { padding: 22px; border-top: 1px solid rgba(255,255,255,.06); }
+    .card-md-title {
+      font-family: "Syne", sans-serif;
+      font-size: 16px; font-weight: 700; color: #eeeef2;
+      line-height: 1.3; letter-spacing: -.3px; margin-bottom: 8px;
+    }
+    .card-md-desc { font-size: 13px; color: rgba(255,255,255,.4); line-height: 1.6; margin-bottom: 18px; }
+    .card-md-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 14px; border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1100px) {
+      .works-hero { grid-template-columns: 1fr; gap: 32px; padding: 60px 24px 48px; }
+      .works-grid { grid-template-columns: 1fr 1fr; padding: 40px 24px 80px; }
+      .card-destaque { grid-column: span 2; }
+      .card-side-stack { grid-column: span 2; flex-direction: row; }
+      .card-sm { flex-direction: column; }
+      .card-sm-icon { width: 100%; height: 60px; }
+      .card-sm-body { padding: 14px; }
+      .card-md { grid-column: span 1; }
+    }
+    @media (max-width: 680px) {
+      .works-grid { grid-template-columns: 1fr; gap: 16px; }
+      .card-destaque { grid-column: span 1; }
+      .card-side-stack { grid-column: span 1; flex-direction: column; }
+      .card-md { grid-column: span 1; }
     }
   </style>
 </head>
 <body>
- 
   <div class="cursor"></div>
   <div class="cursor-follower"></div>
- 
+
   <header id="header">
     <div class="header-inner">
-      <a href="index.html" class="logo">
-        <span class="logo-dot"></span>MindOnline
-      </a>
+      <a href="index.html" class="logo"><span class="logo-dot"></span>MindOnline</a>
       <nav id="navMenu">
         <a href="index.html" class="nav-link">Início</a>
         <a href="index.html#sobre" class="nav-link">Sobre</a>
@@ -232,161 +221,112 @@
       <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </header>
- 
-  <!-- HERO -->
-  <section class="hero" id="topo">
-    <div class="hero-bg">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-    </div>
-    <div class="hero-content">
-      <div class="hero-badge">Produção Acadêmica</div>
-      <h1 class="hero-title">
-        <span class="line">Os trabalhos</span>
-        <span class="line accent">que estamos</span>
-        <span class="line">construindo.</span>
-      </h1>
-      <p class="hero-sub">Artigos, pesquisas e reflexões produzidos pelos alunos da EREMCC Petrolina sobre comunicação ética no mundo digital.</p>
-      <div class="hero-cta">
-        <a href="#artigos" class="btn-primary">Ver artigos</a>
-        <a href="index.html" class="btn-ghost">← Voltar ao início</a>
+
+  <div class="works-wrap">
+    <!-- HERO -->
+    <div class="works-hero">
+      <div>
+        <div class="works-eyebrow">Produção Acadêmica</div>
+        <h1 class="works-title">Nossas <em>pesquisas</em><br>e reflexões</h1>
+      </div>
+      <div class="works-right">
+        <p class="works-intro">Cada artigo é fruto do olhar atento de jovens que acreditam que <strong>a internet pode ser um lugar melhor</strong> — e estão fazendo algo a respeito.</p>
+        <div class="works-stats">
+          <div class="works-stat"><span class="works-stat-n">6</span><span class="works-stat-l">Artigos</span></div>
+          <div class="works-stat"><span class="works-stat-n">5</span><span class="works-stat-l">Autores</span></div>
+          <div class="works-stat"><span class="works-stat-n">2026</span><span class="works-stat-l">Edição</span></div>
+        </div>
       </div>
     </div>
-    <div class="hero-scroll">
-      <span>scroll</span>
-      <div class="scroll-line"></div>
+    <hr class="works-divider">
+
+    <!-- GRID -->
+    <div class="works-grid">
+
+      <!-- DESTAQUE -->
+      <a href="artigo1.html" class="card-destaque">
+        <div class="card-destaque-img-wrap">
+          <span class="card-destaque-badge">✦ Destaque</span>
+          <img src="pexels-fauxels-3183167.jpg" alt="Comunicação Digital" class="card-destaque-img">
+        </div>
+        <div class="card-destaque-body">
+          <span class="card-tag-sm">Comunicação Digital</span>
+          <h2 class="card-destaque-title">Como Nossas Palavras Constroem ou Destroem Comunidades Online</h2>
+          <p class="card-destaque-desc">Uma análise sobre o impacto das interações digitais na formação de comunidades virtuais saudáveis e os mecanismos que transformam espaços de debate em ambientes hostis.</p>
+          <div class="card-meta">
+            <div class="card-autor">
+              <div class="card-av"><img src="logo-eremcc.jpg" alt="EREMCC"></div>
+              <span class="card-autor-nome">Alunos EREMCC</span>
+            </div>
+            <span class="card-data">Março 2026</span>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- SIDE STACK -->
+      <div class="card-side-stack">
+        <a href="artigo2.html" class="card-sm">
+          <div class="card-sm-icon" style="background:linear-gradient(135deg,#0d1a0d,#1a2a1a);">📰</div>
+          <div class="card-sm-body">
+            <span class="card-tag-sm">Fake News</span>
+            <div class="card-sm-title">Por Que Acreditamos no Que Queremos Acreditar?</div>
+            <div class="card-sm-desc">Maria João · Fev 2026</div>
+          </div>
+        </a>
+        <a href="artigo3.html" class="card-sm">
+          <div class="card-sm-icon" style="background:linear-gradient(135deg,#1a0d0d,#2a1515);">🛡️</div>
+          <div class="card-sm-body">
+            <span class="card-tag-sm">Privacidade</span>
+            <div class="card-sm-title">O Que Você Entrega Sem Perceber</div>
+            <div class="card-sm-desc">Pedro Silva · Fev 2026</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- BOTTOM ROW -->
+      <a href="artigo4.html" class="card-md">
+        <div class="card-md-icon" style="background:linear-gradient(135deg,#0d0d1a,#15152a);">💬</div>
+        <div class="card-md-body">
+          <span class="card-tag-sm">Cyberbullying</span>
+          <div class="card-md-title">A Violência Que Não Deixa Marcas Visíveis</div>
+          <p class="card-md-desc">Uma reflexão sobre os impactos psicológicos do assédio online na adolescência.</p>
+          <div class="card-md-meta">
+            <div class="card-autor"><div class="card-av">AC</div><span class="card-autor-nome" style="font-size:12px;">Ana Costa</span></div>
+            <span class="card-data">Jan 2026</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="artigo5.html" class="card-md">
+        <div class="card-md-icon" style="background:linear-gradient(135deg,#1a1a0d,#2a2a15);">⏱️</div>
+        <div class="card-md-body">
+          <span class="card-tag-sm">Saúde Digital</span>
+          <div class="card-md-title">Quando o Scroll Vira Vício</div>
+          <p class="card-md-desc">As redes são projetadas para nos manter conectados. A que custo?</p>
+          <div class="card-md-meta">
+            <div class="card-autor"><div class="card-av">LF</div><span class="card-autor-nome" style="font-size:12px;">Lucas Ferreira</span></div>
+            <span class="card-data">Jan 2026</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="artigo6.html" class="card-md">
+        <div class="card-md-icon" style="background:linear-gradient(135deg,#0d1a1a,#152a2a);">🤝</div>
+        <div class="card-md-body">
+          <span class="card-tag-sm">Ética</span>
+          <div class="card-md-title">É Possível Ser Humano Atrás de uma Tela?</div>
+          <p class="card-md-desc">Como cultivar empatia nas interações digitais e por que isso importa.</p>
+          <div class="card-md-meta">
+            <div class="card-autor"><div class="card-av">JO</div><span class="card-autor-nome" style="font-size:12px;">Joana Oliveira</span></div>
+            <span class="card-data">Dez 2025</span>
+          </div>
+        </div>
+      </a>
+
     </div>
-  </section>
- 
-  <main>
-    <section id="artigos" class="section-trabalhos">
-      <div class="section-label">01 — Artigos</div>
- 
-      <div class="trabalhos-header animar">
-        <h2>Nossas <em>pesquisas</em><br>e reflexões</h2>
-        <p class="trabalhos-intro">Cada artigo é fruto do olhar atento de jovens que acreditam que <strong>a internet pode ser um lugar melhor</strong> — e estão fazendo algo a respeito.</p>
-      </div>
- 
-      <div class="artigos-grid">
- 
-        <!-- ARTIGO DESTAQUE -->
-        <a href="artigo1.html" class="artigo-card artigo-card--destaque animar" style="text-decoration:none;">
-          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #1a1500, #2a2000); padding:0; overflow:hidden;">
-            <img src="pexels-fauxels-3183167.jpg" alt="Comunicação Digital" style="width:100%;height:100%;object-fit:cover;display:block;min-height:300px;">
-          </div>
-          <div class="artigo-body">
-            <span class="artigo-tag">Destaque</span>
-            <h3 class="artigo-titulo">Comunicação Digital: Como Nossas Palavras Constroem ou Destroem Comunidades Online</h3>
-            <p class="artigo-descricao">Uma análise sobre o impacto das interações digitais na formação de comunidades virtuais saudáveis e os mecanismos que transformam espaços de debate em ambientes hostis — e o que cada usuário pode fazer para mudar esse cenário.</p>
-            <div class="artigo-meta">
-              <div class="artigo-autor">
-                <img src="logo-eremcc.jpg" alt="Logo EREMCC" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;">
-                <span class="autor-nome">Alunos EREMCC</span>
-              </div>
-              <span class="artigo-data">Março 2026</span>
-            </div>
-          </div>
-        </a>
- 
-        <!-- ARTIGO 1 -->
-        <a href="artigo2.html" class="artigo-card animar" style="text-decoration:none;">
-          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #0d1a0d, #1a2a1a);">
-            📰
-          </div>
-          <div class="artigo-body">
-            <span class="artigo-tag">Fake News</span>
-            <h3 class="artigo-titulo">Fake News: Por Que Acreditamos no Que Queremos Acreditar?</h3>
-            <p class="artigo-descricao">Um estudo sobre os vieses cognitivos que nos tornam vulneráveis à desinformação e como desenvolver um olhar crítico sobre o que consumimos nas redes.</p>
-            <div class="artigo-meta">
-              <div class="artigo-autor">
-                <div class="autor-avatar">MJ</div>
-                <span class="autor-nome">Maria João</span>
-              </div>
-              <span class="artigo-data">Fev 2026</span>
-            </div>
-          </div>
-        </a>
- 
-        <!-- ARTIGO 2 -->
-        <a href="artigo3.html" class="artigo-card animar" style="text-decoration:none;">
-          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #1a0d0d, #2a1515);">
-            🛡️
-          </div>
-          <div class="artigo-body">
-            <span class="artigo-tag">Privacidade</span>
-            <h3 class="artigo-titulo">Privacidade Digital: O Que Você Entrega Sem Perceber</h3>
-            <p class="artigo-descricao">Cada curtida, cada pesquisa, cada segundo de rolagem — tudo é dado. Este artigo explora o que as plataformas sabem sobre você e como se proteger.</p>
-            <div class="artigo-meta">
-              <div class="artigo-autor">
-                <div class="autor-avatar">PS</div>
-                <span class="autor-nome">Pedro Silva</span>
-              </div>
-              <span class="artigo-data">Fev 2026</span>
-            </div>
-          </div>
-        </a>
- 
-        <!-- ARTIGO 3 -->
-        <a href="artigo4.html" class="artigo-card animar" style="text-decoration:none;">
-          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #0d0d1a, #15152a);">
-            💬
-          </div>
-          <div class="artigo-body">
-            <span class="artigo-tag">Cyberbullying</span>
-            <h3 class="artigo-titulo">Cyberbullying: A Violência Que Não Deixa Marcas Visíveis</h3>
-            <p class="artigo-descricao">Uma reflexão sobre os impactos psicológicos do assédio online na adolescência e o papel da escola e da família na prevenção e acolhimento.</p>
-            <div class="artigo-meta">
-              <div class="artigo-autor">
-                <div class="autor-avatar">AC</div>
-                <span class="autor-nome">Ana Costa</span>
-              </div>
-              <span class="artigo-data">Jan 2026</span>
-            </div>
-          </div>
-        </a>
- 
-        <!-- ARTIGO 4 -->
-        <a href="artigo5.html" class="artigo-card animar" style="text-decoration:none;">
-          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #1a1a0d, #2a2a15);">
-            ⏱️
-          </div>
-          <div class="artigo-body">
-            <span class="artigo-tag">Saúde Digital</span>
-            <h3 class="artigo-titulo">Tempo de Tela: Quando o Scroll Vira Vício</h3>
-            <p class="artigo-descricao">As redes sociais são projetadas para nos manter conectados o máximo possível. Mas a que custo? Uma análise sobre o design persuasivo e seus efeitos na saúde mental.</p>
-            <div class="artigo-meta">
-              <div class="artigo-autor">
-                <div class="autor-avatar">LF</div>
-                <span class="autor-nome">Lucas Ferreira</span>
-              </div>
-              <span class="artigo-data">Jan 2026</span>
-            </div>
-          </div>
-        </a>
- 
-        <!-- ARTIGO 5 -->
-        <a href="artigo6.html" class="artigo-card animar" style="text-decoration:none;">
-          <div class="artigo-capa-placeholder" style="background: linear-gradient(135deg, #0d1a1a, #152a2a);">
-            🤝
-          </div>
-          <div class="artigo-body">
-            <span class="artigo-tag">Ética</span>
-            <h3 class="artigo-titulo">Empatia Digital: É Possível Ser Humano Atrás de uma Tela?</h3>
-            <p class="artigo-descricao">A distância física cria uma sensação de impunidade online. Este artigo discute como cultivar empatia nas interações digitais e por que isso importa.</p>
-            <div class="artigo-meta">
-              <div class="artigo-autor">
-                <div class="autor-avatar">JO</div>
-                <span class="autor-nome">Joana Oliveira</span>
-              </div>
-              <span class="artigo-data">Dez 2025</span>
-            </div>
-          </div>
-        </a>
- 
-      </div>
-    </section>
-  </main>
- 
+  </div>
+
   <footer>
     <div class="footer-inner">
       <span class="footer-logo">MindOnline</span>
@@ -394,7 +334,7 @@
       <span class="footer-origin">Petrolina, PE — Brasil</span>
     </div>
   </footer>
- 
+
   <script src="script.js"></script>
 </body>
 </html>
