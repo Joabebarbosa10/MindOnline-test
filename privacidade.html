@@ -9,130 +9,169 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    .section-privacidade {
-      padding: 140px 48px;
-      max-width: 860px;
+    .priv-wrap { padding-top: 100px; min-height: 100vh; }
+
+    /* HERO */
+    .priv-hero {
+      padding: 80px 48px 60px;
+      max-width: 1200px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: end;
+      border-bottom: 1px solid rgba(255,255,255,.07);
     }
-
-    .privacidade-titulo {
-      font-family: var(--fonte-titulo);
-      font-size: clamp(36px, 5vw, 72px);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -2px;
-      margin-bottom: 16px;
-    }
-
-    .privacidade-titulo em {
-      color: var(--amarelo);
-      font-style: italic;
-    }
-
-    .privacidade-data {
-      font-family: var(--fonte-corpo);
-      font-size: 13px;
-      color: var(--cinza-claro);
-      letter-spacing: 1px;
-      margin-bottom: 64px;
-      display: block;
-    }
-
-    .privacidade-bloco {
-      margin-bottom: 56px;
-      padding-bottom: 56px;
-      border-bottom: 1px solid var(--cinza);
-    }
-
-    .privacidade-bloco:last-child {
-      border-bottom: none;
-    }
-
-    .privacidade-bloco h2 {
-      font-family: var(--fonte-titulo);
-      font-size: 22px;
+    .priv-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,200,66,.1);
+      border: 1px solid rgba(245,200,66,.2);
+      color: #f5c842;
+      font-size: 11px;
       font-weight: 700;
-      color: var(--amarelo);
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      margin-bottom: 20px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+    .priv-tag::before { content: ""; width: 6px; height: 6px; background: #f5c842; border-radius: 50%; }
+    .priv-title {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2.5px;
+    }
+    .priv-title em { color: #f5c842; font-style: italic; }
+    .priv-hero-meta { display: flex; flex-direction: column; gap: 20px; }
+    .priv-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .priv-meta-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.3); }
+    .priv-meta-val { font-size: 15px; color: rgba(255,255,255,.75); font-weight: 500; }
+    .priv-meta-val a { color: #f5c842; text-decoration: none; }
+    .priv-meta-val a:hover { text-decoration: underline; }
+
+    /* BODY */
+    .priv-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px 120px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 64px;
+      align-items: start;
     }
 
-    .privacidade-bloco p {
-      font-size: 16px;
-      color: #aaa;
-      line-height: 1.85;
-      margin-bottom: 16px;
+    /* SIDEBAR */
+    .priv-nav { position: sticky; top: 100px; padding-top: 64px; }
+    .priv-nav-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 20px; }
+    .priv-nav-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+    .priv-nav-list a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 8px;
+      font-size: 13px; color: rgba(255,255,255,.4);
+      text-decoration: none; transition: all .2s; font-weight: 500;
+      border: 1px solid transparent;
+    }
+    .priv-nav-list a:hover { color: rgba(255,255,255,.85); background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.07); }
+    .priv-nav-list a.active { color: #f5c842; background: rgba(245,200,66,.08); border-color: rgba(245,200,66,.15); }
+    .priv-nav-num { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.2); font-family: "Syne", sans-serif; min-width: 20px; }
+    .priv-nav-list a.active .priv-nav-num { color: #f5c842; }
+
+    /* CONTENT */
+    .priv-content { padding-top: 64px; }
+    .priv-section { margin-bottom: 80px; scroll-margin-top: 110px; }
+    .priv-section-header {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 28px; padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .priv-section-num {
+      font-family: "Syne", sans-serif; font-size: 12px; font-weight: 800; color: #f5c842;
+      background: rgba(245,200,66,.1); border: 1px solid rgba(245,200,66,.2);
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; letter-spacing: .5px;
+    }
+    .priv-section-title { font-family: "Syne", sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -.5px; }
+    .priv-section p { font-size: 15px; color: rgba(255,255,255,.55); line-height: 1.85; margin-bottom: 16px; }
+    .priv-section p strong { color: rgba(255,255,255,.85); font-weight: 500; }
+
+    /* LIST */
+    .priv-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+    .priv-list-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,.025); border: 1px solid rgba(255,255,255,.06);
+      border-radius: 10px; font-size: 14px; color: rgba(255,255,255,.6);
+      line-height: 1.6; transition: border-color .2s;
+    }
+    .priv-list-item:hover { border-color: rgba(245,200,66,.15); }
+    .priv-list-icon { color: #f5c842; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+    /* HIGHLIGHT */
+    .priv-highlight {
+      background: rgba(245,200,66,.06); border: 1px solid rgba(245,200,66,.18);
+      border-left: 3px solid #f5c842; border-radius: 10px;
+      padding: 20px 22px; margin: 24px 0;
+      font-size: 14px; color: rgba(255,255,255,.7); line-height: 1.7;
+    }
+    .priv-highlight strong {
+      color: #f5c842; display: block; font-size: 11px;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
     }
 
-    .privacidade-bloco p strong {
-      color: var(--branco);
-      font-weight: 500;
+    /* RIGHTS GRID */
+    .priv-rights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+    .priv-right-card {
+      background: rgba(255,255,255,.025); border: 1px solid rgba(255,255,255,.06);
+      border-radius: 12px; padding: 18px; transition: all .2s;
     }
+    .priv-right-card:hover { border-color: rgba(245,200,66,.2); background: rgba(245,200,66,.03); }
+    .priv-right-icon { font-size: 20px; margin-bottom: 8px; display: block; }
+    .priv-right-title { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.85); margin-bottom: 4px; }
+    .priv-right-desc { font-size: 12px; color: rgba(255,255,255,.4); line-height: 1.5; }
 
-    .privacidade-bloco ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 8px;
+    /* CONTACT BLOCK */
+    .priv-contact-block {
+      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px; padding: 36px;
+      display: flex; align-items: center; gap: 32px; margin-top: 80px;
     }
-
-    .privacidade-bloco ul li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 15px;
-      color: #aaa;
-      line-height: 1.7;
+    .priv-contact-icon {
+      width: 56px; height: 56px;
+      background: rgba(245,200,66,.1); border: 1px solid rgba(245,200,66,.2);
+      border-radius: 14px; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; flex-shrink: 0;
     }
-
-    .privacidade-bloco ul li::before {
-      content: '→';
-      color: var(--amarelo);
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 2px;
+    .priv-contact-text { flex: 1; }
+    .priv-contact-title { font-family: "Syne", sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .priv-contact-desc { font-size: 14px; color: rgba(255,255,255,.45); line-height: 1.6; }
+    .priv-contact-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #f5c842; color: #000; font-weight: 700; font-size: 13px;
+      padding: 11px 20px; border-radius: 8px; text-decoration: none;
+      white-space: nowrap; transition: all .2s; flex-shrink: 0;
     }
+    .priv-contact-link:hover { background: #ffd96a; transform: translateY(-1px); }
 
-    .privacidade-contato {
-      background: var(--preto-3);
-      border: 1px solid var(--cinza);
-      padding: 32px;
-      margin-top: 48px;
-    }
-
-    .privacidade-contato p {
-      font-size: 15px;
-      color: #aaa;
-      line-height: 1.8;
-      margin: 0;
-    }
-
-    .privacidade-contato a {
-      color: var(--amarelo);
-      text-decoration: none;
-    }
-
-    .privacidade-contato a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 900px) {
-      .section-privacidade { padding: 100px 24px; }
+    @media (max-width: 1000px) {
+      .priv-hero { grid-template-columns: 1fr; gap: 32px; padding: 60px 24px 40px; }
+      .priv-body { grid-template-columns: 1fr; padding: 0 24px 80px; }
+      .priv-nav { display: none; }
+      .priv-rights-grid { grid-template-columns: 1fr; }
+      .priv-contact-block { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px; }
     }
   </style>
 </head>
 <body>
-
   <div class="cursor"></div>
   <div class="cursor-follower"></div>
 
   <header id="header">
     <div class="header-inner">
-      <a href="index.html" class="logo">
-        <span class="logo-dot"></span>MindOnline
-      </a>
+      <a href="index.html" class="logo"><span class="logo-dot"></span>MindOnline</a>
       <nav id="navMenu">
         <a href="index.html" class="nav-link">Início</a>
         <a href="index.html#sobre" class="nav-link">Sobre</a>
@@ -145,86 +184,173 @@
     </div>
   </header>
 
-  <main>
-    <section class="section-privacidade">
-      <div class="section-label">Legal</div>
-
-      <h1 class="privacidade-titulo">Política de<br><em>Privacidade</em></h1>
-      <span class="privacidade-data">Última atualização: Março de 2026</span>
-
-      <!-- BLOCO 1 -->
-      <div class="privacidade-bloco">
-        <h2>01 — Quem somos</h2>
-        <p>O <strong>MindOnline</strong> é um projeto educacional desenvolvido por alunos da <strong>Escola de Referência em Ensino Médio Clementino Coelho — Petrolina, Pernambuco</strong>, com mentoria de alunos do <strong>Instituto Federal do Sertão Pernambucano — Campus Petrolina</strong>.</p>
-        <p>Nosso objetivo é promover a comunicação ética e responsável no ambiente digital. Esta política explica como tratamos as informações coletadas por meio deste site.</p>
+  <div class="priv-wrap">
+    <div class="priv-hero">
+      <div class="priv-hero-left">
+        <div class="priv-tag">Documento Legal</div>
+        <h1 class="priv-title">Política de<br><em>Privacidade</em></h1>
       </div>
+      <div class="priv-hero-right">
+        <div class="priv-hero-meta">
+          <div class="priv-meta-item">
+            <span class="priv-meta-label">Última atualização</span>
+            <span class="priv-meta-val">Março de 2026</span>
+          </div>
+          <div class="priv-meta-item">
+            <span class="priv-meta-label">Responsável</span>
+            <span class="priv-meta-val">Projeto MindOnline — EREMCC, Petrolina/PE</span>
+          </div>
+          <div class="priv-meta-item">
+            <span class="priv-meta-label">Contato</span>
+            <span class="priv-meta-val"><a href="mailto:bjoabe036@gmail.com">bjoabe036@gmail.com</a></span>
+          </div>
+          <div class="priv-meta-item">
+            <span class="priv-meta-label">Versão</span>
+            <span class="priv-meta-val">1.0</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <!-- BLOCO 2 -->
-      <div class="privacidade-bloco">
-        <h2>02 — Quais dados coletamos</h2>
-        <p>Coletamos apenas os dados que você nos fornece voluntariamente ao preencher o formulário de contato:</p>
-        <ul>
-          <li>Nome completo</li>
-          <li>Endereço de e-mail</li>
-          <li>Número de telefone (opcional)</li>
-          <li>Mensagem enviada</li>
-          <li>Preferência de recebimento de novidades</li>
+    <div class="priv-body">
+      <aside class="priv-nav">
+        <p class="priv-nav-title">Nesta página</p>
+        <ul class="priv-nav-list">
+          <li><a href="#quem-somos" class="active"><span class="priv-nav-num">01</span>Quem somos</a></li>
+          <li><a href="#dados"><span class="priv-nav-num">02</span>Dados coletados</a></li>
+          <li><a href="#uso"><span class="priv-nav-num">03</span>Como usamos</a></li>
+          <li><a href="#armazenamento"><span class="priv-nav-num">04</span>Armazenamento</a></li>
+          <li><a href="#direitos"><span class="priv-nav-num">05</span>Seus direitos</a></li>
+          <li><a href="#links"><span class="priv-nav-num">06</span>Links externos</a></li>
+          <li><a href="#alteracoes"><span class="priv-nav-num">07</span>Alterações</a></li>
         </ul>
-        <p>Não coletamos dados de navegação, cookies de rastreamento ou qualquer informação sem o seu conhecimento.</p>
-      </div>
+      </aside>
 
-      <!-- BLOCO 3 -->
-      <div class="privacidade-bloco">
-        <h2>03 — Como usamos seus dados</h2>
-        <p>As informações coletadas são utilizadas exclusivamente para:</p>
-        <ul>
-          <li>Responder à sua mensagem ou dúvida</li>
-          <li>Enviar novidades do projeto, caso você tenha optado por recebê-las</li>
-          <li>Melhorar o conteúdo e a experiência do site</li>
-        </ul>
-        <p><strong>Seus dados nunca serão vendidos, compartilhados ou utilizados para fins comerciais.</strong></p>
-      </div>
+      <main class="priv-content">
 
-      <!-- BLOCO 4 -->
-      <div class="privacidade-bloco">
-        <h2>04 — Armazenamento e segurança</h2>
-        <p>Seus dados são armazenados de forma segura e acessados apenas pela equipe do projeto. Adotamos boas práticas de segurança para proteger as informações contra acesso não autorizado.</p>
-        <p>Os dados são mantidos pelo tempo necessário para atender à finalidade para a qual foram coletados e podem ser excluídos a qualquer momento mediante solicitação.</p>
-      </div>
+        <section class="priv-section" id="quem-somos">
+          <div class="priv-section-header">
+            <div class="priv-section-num">01</div>
+            <h2 class="priv-section-title">Quem somos</h2>
+          </div>
+          <p>O <strong>MindOnline</strong> é um projeto educacional desenvolvido por alunos da <strong>Escola de Referência em Ensino Médio Clementino Coelho (EREMCC)</strong>, localizada em Petrolina, Pernambuco, com mentoria de alunos do <strong>Instituto Federal do Sertão Pernambucano — Campus Petrolina</strong>.</p>
+          <p>Nossa missão é promover a comunicação ética, consciente e responsável no ambiente digital. Esta política descreve de forma clara e transparente como tratamos as informações coletadas por meio deste site.</p>
+          <div class="priv-highlight">
+            <strong>Compromisso</strong>
+            Somos um projeto sem fins lucrativos, sem anunciantes e sem interesse comercial nos seus dados. Sua privacidade é respeitada integralmente.
+          </div>
+        </section>
 
-      <!-- BLOCO 5 -->
-      <div class="privacidade-bloco">
-        <h2>05 — Seus direitos</h2>
-        <p>Você tem total controle sobre os seus dados. A qualquer momento, você pode:</p>
-        <ul>
-          <li>Solicitar acesso às informações que temos sobre você</li>
-          <li>Pedir a correção de dados incorretos</li>
-          <li>Solicitar a exclusão dos seus dados</li>
-          <li>Cancelar o recebimento de novidades</li>
-        </ul>
-        <p>Para exercer qualquer um desses direitos, basta entrar em contato conosco pelo e-mail abaixo.</p>
-      </div>
+        <section class="priv-section" id="dados">
+          <div class="priv-section-header">
+            <div class="priv-section-num">02</div>
+            <h2 class="priv-section-title">Dados que coletamos</h2>
+          </div>
+          <p>Coletamos apenas as informações que você nos fornece voluntariamente ao preencher o formulário de contato. Não há coleta automática, cookies de rastreamento ou qualquer dado coletado sem o seu conhecimento.</p>
+          <div class="priv-list">
+            <div class="priv-list-item"><span class="priv-list-icon">→</span><span><strong style="color:rgba(255,255,255,.8);font-weight:600;">Nome completo</strong> — para que possamos nos dirigir a você de forma personalizada.</span></div>
+            <div class="priv-list-item"><span class="priv-list-icon">→</span><span><strong style="color:rgba(255,255,255,.8);font-weight:600;">Endereço de e-mail</strong> — para responder à sua mensagem ou enviar novidades, se solicitado.</span></div>
+            <div class="priv-list-item"><span class="priv-list-icon">→</span><span><strong style="color:rgba(255,255,255,.8);font-weight:600;">Número de telefone</strong> — campo opcional, utilizado somente se necessário para retorno.</span></div>
+            <div class="priv-list-item"><span class="priv-list-icon">→</span><span><strong style="color:rgba(255,255,255,.8);font-weight:600;">Mensagem enviada</strong> — conteúdo da sua dúvida, sugestão ou comentário.</span></div>
+            <div class="priv-list-item"><span class="priv-list-icon">→</span><span><strong style="color:rgba(255,255,255,.8);font-weight:600;">Preferência de novidades</strong> — sua escolha sobre receber ou não comunicações futuras.</span></div>
+          </div>
+          <p>Não utilizamos ferramentas de analytics de terceiros, pixels de rastreamento, fingerprinting ou qualquer tecnologia de coleta implícita.</p>
+        </section>
 
-      <!-- BLOCO 6 -->
-      <div class="privacidade-bloco">
-        <h2>06 — Links externos</h2>
-        <p>Este site pode conter links para sites externos. O MindOnline não se responsabiliza pelas políticas de privacidade ou pelo conteúdo de outros sites. Recomendamos que você leia a política de privacidade de qualquer site que visitar.</p>
-      </div>
+        <section class="priv-section" id="uso">
+          <div class="priv-section-header">
+            <div class="priv-section-num">03</div>
+            <h2 class="priv-section-title">Como usamos seus dados</h2>
+          </div>
+          <p>As informações coletadas têm finalidade exclusivamente educacional e de comunicação direta com você. Nunca utilizamos seus dados para fins que você não autorizou.</p>
+          <div class="priv-list">
+            <div class="priv-list-item"><span class="priv-list-icon">→</span>Responder à sua mensagem, dúvida ou sugestão enviada pelo formulário de contato.</div>
+            <div class="priv-list-item"><span class="priv-list-icon">→</span>Enviar atualizações e novidades do projeto — apenas se você optou por recebê-las.</div>
+            <div class="priv-list-item"><span class="priv-list-icon">→</span>Melhorar o conteúdo e a experiência do site com base no feedback recebido.</div>
+          </div>
+          <div class="priv-highlight">
+            <strong>Garantia</strong>
+            Seus dados nunca serão vendidos, alugados, cedidos ou compartilhados com terceiros para fins comerciais ou publicitários. Jamais.
+          </div>
+        </section>
 
-      <!-- BLOCO 7 -->
-      <div class="privacidade-bloco">
-        <h2>07 — Alterações nesta política</h2>
-        <p>Esta política pode ser atualizada periodicamente para refletir mudanças no projeto ou na legislação vigente. Sempre que houver alterações relevantes, a data de atualização no topo desta página será modificada.</p>
-        <p>Recomendamos que você visite esta página regularmente para se manter informado.</p>
-      </div>
+        <section class="priv-section" id="armazenamento">
+          <div class="priv-section-header">
+            <div class="priv-section-num">04</div>
+            <h2 class="priv-section-title">Armazenamento e segurança</h2>
+          </div>
+          <p>Seus dados são armazenados de forma segura, com acesso restrito à equipe do projeto. Adotamos boas práticas de segurança da informação para proteger suas informações contra acesso não autorizado, perda ou uso indevido.</p>
+          <p>Os dados são mantidos somente pelo tempo necessário para cumprir a finalidade para a qual foram coletados. Após esse período — ou mediante solicitação sua — as informações são excluídas permanentemente.</p>
+          <p>Este site é hospedado na plataforma <strong>Vercel</strong>, que adota padrões de segurança reconhecidos internacionalmente.</p>
+        </section>
 
-      <!-- CONTATO -->
-      <div class="privacidade-contato">
-        <p>Dúvidas sobre esta política? Entre em contato: <a href="bjoabe036@gmail.com">bjoabe036@gmail.com</a></p>
-      </div>
+        <section class="priv-section" id="direitos">
+          <div class="priv-section-header">
+            <div class="priv-section-num">05</div>
+            <h2 class="priv-section-title">Seus direitos</h2>
+          </div>
+          <p>Você tem total controle sobre as informações que nos forneceu. Em conformidade com a <strong>Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)</strong>, você pode exercer os seguintes direitos a qualquer momento:</p>
+          <div class="priv-rights-grid">
+            <div class="priv-right-card">
+              <span class="priv-right-icon">🔍</span>
+              <div class="priv-right-title">Acesso</div>
+              <div class="priv-right-desc">Solicitar quais dados temos sobre você e como são utilizados.</div>
+            </div>
+            <div class="priv-right-card">
+              <span class="priv-right-icon">✏️</span>
+              <div class="priv-right-title">Correção</div>
+              <div class="priv-right-desc">Pedir a atualização de informações incorretas ou desatualizadas.</div>
+            </div>
+            <div class="priv-right-card">
+              <span class="priv-right-icon">🗑️</span>
+              <div class="priv-right-title">Exclusão</div>
+              <div class="priv-right-desc">Solicitar a remoção definitiva dos seus dados a qualquer momento.</div>
+            </div>
+            <div class="priv-right-card">
+              <span class="priv-right-icon">🔕</span>
+              <div class="priv-right-title">Cancelamento</div>
+              <div class="priv-right-desc">Revogar a autorização de recebimento de novidades e comunicações.</div>
+            </div>
+          </div>
+          <p>Para exercer qualquer um desses direitos, entre em contato pelo e-mail abaixo. Respondemos em até 5 dias úteis.</p>
+        </section>
 
-    </section>
-  </main>
+        <section class="priv-section" id="links">
+          <div class="priv-section-header">
+            <div class="priv-section-num">06</div>
+            <h2 class="priv-section-title">Links externos</h2>
+          </div>
+          <p>Este site pode conter links para plataformas e sites externos. O MindOnline não se responsabiliza pelas práticas de privacidade, pelo conteúdo ou pela segurança de sites de terceiros.</p>
+          <p>Recomendamos que você leia a política de privacidade de qualquer site que visitar fora deste domínio antes de fornecer qualquer dado pessoal.</p>
+        </section>
+
+        <section class="priv-section" id="alteracoes">
+          <div class="priv-section-header">
+            <div class="priv-section-num">07</div>
+            <h2 class="priv-section-title">Alterações nesta política</h2>
+          </div>
+          <p>Esta política pode ser revisada periodicamente para refletir mudanças no projeto, nas ferramentas utilizadas ou na legislação aplicável. Sempre que houver alterações relevantes, a data de atualização exibida no topo desta página será modificada.</p>
+          <div class="priv-highlight">
+            <strong>Vigência</strong>
+            Esta versão da política está em vigor desde março de 2026 e substitui todas as versões anteriores.
+          </div>
+        </section>
+
+        <div class="priv-contact-block">
+          <div class="priv-contact-icon">✉️</div>
+          <div class="priv-contact-text">
+            <div class="priv-contact-title">Fale com a gente</div>
+            <div class="priv-contact-desc">Dúvidas sobre esta política, solicitações de acesso, correção ou exclusão de dados? Respondemos em até 5 dias úteis.</div>
+          </div>
+          <a href="mailto:bjoabe036@gmail.com" class="priv-contact-link">
+            Enviar e-mail
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+          </a>
+        </div>
+
+      </main>
+    </div>
+  </div>
 
   <footer>
     <div class="footer-inner">
@@ -235,5 +361,19 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    const sections = document.querySelectorAll(".priv-section");
+    const navLinks = document.querySelectorAll(".priv-nav-list a");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove("active"));
+          const active = document.querySelector(`.priv-nav-list a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add("active");
+        }
+      });
+    }, { rootMargin: "-30% 0px -60% 0px" });
+    sections.forEach(s => observer.observe(s));
+  </script>
 </body>
 </html>
