@@ -3,300 +3,578 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MindOnline</title>
+  <title>MindOnline — Comunicação Ética Digital</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* ── Community Card Hero ── */
-    .hero-community-card {
-      margin-top: 40px;
-      display: inline-flex;
-      flex-direction: column;
-      gap: 10px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 16px;
-      padding: 20px 24px;
-      backdrop-filter: blur(12px);
-      max-width: 420px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-community-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(245,200,66,.06) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .hero-community-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: #f5c842;
-    }
-    .community-dot {
-      width: 7px;
-      height: 7px;
-      background: #00e87a;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #00e87a;
-      animation: pulse-green 2s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-    @keyframes pulse-green {
-      0%,100% { opacity:1; transform:scale(1); }
-      50% { opacity:.5; transform:scale(1.5); }
-    }
-    .hero-community-desc {
-      font-size: 13px;
-      color: rgba(255,255,255,.55);
-      line-height: 1.6;
-      margin: 0;
-    }
-    .btn-community {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #f5c842;
-      color: #000;
-      font-weight: 700;
-      font-size: 13px;
-      padding: 10px 18px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: all .2s;
-      align-self: flex-start;
-      letter-spacing: .2px;
-    }
-    .btn-community:hover {
-      background: #ffd96a;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(245,200,66,.3);
-    }
-    .btn-community svg {
-      transition: transform .2s;
-    }
-    .btn-community:hover svg {
-      transform: translate(2px, -2px);
-    }
-  </style>
+<style>
+:root {
+  --bg: #080808;
+  --fg: #f0ede6;
+  --gold: #e8c84a;
+  --gold2: #f5d76e;
+  --dim: rgba(240,237,230,.5);
+  --border: rgba(240,237,230,.08);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-serif: 'Instrument Serif', serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-body: 'DM Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;cursor:none;}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::selection{background:var(--gold);color:#000;}
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--gold);}
+
+/* CURSOR */
+#cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;will-change:transform;transition:width .2s,height .2s;}
+#cursor-ring{position:fixed;top:0;left:0;width:40px;height:40px;border:1px solid rgba(232,200,74,.35);border-radius:50%;pointer-events:none;z-index:99998;will-change:transform;transition:width .3s cubic-bezier(.16,1,.3,1),height .3s cubic-bezier(.16,1,.3,1),border-color .3s;}
+#cursor-text{position:fixed;top:0;left:0;font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#000;background:var(--gold);padding:3px 8px;border-radius:2px;pointer-events:none;z-index:99999;opacity:0;transition:opacity .2s;white-space:nowrap;}
+body.c-hover #cursor-dot{width:12px;height:12px;}
+body.c-hover #cursor-ring{width:56px;height:56px;border-color:rgba(232,200,74,.15);}
+body.c-card #cursor-ring{width:76px;height:76px;border-color:rgba(232,200,74,.18);}
+body.c-card #cursor-text{opacity:1;}
+
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;z-index:9998;box-shadow:0 0 8px rgba(232,200,74,.6);}
+
+/* PAGE TRANSITION */
+#pt{position:fixed;inset:0;z-index:99997;display:grid;grid-template-columns:repeat(5,1fr);pointer-events:none;}
+.pt-col{background:var(--gold);transform:scaleY(0);transform-origin:bottom;}
+.pt-col:nth-child(1){transition:transform .5s cubic-bezier(.77,0,.175,1) 0s;}
+.pt-col:nth-child(2){transition:transform .5s cubic-bezier(.77,0,.175,1) .06s;}
+.pt-col:nth-child(3){transition:transform .5s cubic-bezier(.77,0,.175,1) .12s;}
+.pt-col:nth-child(4){transition:transform .5s cubic-bezier(.77,0,.175,1) .18s;}
+.pt-col:nth-child(5){transition:transform .5s cubic-bezier(.77,0,.175,1) .24s;}
+#pt.enter .pt-col{transform:scaleY(1);}
+#pt.leave .pt-col{transform:scaleY(0);transform-origin:top;}
+#pt.leave .pt-col:nth-child(1){transition:transform .5s cubic-bezier(.77,0,.175,1) .24s;}
+#pt.leave .pt-col:nth-child(2){transition:transform .5s cubic-bezier(.77,0,.175,1) .18s;}
+#pt.leave .pt-col:nth-child(3){transition:transform .5s cubic-bezier(.77,0,.175,1) .12s;}
+#pt.leave .pt-col:nth-child(4){transition:transform .5s cubic-bezier(.77,0,.175,1) .06s;}
+#pt.leave .pt-col:nth-child(5){transition:transform .5s cubic-bezier(.77,0,.175,1) 0s;}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;}
+header.scrolled{background:rgba(8,8,8,.92);backdrop-filter:blur(24px);border-bottom-color:var(--border);}
+.logo{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:8px;}
+.logo-mark{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulseDot 2.5s ease-in-out infinite;}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,200,74,.4);}50%{opacity:.6;transform:scale(1.3);box-shadow:0 0 0 6px rgba(232,200,74,0);}}
+nav{display:flex;align-items:center;gap:2px;}
+.nav-link{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:8px 14px;position:relative;transition:color .25s;}
+.nav-link::after{content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.nav-link:hover{color:var(--fg);}
+.nav-link:hover::after{transform:scaleX(1);}
+.menu-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:4px;}
+.menu-toggle span{width:24px;height:1px;background:var(--fg);transition:transform .3s,opacity .3s;display:block;}
+
+/* CANVAS */
+#grid-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* HERO */
+.hero{position:relative;min-height:100dvh;display:flex;align-items:center;padding:0 40px;overflow:hidden;z-index:1;}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;}
+.hero-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(232,200,74,.12) 0%,transparent 70%);top:-100px;right:-100px;animation:orbDrift1 14s ease-in-out infinite;}
+.hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(232,200,74,.07) 0%,transparent 70%);bottom:0;left:10%;animation:orbDrift2 18s ease-in-out infinite;}
+@keyframes orbDrift1{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(-40px,30px) scale(1.05);}66%{transform:translate(20px,-20px) scale(.95);}}
+@keyframes orbDrift2{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,-40px);}}
+
+.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding-top:80px;display:grid;grid-template-columns:1fr 340px;gap:60px;align-items:center;}
+
+.hero-tag{display:inline-flex;align-items:center;gap:10px;margin-bottom:36px;opacity:0;animation:fadeUp .7s cubic-bezier(.16,1,.3,1) .3s forwards;}
+.hero-tag-line{width:32px;height:1px;background:var(--gold);}
+.hero-tag-text{font-family:var(--font-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+
+.hero-title{font-family:var(--font-display);font-size:clamp(80px,11vw,156px);line-height:.92;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;}
+.hero-title .row{overflow:hidden;display:block;}
+.hero-title .word{display:block;transform:translateY(110%);transition:transform .9s cubic-bezier(.16,1,.3,1);}
+.hero-title .word.up{transform:translateY(0);}
+.hero-title .row:nth-child(1) .word{transition-delay:.1s;}
+.hero-title .row:nth-child(2) .word{transition-delay:.22s;}
+.hero-title .row:nth-child(3) .word{transition-delay:.34s;}
+.accent-serif{font-family:var(--font-serif);font-style:italic;text-transform:none;color:var(--gold);letter-spacing:0;}
+
+.hero-sub{font-size:clamp(14px,1.3vw,17px);color:var(--dim);line-height:1.75;max-width:500px;margin-bottom:48px;opacity:0;animation:fadeUp .7s cubic-bezier(.16,1,.3,1) .75s forwards;}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp .7s cubic-bezier(.16,1,.3,1) .9s forwards;}
+
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#000;font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:16px 32px;position:relative;overflow:hidden;transition:box-shadow .3s;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:#fff;transform:translateX(-110%) skewX(-15deg);transition:transform .5s cubic-bezier(.16,1,.3,1);opacity:.2;}
+.btn-primary:hover::before{transform:translateX(110%) skewX(-15deg);}
+.btn-primary:hover{box-shadow:0 20px 50px rgba(232,200,74,.3);}
+.btn-ghost{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--border);color:var(--fg);font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:16px 32px;transition:border-color .3s,color .3s;}
+.btn-ghost:hover{border-color:rgba(232,200,74,.4);color:var(--gold);}
+
+/* HERO RIGHT */
+.hero-right{opacity:0;animation:fadeLeft .8s cubic-bezier(.16,1,.3,1) 1.1s forwards;}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
+
+.community-card{border:1px solid var(--border);padding:32px;position:relative;overflow:hidden;background:rgba(240,237,230,.02);backdrop-filter:blur(10px);transition:border-color .35s;}
+.community-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.community-card:hover{border-color:rgba(232,200,74,.3);}
+.cc-live{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+.cc-dot{width:7px;height:7px;border-radius:50%;background:#00e87a;box-shadow:0 0 10px #00e87a;animation:ccPulse 2s ease-in-out infinite;}
+@keyframes ccPulse{0%,100%{box-shadow:0 0 10px #00e87a;}50%{box-shadow:0 0 22px #00e87a;}}
+.cc-title{font-family:var(--font-display);font-size:32px;letter-spacing:2px;margin-bottom:12px;line-height:1;}
+.cc-desc{font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:28px;}
+.cc-link{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding-bottom:4px;border-bottom:1px solid rgba(232,200,74,.3);transition:border-color .3s,gap .3s;}
+.cc-link:hover{border-color:var(--gold);gap:16px;}
+.cc-link svg{transition:transform .3s;}
+.cc-link:hover svg{transform:translate(3px,-3px);}
+
+.hero-scroll{position:absolute;bottom:40px;left:40px;display:flex;align-items:center;gap:16px;opacity:0;animation:fadeUp .7s cubic-bezier(.16,1,.3,1) 1.4s forwards;}
+.scroll-label{font-family:var(--font-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);writing-mode:vertical-rl;}
+.scroll-track{width:1px;height:60px;background:var(--border);position:relative;overflow:hidden;}
+.scroll-fill{position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--gold);animation:scrollFill 2s cubic-bezier(.16,1,.3,1) 1.6s infinite;}
+@keyframes scrollFill{0%{top:-100%;}100%{top:200%;}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* MARQUEE */
+.marquee-wrap{position:relative;z-index:2;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:14px 0;background:rgba(232,200,74,.025);}
+.marquee-track{display:flex;animation:marqueeScroll 30s linear infinite;white-space:nowrap;}
+.marquee-item{display:inline-flex;align-items:center;gap:28px;padding:0 28px;font-family:var(--font-display);font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--dim);flex-shrink:0;}
+.marquee-sep{color:var(--gold);font-size:8px;}
+@keyframes marqueeScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* SECTIONS */
+.section-wrap{position:relative;z-index:2;padding:120px 40px;max-width:1200px;margin:0 auto;}
+.section-eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:64px;}
+.eyebrow-num{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--gold);}
+.eyebrow-line{flex:1;height:1px;background:var(--border);position:relative;overflow:hidden;}
+.eyebrow-line::after{content:'';position:absolute;top:0;left:-100%;height:100%;width:100%;background:var(--gold);transition:left 1.2s cubic-bezier(.16,1,.3,1);}
+.eyebrow-line.lit::after{left:0;}
+.eyebrow-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+.rv.in{opacity:1;transform:translateY(0);}
+.rv-d1{transition-delay:.1s;}.rv-d2{transition-delay:.2s;}.rv-d3{transition-delay:.3s;}.rv-d4{transition-delay:.4s;}.rv-d5{transition-delay:.5s;}
+
+/* SOBRE */
+.sobre-section{border-top:1px solid var(--border);}
+.sobre-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.sobre-heading{font-family:var(--font-display);font-size:clamp(52px,7vw,96px);line-height:.92;letter-spacing:2px;text-transform:uppercase;position:sticky;top:100px;}
+.sobre-heading em{font-family:var(--font-serif);font-style:italic;text-transform:none;color:var(--gold);letter-spacing:0;font-size:.85em;display:block;}
+.sobre-body p{font-size:15px;color:var(--dim);line-height:1.85;margin-bottom:24px;border-left:1px solid var(--border);padding-left:24px;transition:border-color .3s;}
+.sobre-body p:hover{border-color:rgba(232,200,74,.4);}
+.sobre-body strong{color:var(--fg);font-weight:500;}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:100px;}
+.stat-box{background:var(--bg);padding:40px 32px;transition:background .3s;}
+.stat-box:hover{background:rgba(232,200,74,.04);}
+.stat-big{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);color:var(--gold);line-height:1;display:block;margin-bottom:8px;}
+.stat-desc{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);}
+
+/* DICAS */
+.dicas-section{border-top:1px solid var(--border);}
+.dicas-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:80px;}
+.dicas-heading{font-family:var(--font-display);font-size:clamp(48px,6vw,88px);line-height:.92;text-transform:uppercase;letter-spacing:2px;}
+.dicas-heading em{font-family:var(--font-serif);font-style:italic;text-transform:none;color:var(--gold);letter-spacing:0;}
+.dicas-intro{font-size:15px;color:var(--dim);line-height:1.8;padding-top:8px;}
+.dicas-intro strong{color:var(--fg);}
+
+.dicas-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);}
+.dica-item{background:var(--bg);display:grid;grid-template-columns:80px 1fr auto;align-items:start;gap:32px;padding:32px 40px;cursor:none;transition:background .3s,padding-left .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;}
+.dica-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.16,1,.3,1);}
+.dica-item:hover{background:rgba(232,200,74,.03);padding-left:52px;}
+.dica-item:hover::before{transform:scaleY(1);}
+.dica-n{font-family:var(--font-display);font-size:40px;color:rgba(240,237,230,.08);line-height:1;transition:color .3s;}
+.dica-item:hover .dica-n{color:rgba(232,200,74,.25);}
+.dica-title{font-family:var(--font-display);font-size:22px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;transition:color .3s;}
+.dica-item:hover .dica-title{color:var(--gold);}
+.dica-text{font-size:13px;color:var(--dim);line-height:1.75;max-width:560px;}
+.dica-arrow{color:rgba(240,237,230,.1);transition:color .3s,transform .3s cubic-bezier(.16,1,.3,1);align-self:center;font-size:20px;font-family:sans-serif;}
+.dica-item:hover .dica-arrow{color:var(--gold);transform:translate(6px,-6px);}
+.dica-item.destaque{background:rgba(232,200,74,.04);border-top:1px solid rgba(232,200,74,.12);}
+.dica-item.destaque .dica-n{color:rgba(232,200,74,.3);}
+
+/* CONTATO */
+.contato-section{border-top:1px solid var(--border);}
+.contato-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.contato-heading{font-family:var(--font-display);font-size:clamp(52px,7vw,96px);line-height:.92;text-transform:uppercase;letter-spacing:2px;margin-bottom:24px;}
+.contato-heading em{font-family:var(--font-serif);font-style:italic;text-transform:none;letter-spacing:0;color:var(--gold);}
+.contato-desc{font-size:14px;color:var(--dim);line-height:1.8;margin-bottom:48px;}
+.contato-info{display:flex;flex-direction:column;gap:0;}
+.info-row{display:flex;align-items:flex-start;gap:16px;padding:16px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--dim);}
+.info-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);width:80px;flex-shrink:0;padding-top:2px;}
+
+.form-wrap{display:flex;flex-direction:column;gap:2px;}
+.fg{display:flex;flex-direction:column;gap:8px;}
+.fg label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);}
+.fg input,.fg textarea{background:rgba(240,237,230,.03);border:1px solid var(--border);color:var(--fg);font-family:var(--font-body);font-size:14px;font-weight:300;padding:16px 20px;outline:none;transition:border-color .25s,background .25s;width:100%;resize:vertical;}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(240,237,230,.2);}
+.fg input:focus,.fg textarea:focus{border-color:rgba(232,200,74,.5);background:rgba(232,200,74,.02);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.radio-wrap{padding:20px 0;border-top:1px solid var(--border);}
+.radio-label-top{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:14px;}
+.radio-opts{display:flex;gap:24px;}
+.radio-opts label{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:1px;color:var(--dim);cursor:none;}
+.radio-opts input[type=radio]{accent-color:var(--gold);}
+.btn-send{background:var(--gold);color:#000;border:none;cursor:none;font-family:var(--font-display);font-size:18px;letter-spacing:3px;padding:22px 40px;width:100%;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;transition:box-shadow .3s;margin-top:2px;}
+.btn-send::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.2);transform:translateX(-110%) skewX(-15deg);transition:transform .5s cubic-bezier(.16,1,.3,1);}
+.btn-send:hover::before{transform:translateX(110%) skewX(-15deg);}
+.btn-send:hover{box-shadow:0 20px 60px rgba(232,200,74,.35);}
+.btn-send-arrow{font-size:24px;transition:transform .3s;}
+.btn-send:hover .btn-send-arrow{transform:translate(6px,-6px);}
+
+/* FOOTER */
+footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40px;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.footer-logo{font-family:var(--font-display);font-size:20px;letter-spacing:4px;color:var(--fg);}
+.footer-copy,.footer-place{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--dim);}
+.footer-gold{color:var(--gold);}
+
+/* MOBILE */
+@media(max-width:900px){
+  header{padding:0 24px;}
+  nav{display:none;}
+  nav.open{display:flex;flex-direction:column;gap:0;position:fixed;top:64px;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:40px 24px;align-items:flex-start;border-top:1px solid var(--border);}
+  nav.open .nav-link{font-size:32px;letter-spacing:3px;padding:16px 0;font-family:var(--font-display);}
+  .menu-toggle{display:flex;}
+  .hero{padding:0 24px;}
+  .hero-inner{grid-template-columns:1fr;gap:40px;padding-top:100px;padding-bottom:60px;}
+  .hero-right{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) 1.1s forwards;}
+  .section-wrap{padding:80px 24px;}
+  .sobre-grid{grid-template-columns:1fr;gap:48px;}
+  .sobre-heading{position:static;}
+  .stats-row{grid-template-columns:1fr;}
+  .dicas-header{grid-template-columns:1fr;gap:24px;}
+  .dica-item{grid-template-columns:60px 1fr auto;padding:24px;gap:16px;}
+  .dica-n{font-size:28px;}
+  .dica-title{font-size:18px;}
+  .contato-grid{grid-template-columns:1fr;gap:48px;}
+  .form-row{grid-template-columns:1fr;}
+  .footer-inner{flex-direction:column;align-items:flex-start;}
+}
+</style>
 </head>
 <body>
- 
-  <div class="cursor"></div>
-  <div class="cursor-follower"></div>
- 
-  <header id="header">
-    <div class="header-inner">
-      <a href="#topo" class="logo">
-        <span class="logo-dot"></span>MindOnline
-      </a>
-      <nav id="navMenu">
-        <a href="#topo" class="nav-link">Início</a>
-        <a href="#sobre" class="nav-link">Sobre</a>
-        <a href="#dicas" class="nav-link">Dicas</a>
-        <a href="#contato" class="nav-link">Contato</a>
-        <a href="trabalhos.html" class="nav-link">Nossos Trabalhos</a>
-        <a href="privacidade.html" class="nav-link">Privacidade</a>
-      </nav>
-      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
- 
-  <section class="hero" id="topo">
-    <div class="hero-bg">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-    </div>
-    <div class="hero-content">
-      <div class="hero-badge">Comunicação Ética Digital</div>
-      <h1 class="hero-title">
-        <span class="line">A internet que</span>
-        <span class="line accent">queremos</span>
-        <span class="line">começa em você.</span>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-text">Ver dica</div>
+<div id="progress"></div>
+<div id="pt"><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div></div>
+<canvas id="grid-canvas"></canvas>
+
+<header id="header">
+  <a href="#topo" class="logo"><span class="logo-mark"></span>MindOnline</a>
+  <nav id="navMenu">
+    <a href="#topo" class="nav-link">Início</a>
+    <a href="#sobre" class="nav-link">Sobre</a>
+    <a href="#dicas" class="nav-link">Dicas</a>
+    <a href="#contato" class="nav-link">Contato</a>
+    <a href="trabalhos.html" class="nav-link tlink">Trabalhos</a>
+    <a href="privacidade.html" class="nav-link tlink">Privacidade</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<section class="hero" id="topo">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <span class="hero-tag-line"></span>
+        <span class="hero-tag-text">Comunicação Ética Digital · 2026</span>
+      </div>
+      <h1 class="hero-title" id="heroTitle">
+        <span class="row"><span class="word">A internet</span></span>
+        <span class="row"><span class="word">que <span class="accent-serif">queremos</span></span></span>
+        <span class="row"><span class="word">começa em você.</span></span>
       </h1>
       <p class="hero-sub">Um projeto de conscientização sobre como nos comunicamos, relacionamos e consumimos conteúdo no mundo digital.</p>
       <div class="hero-cta">
         <a href="#sobre" class="btn-primary">Conheça o projeto</a>
-        <a href="#dicas" class="btn-ghost">Ver dicas →</a>
+        <a href="#dicas" class="btn-ghost">Ver as 10 dicas →</a>
       </div>
-      <div class="hero-community-card">
-        <div class="hero-community-label">
-          <span class="community-dot"></span>
-          Comunidade ativa agora
-        </div>
-        <p class="hero-community-desc">Participe das conversas sobre comunicação ética e digital na nossa rede social.</p>
-        <a href="https://mind-online-community.vercel.app" target="_blank" class="btn-community">
-          Acessar MindOnline Community
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </div>
+    <div class="hero-right">
+      <div class="community-card">
+        <div class="cc-live"><span class="cc-dot"></span>Comunidade ativa agora</div>
+        <h2 class="cc-title">Mind<br>Online<br>Community</h2>
+        <p class="cc-desc">Participe das conversas sobre comunicação ética e digital. Conecte-se com pessoas que pensam como você.</p>
+        <a href="https://mind-online-community.vercel.app" target="_blank" class="cc-link">
+          Acessar comunidade
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
         </a>
       </div>
     </div>
-    <div class="hero-scroll">
-      <span>scroll</span>
-      <div class="scroll-line"></div>
+  </div>
+  <div class="hero-scroll">
+    <span class="scroll-label">Scroll</span>
+    <div class="scroll-track"><div class="scroll-fill"></div></div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Pense antes de postar <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Verifique antes de compartilhar <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Respeite as diferenças <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Proteja sua privacidade <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Cuide do seu tempo de tela <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Não alimente conflitos <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Seja o usuário que você quer encontrar <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Pense antes de postar <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Verifique antes de compartilhar <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Respeite as diferenças <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Proteja sua privacidade <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Cuide do seu tempo de tela <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Não alimente conflitos <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">Seja o usuário que você quer encontrar <span class="marquee-sep">◆</span></span>
+  </div>
+</div>
+
+<main>
+<section id="sobre" class="sobre-section">
+  <div class="section-wrap">
+    <div class="section-eyebrow rv" data-line>
+      <span class="eyebrow-num">01</span>
+      <span class="eyebrow-line"></span>
+      <span class="eyebrow-label">Sobre o Projeto</span>
     </div>
-  </section>
- 
-  <main>
- 
-    <section id="sobre" class="section-sobre">
-      <div class="section-label">01 — Sobre</div>
-      <div class="sobre-grid">
-        <div class="sobre-text">
-          <h2>Comunicação<br><em>consciente</em><br>na era digital.</h2>
-        </div>
-        <div class="sobre-body">
-          <p>Comunicação Ética na Internet é um projeto independente criado com o propósito de ajudar pessoas a se expressarem, se relacionarem e consumirem conteúdo digital de forma mais consciente, respeitosa e responsável.</p>
-          <p>Em um cenário onde a internet é cada vez mais presente no dia a dia de todos, surgiu a necessidade de um espaço dedicado a orientar pessoas sobre como navegar nesse ambiente de maneira saudável — sem abrir mão da autenticidade, da empatia e do respeito ao próximo.</p>
-          <p>O projeto é desenvolvido por alunos da <strong>Escola de Referência em Ensino Médio Clementino Coelho</strong> — Petrolina, Pernambuco, com mentoria de alunos do <strong>Instituto Federal do Sertão Pernambucano — Campus Petrolina</strong>.</p>
-          <p>Mais do que um site, este é um convite para repensar a forma como nos comunicamos online — porque a internet que queremos começa com as escolhas que fazemos dentro dela.</p>
+    <div class="sobre-grid">
+      <div class="rv">
+        <h2 class="sobre-heading">Comuni<br>cação<br><em>consciente</em><br>digital.</h2>
+      </div>
+      <div class="sobre-body">
+        <p class="rv rv-d1">Comunicação Ética na Internet é um projeto independente criado com o propósito de ajudar pessoas a se expressarem, se relacionarem e consumirem conteúdo digital de forma mais consciente, respeitosa e responsável.</p>
+        <p class="rv rv-d2">Em um cenário onde a internet é cada vez mais presente no dia a dia de todos, surgiu a necessidade de um espaço dedicado a orientar pessoas sobre como navegar nesse ambiente de maneira saudável.</p>
+        <p class="rv rv-d3">O projeto é desenvolvido por alunos da <strong>Escola de Referência em Ensino Médio Clementino Coelho</strong> — Petrolina, Pernambuco, com mentoria de alunos do <strong>Instituto Federal do Sertão Pernambucano</strong>.</p>
+        <p class="rv rv-d4">Mais do que um site, este é um convite para repensar a forma como nos comunicamos online — porque a internet que queremos começa com as escolhas que fazemos dentro dela.</p>
+      </div>
+    </div>
+    <div class="stats-row rv rv-d2" id="statsRow">
+      <div class="stat-box"><span class="stat-big" data-count="10">0</span><span class="stat-desc">Dicas práticas</span></div>
+      <div class="stat-box"><span class="stat-big" data-count="1">0</span><span class="stat-desc">Propósito claro</span></div>
+      <div class="stat-box"><span class="stat-big">∞</span><span class="stat-desc">Impacto possível</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="dicas" class="dicas-section">
+  <div class="section-wrap">
+    <div class="section-eyebrow rv" data-line>
+      <span class="eyebrow-num">02</span>
+      <span class="eyebrow-line"></span>
+      <span class="eyebrow-label">Como se Comportar</span>
+    </div>
+    <div class="dicas-header">
+      <h2 class="dicas-heading rv">Como se<br>comportar<br>nas <em>redes<br>sociais</em></h2>
+      <p class="dicas-intro rv rv-d2">Usar as redes sociais de forma consciente não significa usá-las menos. Significa usá-las <strong>melhor</strong>. Cada escolha que você faz online molda o ambiente digital que todos compartilhamos.</p>
+    </div>
+    <div class="dicas-list">
+      <div class="dica-item rv rv-d1"><span class="dica-n">01</span><div class="dica-content"><h3 class="dica-title">Pense antes de postar</h3><p class="dica-text">Antes de publicar, pergunte: isso é verdadeiro? É necessário? Pode machucar alguém? Uma publicação dura segundos para sair e pode durar anos na memória de quem vê.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item rv rv-d2"><span class="dica-n">02</span><div class="dica-content"><h3 class="dica-title">Verifique antes de compartilhar</h3><p class="dica-text">Notícias falsas se espalham muito mais rápido do que as verdadeiras. Antes de compartilhar qualquer informação, confirme a fonte.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item rv rv-d3"><span class="dica-n">03</span><div class="dica-content"><h3 class="dica-title">Respeite as diferenças</h3><p class="dica-text">A internet reúne pessoas de culturas e opiniões completamente diferentes. Discordar é normal. Desrespeitar não é. Critique ideias, nunca pessoas.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item rv rv-d1"><span class="dica-n">04</span><div class="dica-content"><h3 class="dica-title">Proteja sua privacidade</h3><p class="dica-text">Não compartilhe endereço, rotina, dados pessoais ou informações de familiares publicamente. O que parece inofensivo pode ser usado de forma errada.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item rv rv-d2"><span class="dica-n">05</span><div class="dica-content"><h3 class="dica-title">Cuidado com o tempo de tela</h3><p class="dica-text">As redes sociais são projetadas para prender sua atenção. Defina horários, faça pausas e observe como você se sente depois de usar cada plataforma.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item rv rv-d3"><span class="dica-n">06</span><div class="dica-content"><h3 class="dica-title">Não alimente conflitos</h3><p class="dica-text">Comentários agressivos existem para provocar reação. Ignorar é mais poderoso do que responder. Você não precisa vencer todas as discussões online.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item rv rv-d1"><span class="dica-n">07</span><div class="dica-content"><h3 class="dica-title">Use as configurações de privacidade</h3><p class="dica-text">Revise quem pode ver suas publicações, quem pode te marcar e quais dados você compartilha com os aplicativos.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item rv rv-d2"><span class="dica-n">08</span><div class="dica-content"><h3 class="dica-title">Denuncie conteúdos prejudiciais</h3><p class="dica-text">Hate speech, assédio, desinformação e conteúdo impróprio podem e devem ser denunciados. Denunciar é um ato de responsabilidade coletiva.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item rv rv-d3"><span class="dica-n">09</span><div class="dica-content"><h3 class="dica-title">Existe uma pessoa do outro lado</h3><p class="dica-text">Por trás de cada perfil há um ser humano com sentimentos. Uma mensagem que parece engraçada pra quem envia pode ser devastadora pra quem recebe.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item destaque rv rv-d1"><span class="dica-n">10</span><div class="dica-content"><h3 class="dica-title">Seja o usuário que você quer encontrar</h3><p class="dica-text">A internet que queremos começa com o comportamento de cada um. Poste com intenção, interaja com empatia e contribua para um ambiente mais saudável para todos.</p></div><span class="dica-arrow">↗</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="contato" class="contato-section">
+  <div class="section-wrap">
+    <div class="section-eyebrow rv" data-line>
+      <span class="eyebrow-num">03</span>
+      <span class="eyebrow-line"></span>
+      <span class="eyebrow-label">Fale Conosco</span>
+    </div>
+    <div class="contato-grid">
+      <div class="rv">
+        <h2 class="contato-heading">Vamos<br><em>conversar?</em></h2>
+        <p class="contato-desc">Ficou com alguma dúvida ou quer acrescentar uma informação? Adoramos ouvir você.</p>
+        <div class="contato-info">
+          <div class="info-row rv rv-d1"><span class="info-label">Escola</span><span>Clementino Coelho — Petrolina, PE</span></div>
+          <div class="info-row rv rv-d2"><span class="info-label">Mentoria</span><span>IF Sertão Pernambucano</span></div>
+          <div class="info-row rv rv-d3"><span class="info-label">Ano</span><span>2026</span></div>
         </div>
       </div>
-      <div class="sobre-stats">
-        <div class="stat">
-          <span class="stat-num">10</span>
-          <span class="stat-label">dicas práticas</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">1</span>
-          <span class="stat-label">propósito claro</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">∞</span>
-          <span class="stat-label">impacto possível</span>
-        </div>
-      </div>
-    </section>
- 
-    <section id="dicas" class="section-dicas">
-      <div class="section-label">02 — Dicas</div>
-      <div class="dicas-header">
-        <h2>Como se comportar<br>nas <em>redes sociais</em></h2>
-        <p class="dicas-intro">Usar as redes sociais de forma consciente não significa usá-las menos. Significa usá-las <strong>melhor</strong>.</p>
-      </div>
-      <div class="dicas-grid">
-        <div class="dica-card">
-          <span class="dica-num">01</span>
-          <h3>Pense antes de postar</h3>
-          <p>Antes de publicar, pergunte: isso é verdadeiro? É necessário? Pode machucar alguém? Uma publicação dura segundos para sair e pode durar anos na memória de quem vê.</p>
-        </div>
-        <div class="dica-card">
-          <span class="dica-num">02</span>
-          <h3>Verifique antes de compartilhar</h3>
-          <p>Notícias falsas se espalham muito mais rápido do que as verdadeiras. Antes de compartilhar qualquer informação, confirme a fonte. Se não tiver certeza, não repasse.</p>
-        </div>
-        <div class="dica-card">
-          <span class="dica-num">03</span>
-          <h3>Respeite as diferenças</h3>
-          <p>A internet reúne pessoas de culturas, opiniões e realidades completamente diferentes. Discordar é normal. Desrespeitar não é. Critique ideias, nunca pessoas.</p>
-        </div>
-        <div class="dica-card">
-          <span class="dica-num">04</span>
-          <h3>Proteja sua privacidade</h3>
-          <p>Não compartilhe endereço, rotina, dados pessoais ou informações de familiares publicamente. O que parece inofensivo pode ser usado de forma errada.</p>
-        </div>
-        <div class="dica-card">
-          <span class="dica-num">05</span>
-          <h3>Cuidado com o tempo de tela</h3>
-          <p>As redes sociais são projetadas para prender sua atenção. Defina horários, faça pausas e observe como você se sente depois de usar cada plataforma.</p>
-        </div>
-        <div class="dica-card">
-          <span class="dica-num">06</span>
-          <h3>Não alimente conflitos</h3>
-          <p>Comentários agressivos existem para provocar reação. Ignorar é mais poderoso do que responder. Você não precisa vencer todas as discussões online.</p>
-        </div>
-        <div class="dica-card">
-          <span class="dica-num">07</span>
-          <h3>Use as configurações de privacidade</h3>
-          <p>Revise quem pode ver suas publicações, quem pode te marcar e quais dados você compartilha com os aplicativos. Essas configurações existem para te proteger.</p>
-        </div>
-        <div class="dica-card">
-          <span class="dica-num">08</span>
-          <h3>Denuncie conteúdos prejudiciais</h3>
-          <p>Hate speech, assédio, desinformação e conteúdo impróprio podem ser denunciados em todas as plataformas. Denunciar é um ato de responsabilidade coletiva.</p>
-        </div>
-        <div class="dica-card">
-          <span class="dica-num">09</span>
-          <h3>Existe uma pessoa do outro lado</h3>
-          <p>Por trás de cada perfil há um ser humano com sentimentos. Uma mensagem que parece engraçada pra quem envia pode ser devastadora pra quem recebe.</p>
-        </div>
-        <div class="dica-card dica-card--destaque">
-          <span class="dica-num">10</span>
-          <h3>Seja o usuário que você quer encontrar</h3>
-          <p>A internet que queremos começa com o comportamento de cada um. Poste com intenção, interaja com empatia e contribua para um ambiente mais saudável para todos.</p>
-        </div>
-      </div>
-    </section>
- 
-    <section id="contato" class="section-contato">
-      <div class="section-label">03 — Contato</div>
-      <div class="contato-inner">
-        <div class="contato-text">
-          <h2>Vamos<br>conversar?</h2>
-          <p>Ficou com alguma dúvida ou quer acrescentar uma informação? Preencha o formulário ao lado — adoramos ouvir você.</p>
-        </div>
-        <div>
-          <div class="contato-form">
-
-            <div class="form-group">
-              <label for="nome">Seu Nome</label>
-              <input type="text" id="nome" name="nome" placeholder="Digite seu nome*" required>
-            </div>
-
-            <div class="form-group">
-              <label for="telefone">Seu Telefone</label>
-              <input type="tel" id="telefone" name="telefone" placeholder="Digite seu telefone">
-            </div>
-
-            <div class="form-group">
-              <label for="email">Seu E-Mail</label>
-              <input type="email" id="email" name="email" placeholder="Digite seu e-mail*" required>
-            </div>
-
-            <div class="form-radio-group">
-              <label>Deseja receber nossas novidades?</label>
-              <div class="radio-options">
-                <label>
-                  <input type="radio" name="novidades" value="sim" checked> Sim
-                </label>
-                <label>
-                  <input type="radio" name="novidades" value="nao"> Não
-                </label>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="mensagem">Sua Mensagem</label>
-              <textarea id="mensagem" name="mensagem" placeholder="Mensagem*" required></textarea>
-            </div>
-
-            <button type="button" class="btn-form">Enviar →</button>
-
+      <div class="rv rv-d2">
+        <div class="form-wrap">
+          <div class="form-row">
+            <div class="fg"><label for="nome">Seu Nome *</label><input type="text" id="nome" name="nome" placeholder="Nome completo" required></div>
+            <div class="fg"><label for="telefone">Telefone</label><input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000"></div>
           </div>
+          <div class="fg" style="margin-top:2px"><label for="email">E-mail *</label><input type="email" id="email" name="email" placeholder="seu@email.com" required></div>
+          <div class="radio-wrap">
+            <span class="radio-label-top">Deseja receber nossas novidades?</span>
+            <div class="radio-opts">
+              <label><input type="radio" name="novidades" value="sim" checked> Sim</label>
+              <label><input type="radio" name="novidades" value="nao"> Não</label>
+            </div>
+          </div>
+          <div class="fg"><label for="mensagem">Mensagem *</label><textarea id="mensagem" name="mensagem" rows="5" placeholder="Escreva sua mensagem..." required></textarea></div>
+          <button type="button" class="btn-send">Enviar mensagem<span class="btn-send-arrow">↗</span></button>
         </div>
       </div>
-    </section>
- 
-  </main>
- 
-  <footer>
-    <div class="footer-inner">
-      <span class="footer-logo">MindOnline</span>
-      <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
-      <span class="footer-origin">Petrolina, PE — Brasil</span>
     </div>
-  </footer>
- 
-  <script src="script.js"></script>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">MindOnline</span>
+    <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
+    <span class="footer-place">Petrolina, <span class="footer-gold">PE</span> — Brasil</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+/* GRID CANVAS */
+(function(){
+  const canvas=document.getElementById('grid-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,mouse={x:-9999,y:-9999};
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  document.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  const step=65;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let x=0;x<=W;x+=step){
+      for(let y=0;y<=H;y+=step){
+        const dx=x-mouse.x,dy=y-mouse.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        const maxD=200;
+        if(dist<maxD){
+          const force=(1-dist/maxD)*14;
+          const ang=Math.atan2(dy,dx);
+          const nx=x+Math.cos(ang)*force;
+          const ny=y+Math.sin(ang)*force;
+          ctx.beginPath();
+          ctx.arc(nx,ny,.8+(1-dist/maxD)*2,0,Math.PI*2);
+          ctx.fillStyle=`rgba(232,200,74,${0.06+(1-dist/maxD)*0.3})`;
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.arc(x,y,.7,0,Math.PI*2);
+          ctx.fillStyle='rgba(240,237,230,0.06)';
+          ctx.fill();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* PAGE TRANSITION */
+const PT=document.getElementById('pt');
+function ptEnter(){PT.classList.remove('leave');PT.classList.add('enter');setTimeout(()=>PT.classList.remove('enter'),800);}
+function ptLeave(cb){PT.classList.add('leave');setTimeout(cb,800);}
+window.addEventListener('load',()=>{ptEnter();setTimeout(animHero,400);});
+document.querySelectorAll('.tlink').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const href=a.getAttribute('href');
+    if(!href||href.startsWith('#')||href.startsWith('http')||href.startsWith('//'))return;
+    e.preventDefault();ptLeave(()=>window.location.href=href);
+  });
+});
+
+/* HERO TITLE */
+function animHero(){
+  document.querySelectorAll('#heroTitle .word').forEach((w,i)=>{
+    setTimeout(()=>w.classList.add('up'),i*180);
+  });
+}
+
+/* CURSOR */
+const dot=document.getElementById('cursor-dot');
+const ring=document.getElementById('cursor-ring');
+const ctxt=document.getElementById('cursor-text');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  dot.style.transform=`translate(${mx-4}px,${my-4}px)`;
+  ctxt.style.left=mx+'px';ctxt.style.top=(my+22)+'px';
+});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.transform=`translate(${rx-20}px,${ry-20}px)`;requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('c-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('c-hover'));
+});
+document.querySelectorAll('.dica-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('c-card'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('c-card'));
+});
+document.querySelectorAll('.btn-primary,.btn-ghost,.btn-send').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();const bx=e.clientX-r.left-r.width/2;const by=e.clientY-r.top-r.height/2;btn.style.transform=`translate(${bx*.14}px,${by*.14}px)`;});
+  btn.addEventListener('mouseleave',()=>btn.style.transform='');
+});
+
+/* SCROLL */
+const hdr=document.getElementById('header');
+const prog=document.getElementById('progress');
+window.addEventListener('scroll',()=>{
+  hdr.classList.toggle('scrolled',scrollY>60);
+  prog.style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+},{passive:true});
+
+/* REVEAL */
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>revObs.observe(el));
+
+const lineObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.querySelector('.eyebrow-line')?.classList.add('lit');});
+},{threshold:0.5});
+document.querySelectorAll('[data-line]').forEach(el=>lineObs.observe(el));
+
+/* STATS COUNTER */
+const statsObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.querySelectorAll('[data-count]').forEach(el=>{
+      const target=parseInt(el.dataset.count);let cur=0;
+      const step=Math.ceil(target/20);
+      const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(t);},60);
+    });
+    statsObs.unobserve(e.target);
+  });
+},{threshold:0.3});
+const statsRow=document.getElementById('statsRow');
+if(statsRow)statsObs.observe(statsRow);
+
+/* MOBILE MENU */
+const toggle=document.getElementById('menuToggle');
+const nav=document.getElementById('navMenu');
+toggle?.addEventListener('click',()=>{
+  const open=nav.classList.toggle('open');
+  const spans=toggle.querySelectorAll('span');
+  if(open){spans[0].style.transform='translateY(6px) rotate(45deg)';spans[1].style.opacity='0';spans[2].style.transform='translateY(-6px) rotate(-45deg)';}
+  else{spans.forEach(s=>s.style.transform=s.style.opacity='');}
+});
+nav?.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click',()=>{nav.classList.remove('open');toggle?.querySelectorAll('span').forEach(s=>s.style.transform=s.style.opacity='');});
+});
+
+/* DICA TILT */
+document.querySelectorAll('.dica-item').forEach(item=>{
+  item.addEventListener('mousemove',e=>{
+    const r=item.getBoundingClientRect();
+    const y=(e.clientY-r.top-r.height/2)/r.height;
+    item.style.transform=`perspective(800px) rotateX(${-y*1.5}deg)`;
+  });
+  item.addEventListener('mouseleave',()=>item.style.transform='');
+});
+</script>
 </body>
 </html>
