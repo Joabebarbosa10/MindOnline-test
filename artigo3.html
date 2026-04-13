@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacidade Digital: O Que Você Entrega <em>Sem Perceber</em> — MindOnline</title>
+  <title>Privacidade Digital: O Que Você Entrega Sem Perceber — MindOnline</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 <style>
+
+
 
 :root{--bg:#080808;--fg:#f0ede6;--gold:#e8c84a;--gold2:#f5d76e;--dim:rgba(240,237,230,.5);--border:rgba(240,237,230,.08);--font-display:'Bebas Neue',sans-serif;--font-serif:'Instrument Serif',serif;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -25,7 +27,7 @@ body.ch #cur-ring{width:56px;height:56px;border-color:rgba(232,200,74,.15);}
 .pt-col:nth-child(1){transition:transform .5s cubic-bezier(.77,0,.175,1) 0s;}.pt-col:nth-child(2){transition:transform .5s cubic-bezier(.77,0,.175,1) .06s;}.pt-col:nth-child(3){transition:transform .5s cubic-bezier(.77,0,.175,1) .12s;}.pt-col:nth-child(4){transition:transform .5s cubic-bezier(.77,0,.175,1) .18s;}.pt-col:nth-child(5){transition:transform .5s cubic-bezier(.77,0,.175,1) .24s;}
 #pt.enter .pt-col{transform:scaleY(1);}
 #pt.leave .pt-col{transform:scaleY(0);transform-origin:top;}
-#pt.leave .pt-col:nth-child(1){transition:transform .5s cubic-bezier(.77,0,.175,1) .24s;}.pt-col:nth-child(2){transition:transform .5s cubic-bezier(.77,0,.175,1) .18s;}.pt-col:nth-child(3){transition:transform .5s cubic-bezier(.77,0,.175,1) .12s;}.pt-col:nth-child(4){transition:transform .5s cubic-bezier(.77,0,.175,1) .06s;}.pt-col:nth-child(5){transition:transform .5s cubic-bezier(.77,0,.175,1) 0s;}
+#pt.leave .pt-col:nth-child(1){transition:transform .5s cubic-bezier(.77,0,.175,1) .24s;}#pt.leave .pt-col:nth-child(2){transition:transform .5s cubic-bezier(.77,0,.175,1) .18s;}#pt.leave .pt-col:nth-child(3){transition:transform .5s cubic-bezier(.77,0,.175,1) .12s;}#pt.leave .pt-col:nth-child(4){transition:transform .5s cubic-bezier(.77,0,.175,1) .06s;}#pt.leave .pt-col:nth-child(5){transition:transform .5s cubic-bezier(.77,0,.175,1) 0s;}
 header{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;}
 header.scrolled{background:rgba(8,8,8,.92);backdrop-filter:blur(24px);border-bottom-color:var(--border);}
 .logo{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:8px;}
@@ -39,7 +41,7 @@ nav{display:flex;align-items:center;gap:2px;}
 .menu-toggle span{width:24px;height:1px;background:var(--fg);transition:transform .3s,opacity .3s;display:block;}
 .rv{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
 .rv.in{opacity:1;transform:translateY(0);}
-.rv-d1{transition-delay:.1s;}.rv-d2{transition-delay:.2s;}.rv-d3{transition-delay:.3s;}.rv-d4{transition-delay:.4s;}.rv-d5{transition-delay:.5s;}
+.rv-d1{transition-delay:.1s;}.rv-d2{transition-delay:.2s;}.rv-d3{transition-delay:.3s;}.rv-d4{transition-delay:.4s;}
 footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40px;}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
 .footer-logo{font-family:var(--font-display);font-size:20px;letter-spacing:4px;}
@@ -84,7 +86,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
 .art-content h2:first-child{margin-top:0;padding-top:0;border-top:none;}
 .art-content p{font-size:17px;color:var(--dim);line-height:1.9;margin-bottom:20px;}
 .art-content strong{color:var(--fg);font-weight:500;}
-.art-content blockquote{margin:40px 0;padding:0 0 0 32px;border-left:2px solid var(--gold);position:relative;}
+.art-content blockquote{margin:40px 0;padding:0 0 0 32px;border-left:2px solid var(--gold);}
 .art-content blockquote p{font-family:var(--font-serif);font-size:22px;font-style:italic;color:rgba(240,237,230,.8);line-height:1.6;margin:0;}
 .art-content ul{list-style:none;display:flex;flex-direction:column;gap:1px;margin:24px 0 32px;border:1px solid var(--border);background:var(--border);}
 .art-content ul li{display:flex;align-items:flex-start;gap:16px;padding:18px 24px;background:var(--bg);font-size:15px;color:var(--dim);line-height:1.65;transition:background .25s;}
@@ -93,13 +95,12 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
 .art-sidebar{position:sticky;top:90px;}
 .art-sidebar-box{border:1px solid var(--border);padding:24px;margin-bottom:1px;background:rgba(240,237,230,.02);}
 .art-sidebar-title{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:16px;display:block;}
-.art-toc-list{list-style:none;display:flex;flex-direction:column;gap:0;}
+.art-toc-list{list-style:none;display:flex;flex-direction:column;}
 .art-toc-list a{display:block;padding:8px 12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;color:rgba(240,237,230,.3);text-decoration:none;transition:all .2s;border-left:2px solid transparent;}
 .art-toc-list a:hover{color:var(--fg);background:rgba(240,237,230,.03);}
 .art-toc-list a.active{color:var(--gold);border-left-color:var(--gold);background:rgba(232,200,74,.04);}
 .art-tag-list{display:flex;flex-wrap:wrap;gap:6px;}
-.art-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border);color:var(--dim);transition:border-color .25s;}
-.art-tag:hover{border-color:rgba(232,200,74,.3);color:var(--gold);}
+.art-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border);color:var(--dim);}
 .art-footer-nav{max-width:1000px;margin:0 auto;padding:48px 60px 80px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);gap:20px;flex-wrap:wrap;}
 .art-footer-nav a{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .25s;}
 .art-footer-nav a:hover{color:var(--gold);}
@@ -127,13 +128,15 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
 }
 @media(max-width:600px){.art-cover{height:300px;}.art-cover-title{font-size:clamp(28px,10vw,48px);}}
 
+
+
 </style>
 </head>
 <body>
-<div id="cur-dot"></div>
-<div id="cur-ring"></div>
+<div id="cur-dot"></div><div id="cur-ring"></div>
 <div id="progress"></div>
 <div id="pt"><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div></div>
+<div class="art-progress"><div class="art-progress-bar" id="progressBar"></div></div>
 <header id="header">
   <a href="index.html" class="logo"><span class="logo-mark"></span>MindOnline</a>
   <nav id="navMenu">
@@ -146,9 +149,9 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
   </nav>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
-<div class="art-progress"><div class="art-progress-bar" id="progressBar"></div></div>
+
 <div class="art-cover">
-  <img src="Artigo_3.jpg" alt="Privacidade Digital: O Que Você Entrega <em>Sem Perceber</em>">
+  <img src="Artigo_3.jpg" alt="Privacidade Digital: O Que Você Entrega Sem Perceber">
   <div class="art-cover-overlay"></div>
   <div class="art-cover-content">
     <a href="trabalhos.html" class="art-cover-back">← Nossos Trabalhos</a>
@@ -156,6 +159,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
     <h1 class="art-cover-title">Privacidade Digital: O Que Você Entrega <em>Sem Perceber</em></h1>
   </div>
 </div>
+
 <div class="art-meta-bar">
   <div class="art-meta-author">
     <div class="art-meta-av">IS</div>
@@ -166,47 +170,77 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
   </div>
   <div class="art-meta-divider"></div>
   <div class="art-meta-item"><span class="art-meta-label">Publicado em</span><span class="art-meta-val">Abril de 2026</span></div>
-  <div class="art-meta-item"><span class="art-meta-label">Leitura</span><span class="art-meta-val">~ 5 min</span></div>
+  <div class="art-meta-item"><span class="art-meta-label">Leitura</span><span class="art-meta-val">~ 6 min</span></div>
   <div class="art-meta-item"><span class="art-meta-label">Categoria</span><span class="art-meta-val">Privacidade</span></div>
   <div class="art-meta-actions">
     <button onclick="baixarPDF()" class="art-btn-outline">⬇ PDF</button>
-    <a href="https://mind-online-community.vercel.app" target="_blank" class="art-btn-outline">Comentar →</a>
+    <a href="https://mind-online-community.vercel.app" target="_blank" rel="noopener" class="art-btn-outline">Comentar →</a>
   </div>
 </div>
+
 <div class="art-body">
   <article class="art-content rv">
+    
 <h2 id="intro">Introdução</h2>
-<p>Toda vez que você abre um aplicativo, realiza uma pesquisa ou curte uma publicação, está gerando dados. Esses dados descrevem quem você é, o que você pensa, onde você esteve — e, na maioria das vezes, você entrega tudo isso <strong>voluntariamente, sem perceber</strong>.</p>
+<p>Toda vez que você abre um aplicativo, realiza uma pesquisa ou curte uma publicação, está gerando dados. Esses dados descrevem quem você é, o que você pensa, onde você esteve e o que deseja. E, na maioria das vezes, você entrega tudo isso <strong>voluntariamente — sem perceber</strong>.</p>
+<p>A privacidade digital deixou de ser uma questão técnica reservada a especialistas em segurança da informação. Ela é hoje um direito fundamental que precisa ser compreendido e exercido por qualquer pessoa que utilize a internet — e, em 2026, isso significa praticamente toda a população brasileira.</p>
+<p>Este artigo explora o que acontece com seus dados, quem os usa, como eles são comercializados e — mais importante — o que você pode fazer para proteger sua privacidade no mundo digital.</p>
+
 <h2 id="dados">Que Dados São Coletados?</h2>
-<p>As plataformas digitais coletam muito mais do que o óbvio. Além dos dados que você fornece diretamente, elas registram:</p>
+<p>As plataformas digitais coletam muito mais do que o óbvio. Além dos dados que você fornece diretamente — como nome, e-mail e data de nascimento — elas registram uma quantidade enorme de informações comportamentais:</p>
 <ul>
-  <li>Quanto tempo você fica olhando para cada publicação</li>
-  <li>Quais produtos você pesquisa, mesmo sem comprar</li>
-  <li>Sua localização geográfica em tempo real</li>
-  <li>Os dispositivos que você usa e os horários de uso</li>
-  <li>Com quem você se comunica e sobre o quê</li>
+  <li>Quanto tempo você fica olhando para cada publicação (mesmo sem curtir ou comentar)</li>
+  <li>Quais produtos você pesquisa, mesmo sem chegar a comprar</li>
+  <li>Sua localização geográfica em tempo real, muitas vezes com precisão de metros</li>
+  <li>Os dispositivos que você usa, os horários e padrões de uso</li>
+  <li>Com quem você se comunica, com que frequência e sobre quais assuntos</li>
+  <li>Seus padrões de digitação, velocidade de rolagem e comportamento de clique</li>
 </ul>
+<p>Esses dados são combinados, cruzados e analisados por algoritmos sofisticados, formando um perfil detalhado de cada usuário — muitas vezes mais preciso do que qualquer pessoa conseguiria descrever sobre si mesma.</p>
+
 <h2 id="economia">A Economia dos Dados</h2>
-<p>Existe uma frase que resume o modelo de negócio das grandes plataformas: <strong>"Se o produto é gratuito, o produto é você."</strong></p>
+<p>Existe uma frase que resume bem o modelo de negócio das grandes plataformas digitais: <strong>"Se o produto é gratuito, o produto é você."</strong></p>
+<p>Serviços como redes sociais, mecanismos de busca e aplicativos de mensagens são oferecidos sem custo financeiro direto porque o verdadeiro produto comercializado são os dados dos usuários. Essas informações alimentam sistemas de publicidade extremamente precisos, capazes de segmentar anúncios por idade, localização, interesses, comportamento de compra e até estado emocional.</p>
 <blockquote><p>"Você não paga com dinheiro. Você paga com atenção, com tempo e com a sua vida privada."</p></blockquote>
-<h2 id="proteger">Como Se Proteger</h2>
-<p>Proteger sua privacidade digital não exige conhecimento técnico avançado:</p>
+<p>Em 2023, as receitas de publicidade do Google, Meta (Facebook/Instagram) e Amazon juntas ultrapassaram 400 bilhões de dólares — todas baseadas, fundamentalmente, na análise de dados dos usuários. Isso dá uma dimensão do valor econômico real das informações que você "entrega de graça" a cada interação.</p>
+
+<h2 id="lgpd">A LGPD e Seus Direitos</h2>
+<p>A <strong>Lei Geral de Proteção de Dados</strong> (Lei n.º 13.709/2018) representa um marco importante na proteção da privacidade dos brasileiros. Inspirada no GDPR europeu, ela estabelece regras sobre como empresas podem coletar, tratar e armazenar dados pessoais.</p>
+<p>Entre os principais direitos garantidos pela LGPD estão:</p>
 <ul>
-  <li>Revise as permissões dos aplicativos instalados no seu celular</li>
-  <li>Use senhas fortes e únicas para cada conta</li>
-  <li>Ative a autenticação em dois fatores nas contas mais importantes</li>
-  <li>Prefira aplicativos com criptografia de ponta a ponta</li>
-  <li>Desative o rastreamento de localização quando não for necessário</li>
+  <li>Saber quais dados uma empresa possui sobre você e por que os coletou</li>
+  <li>Solicitar a correção de dados incorretos ou desatualizados</li>
+  <li>Pedir a exclusão de dados que não são mais necessários</li>
+  <li>Revogar o consentimento dado anteriormente a qualquer momento</li>
+  <li>Ser informado sobre incidentes de segurança que afetem seus dados</li>
+  <li>Receber seus dados em formato portável para migrar para outro serviço</li>
 </ul>
+<p>A ANPD (Autoridade Nacional de Proteção de Dados) é o órgão responsável por fiscalizar o cumprimento da lei e aplicar sanções em caso de violações.</p>
+
+<h2 id="proteger">Como Se Proteger</h2>
+<p>Proteger sua privacidade digital não exige conhecimento técnico avançado. Pequenas mudanças de comportamento já fazem uma grande diferença:</p>
+<ul>
+  <li>Revise as permissões dos aplicativos instalados no seu celular — muitos pedem acesso a câmera, microfone e localização sem necessidade</li>
+  <li>Use senhas fortes e únicas para cada conta — um gerenciador de senhas como Bitwarden ou 1Password ajuda muito</li>
+  <li>Ative a autenticação em dois fatores nas contas mais importantes (e-mail, redes sociais, banco)</li>
+  <li>Leia ao menos a parte principal das políticas de privacidade antes de aceitar — procure o que dizem sobre compartilhamento de dados com terceiros</li>
+  <li>Prefira aplicativos com criptografia de ponta a ponta para comunicação, como Signal ou WhatsApp</li>
+  <li>Desative o rastreamento de localização quando não for estritamente necessário</li>
+</ul>
+
 <h2 id="conclusao">Conclusão</h2>
-<p>A privacidade não é sobre ter algo a esconder. É sobre ter o <strong>direito de escolher o que compartilhar, com quem e quando</strong>. A LGPD garante direitos importantes aos brasileiros — conhecê-la é o primeiro passo para exercê-la.</p>
-</article>
+<p>A privacidade não é sobre ter algo a esconder. É sobre ter o <strong>direito de escolher o que compartilhar, com quem e quando</strong>. Em um mundo onde os dados valem mais do que o petróleo, proteger informações pessoais é um ato de autonomia e cidadania.</p>
+<p>Conhecer os direitos garantidos pela LGPD, questionar os aplicativos que usamos e adotar práticas básicas de segurança digital são passos concretos que qualquer pessoa pode dar — independente do nível de conhecimento técnico.</p>
+<p>A internet pode ser um espaço de liberdade, conexão e oportunidade. Para que ela continue sendo isso, precisamos garantir que essa liberdade inclua o direito de controlar nossa própria história digital.</p>
+
+  </article>
   <aside class="art-sidebar">
     <div class="art-sidebar-box">
       <span class="art-sidebar-title">Neste artigo</span>
       <ul class="art-toc-list"><li><a href="#intro" class="active">Introdução</a></li>
 <li><a href="#dados" >Que Dados São Coletados</a></li>
 <li><a href="#economia" >A Economia dos Dados</a></li>
+<li><a href="#lgpd" >A LGPD e Seus Direitos</a></li>
 <li><a href="#proteger" >Como Se Proteger</a></li>
 <li><a href="#conclusao" >Conclusão</a></li></ul>
     </div>
@@ -221,35 +255,25 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
     </div>
   </aside>
 </div>
+
 <div class="art-footer-nav">
   <a href="trabalhos.html">← Ver todos os artigos</a>
-  <a href="index.html#contato">Fale conosco →</a>
+  <a href="https://mind-online-community.vercel.app" target="_blank" rel="noopener">Comentar na comunidade →</a>
 </div>
+
 <div class="art-continue">
   <span class="art-continue-label">Continue lendo</span>
-  <div class="art-continue-grid"><a href="artigo1.html" class="art-continue-card">
-      <span class="art-continue-tag">Comunicação Digital</span>
-      <span class="art-continue-title">Como Nossas Palavras Constroem ou Destroem Comunidades</span>
-      <span class="art-continue-arrow">↗</span>
-    </a>
-<a href="artigo2.html" class="art-continue-card">
-      <span class="art-continue-tag">Fake News</span>
-      <span class="art-continue-title">Por Que Acreditamos no Que Queremos Acreditar?</span>
-      <span class="art-continue-arrow">↗</span>
-    </a>
-<a href="artigo5.html" class="art-continue-card">
-      <span class="art-continue-tag">Saúde Digital</span>
-      <span class="art-continue-title">Quando o Scroll Vira Vício</span>
-      <span class="art-continue-arrow">↗</span>
-    </a></div>
+  <div class="art-continue-grid"><a href="artigo1.html" class="art-continue-card"><span class="art-continue-tag">Comunicação Digital</span><span class="art-continue-title">Como Nossas Palavras Constroem ou Destroem Comunidades</span><span class="art-continue-arrow">↗</span></a>
+<a href="artigo2.html" class="art-continue-card"><span class="art-continue-tag">Fake News</span><span class="art-continue-title">Por Que Acreditamos no Que Queremos Acreditar?</span><span class="art-continue-arrow">↗</span></a>
+<a href="artigo5.html" class="art-continue-card"><span class="art-continue-tag">Saúde Digital</span><span class="art-continue-title">Quando o Scroll Vira Vício</span><span class="art-continue-arrow">↗</span></a></div>
 </div>
-<footer>
-  <div class="footer-inner">
-    <span class="footer-logo">MindOnline</span>
-    <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
-    <span class="footer-origin">Petrolina, PE — Brasil</span>
-  </div>
-</footer>
+
+<footer><div class="footer-inner">
+  <span class="footer-logo">MindOnline</span>
+  <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
+  <span class="footer-origin">Petrolina, PE — Brasil</span>
+</div></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 
 const PT=document.getElementById('pt');
@@ -259,7 +283,7 @@ window.addEventListener('load',ptEnter);
 document.querySelectorAll('a[href]').forEach(a=>{
   a.addEventListener('click',e=>{
     const href=a.getAttribute('href');
-    if(!href||href.startsWith('#')||href.startsWith('http')||href.startsWith('//'))return;
+    if(!href||href.startsWith('#')||href.startsWith('http')||href.startsWith('mailto')||href.startsWith('//'))return;
     e.preventDefault();ptLeave(()=>window.location.href=href);
   });
 });
@@ -310,65 +334,208 @@ toggle?.addEventListener('click',()=>{
 nav?.querySelectorAll('a').forEach(a=>{
   a.addEventListener('click',()=>{nav.classList.remove('open');toggle?.querySelectorAll('span').forEach(s=>s.style.transform=s.style.opacity='');});
 });
-
-
 window.addEventListener('scroll',()=>{
   const el=document.documentElement;
-  const pct=(el.scrollTop/(el.scrollHeight-el.clientHeight))*100;
-  document.getElementById('progressBar').style.width=pct+'%';
-});
+  const bar=document.getElementById('progressBar');
+  if(bar)bar.style.width=((el.scrollTop/(el.scrollHeight-el.clientHeight))*100)+'%';
+},{passive:true});
 
 
-function baixarPDF() {
-  const script = document.createElement('script');
-  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-  script.onload = function() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit:'mm', format:'a4' });
-    const ml=20, mr=20, w=210-ml-mr;
-    let y=20;
-    function txt(t, fs, bold, cor) {
-      doc.setFontSize(fs); doc.setFont('helvetica', bold?'bold':'normal');
-      doc.setTextColor(...cor);
-      doc.splitTextToSize(t, w).forEach(l => {
-        if(y>275){ doc.addPage(); y=20; }
-        doc.text(l, ml, y); y += fs*0.45;
-      }); y+=4;
-    }
-    function line() { doc.setDrawColor(60,60,60); doc.line(ml,y,210-mr,y); y+=8; }
+function baixarPDF(){
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  const pw=210, ph=297, ml=22, mr=22, mt=0, w=pw-ml-mr;
+  let y=0;
 
-    // Header
-    doc.setFillColor(8,8,8); doc.rect(0,0,210,44,'F');
-    doc.setFontSize(24); doc.setFont('helvetica','bold'); doc.setTextColor(232,200,74);
-    doc.text('MindOnline', ml, 22);
-    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(136,136,136);
-    doc.text('Comunicação Ética Digital — EREMCC Petrolina', ml, 32);
-    y=56;
+  // ── CAPA ──────────────────────────────────────────
+  // Fundo preto total
+  doc.setFillColor(8,8,8);
+  doc.rect(0,0,pw,ph,'F');
 
-    txt('PRIVACIDADE', 9, true, [232,200,74]);
-    txt('Privacidade Digital: O Que Você Entrega Sem Perceber', 18, true, [240,237,230]);
-    line();
-    txt('Autor: Isaac Siqueira de Oliveira — Aluno — EREMCC Petrolina', 10, false, [136,136,136]);
-    txt('Data: Abril de 2026  |  Leitura: ~5 min', 10, false, [136,136,136]);
-    txt('MindOnline — mind-online-community.vercel.app', 10, false, [136,136,136]);
-    line();
+  // Faixa dourada lateral esquerda
+  doc.setFillColor(232,200,74);
+  doc.rect(0,0,8,ph,'F');
 
-    const secoes = [["Introdução", "Toda vez que você abre um aplicativo, realiza uma pesquisa ou curte uma publicação, está gerando dados. Na maioria das vezes, você entrega tudo isso voluntariamente — sem perceber."], ["Que Dados São Coletados", "As plataformas coletam quanto tempo você olha para cada publicação, quais produtos pesquisa, sua localização em tempo real, os dispositivos que usa e com quem se comunica. Esses dados formam um perfil detalhado de cada usuário."], ["A Economia dos Dados", "Se o produto é gratuito, o produto é você. Serviços como redes sociais comercializam dados dos usuários para sistemas de publicidade extremamente precisos, capazes de segmentar anúncios por idade, localização e comportamento."], ["Como Se Proteger", "Revise as permissões dos aplicativos, use senhas fortes e únicas, ative a autenticação em dois fatores, prefira apps com criptografia de ponta a ponta e desative o rastreamento de localização quando desnecessário."], ["Conclusão", "A privacidade não é sobre ter algo a esconder — é sobre ter o direito de escolher o que compartilhar, com quem e quando. Em um mundo onde os dados valem mais do que o petróleo, proteger informações pessoais é um ato de cidadania."]];
-    secoes.forEach(([t, c]) => {
-      txt(t, 13, true, [232,200,74]);
-      txt(c, 11, false, [160,157,150]);
-      y+=4;
+  // Linha decorativa fina
+  doc.setFillColor(50,50,50);
+  doc.rect(8,0,1,ph,'F');
+
+  // Logo
+  doc.setFontSize(32);
+  doc.setFont('helvetica','bold');
+  doc.setTextColor(232,200,74);
+  doc.text('MindOnline',ml+4,38);
+
+  // Subtítulo do projeto
+  doc.setFontSize(9);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(120,120,120);
+  doc.text('COMUNICAÇÃO ÉTICA DIGITAL — EREMCC PETROLINA',ml+4,46);
+
+  // Linha separadora
+  doc.setDrawColor(40,40,40);
+  doc.setLineWidth(0.3);
+  doc.line(ml+4,52,pw-ml,52);
+
+  // Badge da categoria
+  doc.setFillColor(232,200,74);
+  doc.roundedRect(ml+4,62,doc.getTextWidth('Privacidade'.toUpperCase())+14,8,1,1,'F');
+  doc.setFontSize(8);
+  doc.setFont('helvetica','bold');
+  doc.setTextColor(0,0,0);
+  doc.text('Privacidade'.toUpperCase(),ml+11,67.5);
+
+  // Título do artigo — grande
+  doc.setTextColor(240,237,230);
+  doc.setFont('helvetica','bold');
+  // Quebrar título em linhas
+  const titleLines=doc.splitTextToSize('Privacidade Digital: O Que Você Entrega Sem Perceber',w-4);
+  const titleFontSize=titleLines.length>3?20:titleLines.length>2?24:28;
+  doc.setFontSize(titleFontSize);
+  let ty=82;
+  titleLines.forEach(line=>{
+    doc.text(line,ml+4,ty);
+    ty+=titleFontSize*0.42;
+  });
+
+  // Linha abaixo do título
+  doc.setDrawColor(232,200,74);
+  doc.setLineWidth(0.5);
+  doc.line(ml+4,ty+6,ml+4+60,ty+6);
+
+  // Info do autor
+  ty+=20;
+  doc.setFontSize(10);
+  doc.setFont('helvetica','bold');
+  doc.setTextColor(232,200,74);
+  doc.text('Isaac Siqueira de Oliveira',ml+4,ty);
+  ty+=6;
+  doc.setFontSize(9);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(100,100,100);
+  doc.text('Abril de 2026  ·  Leitura: ~ 5 min',ml+4,ty);
+  ty+=6;
+  doc.text('Categoria: Privacidade',ml+4,ty);
+
+  // Decoração geométrica no canto inferior direito
+  doc.setDrawColor(30,30,30);
+  doc.setLineWidth(0.3);
+  for(let i=0;i<8;i++){
+    doc.line(pw-60+i*7,ph-60,pw-8,ph-60+i*7);
+  }
+
+  // Rodapé da capa
+  doc.setFillColor(15,15,15);
+  doc.rect(8,ph-20,pw-8,20,'F');
+  doc.setFontSize(8);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(80,80,80);
+  doc.text('mindonline.com.br',ml+4,ph-12);
+  doc.text('© 2026 MindOnline — Todos os direitos reservados',pw-mr,ph-12,{align:'right'});
+
+  // ── PÁGINAS DE CONTEÚDO ──────────────────────────
+  const secoes=[["Introdução","Toda vez que você abre um aplicativo, realiza uma pesquisa ou curte uma publicação, está gerando dados. Esses dados descrevem quem você é, o que você pensa, onde você esteve e o que deseja. E, na maioria das vezes, você entrega tudo isso voluntariamente — sem perceber. A privacidade digital deixou de ser uma questão técnica reservada a especialistas. Ela é hoje um direito fundamental que precisa ser compreendido e exercido por qualquer pessoa que utilize a internet."],
+["Que Dados São Coletados","As plataformas digitais coletam muito mais do que o óbvio. Além dos dados que você fornece diretamente — como nome, e-mail e data de nascimento — elas registram: quanto tempo você fica olhando para cada publicação, quais produtos você pesquisa mesmo sem comprar, sua localização geográfica em tempo real, os dispositivos que você usa e os horários de uso, e com quem você se comunica e sobre o quê. Esses dados são combinados, cruzados e vendidos para anunciantes, formando um perfil detalhado de cada usuário."],
+["A Economia dos Dados","Existe uma frase que resume bem o modelo de negócio das grandes plataformas digitais: Se o produto é gratuito, o produto é você. Serviços como redes sociais, mecanismos de busca e aplicativos de mensagens são oferecidos sem custo financeiro direto porque o verdadeiro produto comercializado são os dados dos usuários. Essas informações alimentam sistemas de publicidade extremamente precisos, capazes de segmentar anúncios por idade, localização, interesses, comportamento de compra e até estado emocional."],
+["A LGPD e Seus Direitos","A Lei Geral de Proteção de Dados (Lei n.º 13.709/2018) representa um marco importante na proteção da privacidade dos brasileiros. Entre os principais direitos garantidos estão: saber quais dados uma empresa possui sobre você, solicitar a correção de dados incorretos, pedir a exclusão de dados desnecessários, revogar o consentimento dado anteriormente e ser informado sobre incidentes de segurança que afetem seus dados. A ANPD (Autoridade Nacional de Proteção de Dados) é o órgão responsável por fiscalizar o cumprimento da lei."],
+["Como Se Proteger","Proteger sua privacidade digital não exige conhecimento técnico avançado. Revisar as permissões dos aplicativos instalados no celular, usar senhas fortes e únicas para cada conta, ativar a autenticação em dois fatores nas contas mais importantes, ler ao menos a parte principal das políticas de privacidade antes de aceitar, preferir aplicativos com criptografia de ponta a ponta para comunicação e desativar o rastreamento de localização quando não for necessário são medidas simples e eficazes."],
+["Conclusão","A privacidade não é sobre ter algo a esconder. É sobre ter o direito de escolher o que compartilhar, com quem e quando. Em um mundo onde os dados valem mais do que o petróleo, proteger informações pessoais é um ato de autonomia e cidadania. Conhecer e exercer os direitos garantidos pela LGPD é o primeiro passo."]];
+
+  secoes.forEach(([titulo,corpo],idx)=>{
+    doc.addPage();
+    // Fundo
+    doc.setFillColor(8,8,8);
+    doc.rect(0,0,pw,ph,'F');
+    // Faixa lateral
+    doc.setFillColor(232,200,74);
+    doc.rect(0,0,8,ph,'F');
+    doc.setFillColor(50,50,50);
+    doc.rect(8,0,1,ph,'F');
+
+    // Header da página
+    doc.setFillColor(15,15,15);
+    doc.rect(8,0,pw-8,18,'F');
+    doc.setFontSize(8);
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(232,200,74);
+    doc.text('MINDONLINE',ml+4,11);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(80,80,80);
+    doc.text(`${idx+1} / ${secoes.length}`,pw-mr,11,{align:'right'});
+    doc.setDrawColor(30,30,30);
+    doc.setLineWidth(0.3);
+    doc.line(8,18,pw,18);
+
+    let py=32;
+
+    // Número da seção
+    doc.setFontSize(9);
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(232,200,74);
+    doc.text(`0${idx+1}`,ml+4,py);
+    py+=2;
+
+    // Linha dourada
+    doc.setDrawColor(232,200,74);
+    doc.setLineWidth(0.4);
+    doc.line(ml+4,py+2,ml+4+20,py+2);
+    py+=10;
+
+    // Título da seção
+    doc.setFontSize(17);
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(240,237,230);
+    const tLines=doc.splitTextToSize(titulo.toUpperCase(),w-4);
+    tLines.forEach(l=>{ doc.text(l,ml+4,py); py+=8; });
+    py+=4;
+
+    // Linha separadora
+    doc.setDrawColor(30,30,30);
+    doc.setLineWidth(0.2);
+    doc.line(ml+4,py,pw-mr,py);
+    py+=10;
+
+    // Corpo do texto
+    doc.setFontSize(10.5);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(160,155,148);
+    doc.setLineHeightFactor(1.5);
+    const bodyLines=doc.splitTextToSize(corpo,w-4);
+    bodyLines.forEach(l=>{
+      if(py>ph-22){
+        // Rodapé
+        doc.setFillColor(15,15,15);
+        doc.rect(8,ph-16,pw-8,16,'F');
+        doc.setFontSize(7.5);
+        doc.setTextColor(60,60,60);
+        doc.text('MindOnline — Comunicação Ética Digital',ml+4,ph-8);
+        doc.text('artigo3-mindonline.pdf',pw-mr,ph-8,{align:'right'});
+        doc.addPage();
+        doc.setFillColor(8,8,8);doc.rect(0,0,pw,ph,'F');
+        doc.setFillColor(232,200,74);doc.rect(0,0,8,ph,'F');
+        doc.setFillColor(50,50,50);doc.rect(8,0,1,ph,'F');
+        doc.setFillColor(15,15,15);doc.rect(8,0,pw-8,18,'F');
+        doc.setDrawColor(30,30,30);doc.setLineWidth(0.3);doc.line(8,18,pw,18);
+        doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(80,80,80);
+        doc.text('Continuação...',ml+4,11);
+        py=30;
+        doc.setFontSize(10.5);doc.setFont('helvetica','normal');doc.setTextColor(160,155,148);
+      }
+      doc.text(l,ml+4,py);
+      py+=5.8;
     });
 
-    const total = doc.internal.getNumberOfPages();
-    for(let i=1;i<=total;i++) {
-      doc.setPage(i); doc.setFontSize(9); doc.setTextColor(100,100,100);
-      doc.text('MindOnline — Comunicação Ética Digital', ml, 290);
-      doc.text('Página '+i+' de '+total, 210-mr, 290, {align:'right'});
-    }
-    doc.save('artigo3-privacidade-digital-mindonline.pdf');
-  };
-  document.head.appendChild(script);
+    // Rodapé da página
+    doc.setFillColor(15,15,15);
+    doc.rect(8,ph-16,pw-8,16,'F');
+    doc.setFontSize(7.5);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(60,60,60);
+    doc.text('MindOnline — Comunicação Ética Digital',ml+4,ph-8);
+    doc.text('artigo3-mindonline.pdf',pw-mr,ph-8,{align:'right'});
+  });
+
+  doc.save('artigo3-mindonline.pdf');
 }
 
 </script>
