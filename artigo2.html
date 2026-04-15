@@ -1,596 +1,897 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fake News: Por Que Acreditamos no Que Queremos Acreditar? — MindOnline</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake News: Por Que Acreditamos no Que Queremos Acreditar? — MindOnline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 <style>
-:root{
-  --bg:#080808;--bg2:#0e0e0e;--bg3:#141414;
-  --fg:#f0ede6;--dim:rgba(240,237,230,.5);--dimmer:rgba(240,237,230,.18);
-  --gold:#e8c84a;--gold2:#f5d76e;--golddim:rgba(232,200,74,.08);
-  --border:rgba(240,237,230,.07);--border2:rgba(240,237,230,.12);
-  --font-display:'Bebas Neue',sans-serif;
-  --font-serif:'Instrument Serif',serif;
-  --font-mono:'DM Mono',monospace;
-  --font-body:'DM Sans',sans-serif;
-}
+
+
+
+:root{--bg:#080808;--fg:#f0ede6;--gold:#e8c84a;--gold2:#f5d76e;--dim:rgba(240,237,230,.5);--border:rgba(240,237,230,.08);--font-display:'Bebas Neue',sans-serif;--font-serif:'Instrument Serif',serif;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;cursor:none;font-size:16px;}
+html{scroll-behavior:smooth;cursor:none;}
 body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 ::selection{background:var(--gold);color:#000;}
-::-webkit-scrollbar{width:2px;};::-webkit-scrollbar-thumb{background:var(--gold);}
-
-/* ── CURSOR ── */
-#cur-dot{position:fixed;top:0;left:0;width:6px;height:6px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;will-change:transform;transform:translate(-50%,-50%);}
-#cur-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid rgba(232,200,74,.4);border-radius:50%;pointer-events:none;z-index:99998;will-change:transform;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s,opacity .3s;}
-body.ch #cur-ring{width:52px;height:52px;border-color:rgba(232,200,74,.2);}
-
-/* ── PAGE TRANSITION ── */
-#pt{position:fixed;inset:0;z-index:99997;pointer-events:none;overflow:hidden;}
-#pt-inner{position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.77,0,.175,1);}
-#pt.enter #pt-inner{transform:scaleX(1);transform-origin:left;}
-#pt.leave #pt-inner{transform:scaleX(0);transform-origin:right;transition:transform .55s cubic-bezier(.77,0,.175,1) .05s;}
-
-/* ── READING PROGRESS ── */
-#rp{position:fixed;top:0;left:0;right:0;height:2px;z-index:9999;background:rgba(240,237,230,.04);}
-#rp-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2));box-shadow:0 0 12px rgba(232,200,74,.6);transition:width .08s linear;}
-
-/* ── HEADER ── */
-header{
-  position:fixed;top:0;left:0;right:0;z-index:900;height:60px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 40px;transition:background .4s,border-color .4s;
-  border-bottom:1px solid transparent;
-}
-header.sc{background:rgba(8,8,8,.94);backdrop-filter:blur(20px);border-bottom-color:var(--border);}
-.logo{font-family:var(--font-display);font-size:21px;letter-spacing:3px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:9px;}
-.logo-dot{width:7px;height:7px;background:var(--gold);border-radius:50%;animation:pd 2.5s ease-in-out infinite;flex-shrink:0;}
-@keyframes pd{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,200,74,.4);}50%{opacity:.5;transform:scale(1.4);box-shadow:0 0 0 7px rgba(232,200,74,0);}}
+::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-thumb{background:var(--gold);}
+#cur-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;will-change:transform;}
+#cur-ring{position:fixed;top:0;left:0;width:40px;height:40px;border:1px solid rgba(232,200,74,.35);border-radius:50%;pointer-events:none;z-index:99998;will-change:transform;transition:width .3s cubic-bezier(.16,1,.3,1),height .3s cubic-bezier(.16,1,.3,1),border-color .3s;}
+body.ch #cur-ring{width:56px;height:56px;border-color:rgba(232,200,74,.15);}
+#progress{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;z-index:9998;box-shadow:0 0 8px rgba(232,200,74,.6);}
+#pt{position:fixed;inset:0;z-index:99997;display:grid;grid-template-columns:repeat(5,1fr);pointer-events:none;}
+.pt-col{background:var(--gold);transform:scaleY(0);transform-origin:bottom;}
+.pt-col:nth-child(1){transition:transform .5s cubic-bezier(.77,0,.175,1) 0s;}.pt-col:nth-child(2){transition:transform .5s cubic-bezier(.77,0,.175,1) .06s;}.pt-col:nth-child(3){transition:transform .5s cubic-bezier(.77,0,.175,1) .12s;}.pt-col:nth-child(4){transition:transform .5s cubic-bezier(.77,0,.175,1) .18s;}.pt-col:nth-child(5){transition:transform .5s cubic-bezier(.77,0,.175,1) .24s;}
+#pt.enter .pt-col{transform:scaleY(1);}
+#pt.leave .pt-col{transform:scaleY(0);transform-origin:top;}
+#pt.leave .pt-col:nth-child(1){transition:transform .5s cubic-bezier(.77,0,.175,1) .24s;}#pt.leave .pt-col:nth-child(2){transition:transform .5s cubic-bezier(.77,0,.175,1) .18s;}#pt.leave .pt-col:nth-child(3){transition:transform .5s cubic-bezier(.77,0,.175,1) .12s;}#pt.leave .pt-col:nth-child(4){transition:transform .5s cubic-bezier(.77,0,.175,1) .06s;}#pt.leave .pt-col:nth-child(5){transition:transform .5s cubic-bezier(.77,0,.175,1) 0s;}
+header{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;}
+header.scrolled{background:rgba(8,8,8,.92);backdrop-filter:blur(24px);border-bottom-color:var(--border);}
+.logo{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:8px;}
+.logo-mark{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulseDot 2.5s ease-in-out infinite;}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,200,74,.4);}50%{opacity:.6;transform:scale(1.3);box-shadow:0 0 0 6px rgba(232,200,74,0);}}
 nav{display:flex;align-items:center;gap:2px;}
-.nl{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:7px 13px;position:relative;transition:color .25s;}
-.nl::after{content:'';position:absolute;bottom:3px;left:13px;right:13px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.16,1,.3,1);}
-.nl:hover{color:var(--fg);}.nl:hover::after,.nl.av::after{transform:scaleX(1);}.nl.av{color:var(--gold);}
-.mtog{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:4px;}
-.mtog span{width:24px;height:1px;background:var(--fg);transition:transform .3s,opacity .3s;display:block;}
-
-/* ── COVER ── */
-.cover{
-  position:relative;width:100%;height:100svh;min-height:500px;
-  overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;
-}
-.cover-bg{
-  position:absolute;inset:0;
-  background:url('Artigo_2.jpg') center/cover no-repeat;
-  filter:brightness(.35) saturate(.6);
-  transform:scale(1.05);
-  transition:transform 8s ease-out;
-}
-.cover-bg.loaded{transform:scale(1);}
-.cover-grain{
-  position:absolute;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;opacity:.4;
-}
-.cover-grad{
-  position:absolute;inset:0;
-  background:linear-gradient(0deg,rgba(8,8,8,1) 0%,rgba(8,8,8,.7) 35%,rgba(8,8,8,.2) 70%,transparent 100%);
-}
-.cover-content{
-  position:relative;z-index:2;padding:0 60px 70px;max-width:1100px;
-}
-.back-link{
-  display:inline-flex;align-items:center;gap:8px;color:var(--dim);
-  font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;
-  text-decoration:none;transition:color .25s;margin-bottom:24px;
-  opacity:0;animation:fadeUp .6s .4s forwards;
-}
-.back-link:hover{color:var(--gold);}
-.badge{
-  display:inline-block;font-family:var(--font-mono);font-size:8px;letter-spacing:2px;
-  text-transform:uppercase;background:var(--gold);color:#000;padding:4px 12px;
-  margin-bottom:20px;opacity:0;animation:fadeUp .6s .5s forwards;
-}
-.cover-title{
-  font-family:var(--font-display);
-  font-size:clamp(42px,6vw,88px);
-  line-height:.9;letter-spacing:2px;text-transform:uppercase;
-  color:var(--fg);max-width:900px;overflow:hidden;
-}
-.cover-title em{font-family:var(--font-serif);font-style:italic;text-transform:none;color:var(--gold);letter-spacing:0;}
-.cover-title .word{
-  display:inline-block;overflow:hidden;
-}
-.cover-title .word span{
-  display:inline-block;transform:translateY(110%);
-  animation:wordUp .7s cubic-bezier(.16,1,.3,1) forwards;
-}
-.cover-scrollhint{
-  position:absolute;bottom:24px;right:60px;z-index:2;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  font-family:var(--font-mono);font-size:8px;letter-spacing:2px;
-  text-transform:uppercase;color:var(--dimmer);
-  opacity:0;animation:fadeUp .6s 1.4s forwards;
-}
-.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s ease-in-out infinite;}
-@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
-
-/* ── META BAR ── */
-.meta-bar{
-  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
-  padding:24px 60px;border-bottom:1px solid var(--border);
-  background:var(--bg);
-}
-.meta-av{
-  width:42px;height:42px;border-radius:50%;
-  background:rgba(232,200,74,.15);color:var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-mono);font-size:12px;font-weight:500;
-  flex-shrink:0;
-}
-.meta-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.meta-name{font-size:13px;font-weight:500;}
-.meta-school{font-family:var(--font-mono);font-size:9px;color:var(--dim);letter-spacing:.5px;margin-top:2px;}
-.meta-div{width:1px;height:28px;background:var(--border);flex-shrink:0;}
-.meta-item{display:flex;flex-direction:column;gap:2px;}
-.meta-lbl{font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,237,230,.2);}
-.meta-val{font-family:var(--font-mono);font-size:10px;color:var(--dim);}
-.meta-actions{margin-left:auto;display:flex;gap:8px;}
-.btn-o{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 16px;border:1px solid var(--border);background:transparent;
-  color:var(--dim);font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;
-  text-transform:uppercase;cursor:pointer;text-decoration:none;
-  transition:all .25s;position:relative;overflow:hidden;
-}
-.btn-o::before{
-  content:'';position:absolute;inset:0;background:var(--gold);
-  transform:translateX(-101%);transition:transform .3s cubic-bezier(.16,1,.3,1);
-}
-.btn-o:hover{color:#000;border-color:var(--gold);}
-.btn-o:hover::before{transform:translateX(0);}
-.btn-o span{position:relative;z-index:1;}
-
-/* ── LAYOUT ── */
-.art-wrap{
-  max-width:1240px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 280px;gap:0;
-  padding:0;
-}
-
-/* ── CONTENT ── */
-.art-content{
-  padding:72px 64px 100px;
-  border-right:1px solid var(--border);
-}
-.art-content h2{
-  font-family:var(--font-display);font-size:26px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--fg);
-  margin:64px 0 20px;padding-top:64px;
-  border-top:1px solid var(--border);
-  position:relative;
-}
-.art-content h2::before{
-  content:'';position:absolute;top:-1px;left:0;width:40px;height:2px;
-  background:var(--gold);
-}
-.art-content h2:first-child{margin-top:0;padding-top:0;border-top:none;}
-.art-content h2:first-child::before{display:none;}
-.art-content p{font-size:17px;color:var(--dim);line-height:1.95;margin-bottom:22px;}
-.art-content strong{color:var(--fg);font-weight:500;}
-.art-content em{font-style:italic;color:rgba(240,237,230,.75);}
-.art-content blockquote{
-  margin:44px 0;padding:0 0 0 28px;
-  border-left:2px solid var(--gold);
-}
-.art-content blockquote p{
-  font-family:var(--font-serif);font-size:22px;font-style:italic;
-  color:rgba(240,237,230,.8);line-height:1.6;margin:0;
-}
-.art-content ul{
-  list-style:none;margin:28px 0 36px;
-  display:flex;flex-direction:column;gap:0;
-  border:1px solid var(--border);background:var(--border);
-}
-.art-content ul li{
-  display:flex;align-items:flex-start;gap:16px;
-  padding:18px 22px;background:var(--bg);
-  font-size:15px;color:var(--dim);line-height:1.7;
-  transition:background .2s;
-  border-bottom:1px solid var(--border);
-}
-.art-content ul li:last-child{border-bottom:none;}
-.art-content ul li:hover{background:var(--golddim);}
-.art-content ul li::before{
-  content:'→';color:var(--gold);font-family:var(--font-mono);
-  font-size:12px;flex-shrink:0;margin-top:3px;
-}
-
-/* ── PARAGRAPH REVEAL ── */
-.rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.nav-link{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:8px 14px;position:relative;transition:color .25s;}
+.nav-link::after{content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.nav-link:hover{color:var(--fg);}.nav-link:hover::after,.nav-link.ativo::after{transform:scaleX(1);}.nav-link.ativo{color:var(--gold);}
+.menu-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:4px;}
+.menu-toggle span{width:24px;height:1px;background:var(--fg);transition:transform .3s,opacity .3s;display:block;}
+.rv{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
 .rv.in{opacity:1;transform:translateY(0);}
-.rv-d1{transition-delay:.08s;}.rv-d2{transition-delay:.16s;}.rv-d3{transition-delay:.24s;}
-
-/* ── SIDEBAR ── */
-.art-sidebar{
-  position:sticky;top:60px;height:calc(100vh - 60px);
-  overflow-y:auto;padding:40px 28px;
-  scrollbar-width:none;display:flex;flex-direction:column;gap:0;
-}
-.art-sidebar::-webkit-scrollbar{display:none;}
-
-/* ── TOC ── */
-.toc-box{margin-bottom:1px;}
-.toc-hd{
-  font-family:var(--font-mono);font-size:8px;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--dimmer);
-  padding:16px 0 12px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:8px;
-}
-.toc-hd::before{content:'';flex:1;height:1px;background:var(--border);}
-.toc-list{list-style:none;padding:8px 0;}
-.toc-list li{position:relative;}
-.toc-list a{
-  display:flex;align-items:center;gap:10px;
-  padding:8px 0;text-decoration:none;
-  transition:all .2s;
-}
-.toc-num{
-  font-family:var(--font-mono);font-size:8px;
-  color:var(--dimmer);letter-spacing:1px;flex-shrink:0;
-  transition:color .2s;
-}
-.toc-label{
-  font-size:11px;color:rgba(240,237,230,.25);
-  letter-spacing:.3px;transition:color .2s;
-  line-height:1.4;
-}
-.toc-list a:hover .toc-num,
-.toc-list a.active .toc-num{color:var(--gold);}
-.toc-list a:hover .toc-label{color:var(--fg);}
-.toc-list a.active .toc-label{color:var(--fg);font-weight:500;}
-.toc-list a::before{
-  content:'';position:absolute;left:-28px;top:50%;transform:translateY(-50%);
-  width:2px;height:0%;background:var(--gold);
-  transition:height .3s cubic-bezier(.16,1,.3,1);
-}
-.toc-list a.active::before,.toc-list a:hover::before{height:70%;}
-
-/* Separadores sidebar */
-.sb-sep{height:1px;background:var(--border);margin:20px 0;}
-
-/* Tags */
-.tags-hd{font-family:var(--font-mono);font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--dimmer);margin-bottom:12px;}
-.tag-pill{
-  display:inline-block;font-family:var(--font-mono);font-size:8px;
-  letter-spacing:1.5px;text-transform:uppercase;
-  padding:4px 10px;border:1px solid var(--border);color:var(--dim);
-  margin:0 4px 6px 0;transition:all .2s;cursor:default;
-}
-.tag-pill:hover{border-color:rgba(232,200,74,.3);color:var(--gold);background:var(--golddim);}
-
-/* Projeto box */
-.proj-box{
-  margin-top:auto;padding:20px;
-  border:1px solid rgba(232,200,74,.15);
-  background:rgba(232,200,74,.03);
-}
-.proj-hd{font-family:var(--font-mono);font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
-.proj-txt{font-size:12px;color:var(--dim);line-height:1.65;margin-bottom:12px;}
-.proj-link{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);text-decoration:none;transition:opacity .2s;}
-.proj-link:hover{opacity:.7;}
-
-/* ── FOOTER NAV ── */
-.fn{
-  max-width:1240px;margin:0 auto;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:40px 60px 60px;border-top:1px solid var(--border);
-  gap:20px;flex-wrap:wrap;
-}
-.fn a{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--dim);text-decoration:none;
-  transition:color .25s;
-}
-.fn a:hover{color:var(--gold);}
-
-/* ── CONTINUE READING ── */
-.continue-section{
-  max-width:1240px;margin:0 auto;
-  padding:0 60px 80px;
-}
-.continue-lbl{
-  font-family:var(--font-mono);font-size:8px;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--dimmer);
-  padding-bottom:24px;display:flex;align-items:center;gap:16px;
-}
-.continue-lbl::before,.continue-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
-.cnt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
-.cnt-card{
-  background:var(--bg);padding:28px;text-decoration:none;
-  display:flex;flex-direction:column;gap:10px;
-  transition:background .3s;position:relative;overflow:hidden;
-}
-.cnt-card::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,var(--gold),transparent);
-  transform:scaleX(0);transform-origin:left;
-  transition:transform .4s cubic-bezier(.16,1,.3,1);
-}
-.cnt-card:hover{background:var(--golddim);}.cnt-card:hover::after{transform:scaleX(1);}
-.cnt-tag{font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
-.cnt-title{font-family:var(--font-display);font-size:19px;letter-spacing:.5px;text-transform:uppercase;color:var(--fg);line-height:1;flex:1;transition:color .3s;}
-.cnt-card:hover .cnt-title{color:var(--gold);}
-.cnt-arrow{font-size:16px;color:var(--dimmer);transition:color .3s,transform .3s;}
-.cnt-card:hover .cnt-arrow{color:var(--gold);transform:translate(3px,-3px);}
-
-/* ── FOOTER ── */
-footer{border-top:1px solid var(--border);padding:36px 60px;}
-.fi{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
-.fl{font-family:var(--font-display);font-size:18px;letter-spacing:4px;}
-.fc,.fo{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;color:var(--dim);}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes wordUp{from{transform:translateY(110%);}to{transform:translateY(0);}}
-
-/* ── RESPONSIVE ── */
-@media(max-width:1100px){
-  .art-wrap{grid-template-columns:1fr;}
-  .art-sidebar{display:none;}
-  .art-content{padding:48px 32px 80px;border-right:none;}
-}
+.rv-d1{transition-delay:.1s;}.rv-d2{transition-delay:.2s;}.rv-d3{transition-delay:.3s;}.rv-d4{transition-delay:.4s;}
+footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40px;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.footer-logo{font-family:var(--font-display);font-size:20px;letter-spacing:4px;}
+.footer-copy,.footer-origin{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--dim);}
 @media(max-width:900px){
   header{padding:0 20px;}nav{display:none;}
-  .mtog{display:flex;}
-  nav.open{
-    display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;bottom:0;
-    background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:40px 24px;
-    align-items:flex-start;justify-content:center;border-top:1px solid var(--border);
-    overflow-y:auto;z-index:800;
-  }
-  nav.open .nl{font-family:var(--font-display);font-size:32px;letter-spacing:3px;text-transform:uppercase;color:var(--fg);padding:12px 0;border-bottom:1px solid var(--border);width:100%;}
-  nav.open .nl::after{display:none;}
-  .cover-content{padding:0 24px 50px;}
-  .cover-scrollhint{right:24px;}
-  .meta-bar{padding:18px 24px;}.meta-actions{display:none;}
+  nav.open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:40px 24px;align-items:flex-start;justify-content:center;border-top:1px solid var(--border);overflow-y:auto;z-index:800;}
+  nav.open .nav-link{font-family:var(--font-display);font-size:32px;letter-spacing:3px;text-transform:uppercase;color:var(--fg);padding:14px 0;border-bottom:1px solid var(--border);width:100%;}
+  nav.open .nav-link::after{display:none;}
+  .menu-toggle{display:flex;}
   #cur-dot,#cur-ring{display:none;}html{cursor:auto;}body *{cursor:auto!important;}
-  .fn{padding:32px 24px 48px;}
-  .continue-section{padding:0 24px 60px;}
-  .cnt-grid{grid-template-columns:1fr;}
-  footer{padding:28px 24px;}
+  footer{padding:28px 20px;}.footer-inner{flex-direction:column;align-items:flex-start;gap:10px;}
 }
-@media(max-width:600px){
-  .cover{min-height:80svh;}
-  .cover-title{font-size:clamp(36px,12vw,64px);}
-  .art-content{padding:36px 20px 60px;}
-  .art-content h2{font-size:22px;}
-  .art-content p{font-size:16px;}
+
+
+.art-progress{position:fixed;top:64px;left:0;right:0;height:2px;background:rgba(240,237,230,.05);z-index:100;}
+.art-progress-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;transition:width .1s linear;box-shadow:0 0 8px rgba(232,200,74,.5);}
+.art-cover{position:relative;width:100%;height:560px;overflow:hidden;}
+.art-cover img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.5) saturate(.7);}
+.art-cover-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.5) 45%,transparent 100%);}
+.art-cover-content{position:absolute;bottom:0;left:0;right:0;padding:0 60px 60px;max-width:1100px;}
+.art-cover-back{display:inline-flex;align-items:center;gap:10px;color:var(--dim);font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .25s;margin-bottom:28px;}
+.art-cover-back:hover{color:var(--gold);}
+.art-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;background:var(--gold);color:#000;padding:4px 10px;display:inline-block;margin-bottom:20px;}
+.art-cover-title{font-family:var(--font-display);font-size:clamp(36px,5vw,68px);line-height:.92;letter-spacing:2px;text-transform:uppercase;color:var(--fg);max-width:900px;}
+.art-cover-title em{font-family:var(--font-serif);font-style:italic;text-transform:none;color:var(--gold);letter-spacing:0;}
+.art-meta-bar{max-width:1000px;margin:0 auto;padding:28px 60px;display:flex;align-items:center;gap:24px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.art-meta-author{display:flex;align-items:center;gap:12px;}
+.art-meta-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:500;color:#000;background:var(--gold);flex-shrink:0;overflow:hidden;}
+.art-meta-av img{width:100%;height:100%;object-fit:cover;}
+.art-meta-name{font-size:14px;font-weight:500;color:var(--fg);}
+.art-meta-school{font-family:var(--font-mono);font-size:10px;color:var(--dim);letter-spacing:.5px;}
+.art-meta-divider{width:1px;height:32px;background:var(--border);flex-shrink:0;}
+.art-meta-item{display:flex;flex-direction:column;gap:3px;}
+.art-meta-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,237,230,.25);}
+.art-meta-val{font-family:var(--font-mono);font-size:11px;color:var(--dim);letter-spacing:.5px;}
+.art-meta-actions{margin-left:auto;display:flex;gap:8px;}
+.art-btn-outline{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--border);background:transparent;color:var(--dim);font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .25s;}
+.art-btn-outline:hover{border-color:rgba(232,200,74,.4);color:var(--gold);}
+.art-body{max-width:1200px;margin:0 auto;padding:80px 60px 100px;display:grid;grid-template-columns:1fr 260px;gap:80px;align-items:start;}
+.art-content h2{font-family:var(--font-display);font-size:28px;letter-spacing:1px;text-transform:uppercase;color:var(--fg);margin:60px 0 20px;padding-top:60px;border-top:1px solid var(--border);}
+.art-content h2:first-child{margin-top:0;padding-top:0;border-top:none;}
+.art-content p{font-size:17px;color:var(--dim);line-height:1.9;margin-bottom:20px;}
+.art-content strong{color:var(--fg);font-weight:500;}
+.art-content blockquote{margin:40px 0;padding:0 0 0 32px;border-left:2px solid var(--gold);}
+.art-content blockquote p{font-family:var(--font-serif);font-size:22px;font-style:italic;color:rgba(240,237,230,.8);line-height:1.6;margin:0;}
+.art-content ul{list-style:none;display:flex;flex-direction:column;gap:1px;margin:24px 0 32px;border:1px solid var(--border);background:var(--border);}
+.art-content ul li{display:flex;align-items:flex-start;gap:16px;padding:18px 24px;background:var(--bg);font-size:15px;color:var(--dim);line-height:1.65;transition:background .25s;}
+.art-content ul li:hover{background:rgba(232,200,74,.03);}
+.art-content ul li::before{content:'→';color:var(--gold);font-family:var(--font-mono);font-size:13px;flex-shrink:0;margin-top:2px;}
+.art-sidebar{position:sticky;top:90px;}
+.art-sidebar-box{border:1px solid var(--border);padding:24px;margin-bottom:1px;background:rgba(240,237,230,.02);}
+.art-sidebar-title{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:16px;display:block;}
+.art-toc-list{list-style:none;display:flex;flex-direction:column;}
+.art-toc-list a{display:block;padding:8px 12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;color:rgba(240,237,230,.3);text-decoration:none;transition:all .2s;border-left:2px solid transparent;}
+.art-toc-list a:hover{color:var(--fg);background:rgba(240,237,230,.03);}
+.art-toc-list a.active{color:var(--gold);border-left-color:var(--gold);background:rgba(232,200,74,.04);}
+.art-tag-list{display:flex;flex-wrap:wrap;gap:6px;}
+.art-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border);color:var(--dim);}
+.art-footer-nav{max-width:1000px;margin:0 auto;padding:48px 60px 80px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);gap:20px;flex-wrap:wrap;}
+.art-footer-nav a{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .25s;}
+.art-footer-nav a:hover{color:var(--gold);}
+.art-continue{max-width:1200px;margin:0 auto;padding:0 60px 100px;border-top:1px solid var(--border);}
+.art-continue-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);padding-top:48px;margin-bottom:28px;display:block;}
+.art-continue-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.art-continue-card{background:var(--bg);padding:28px;text-decoration:none;display:flex;flex-direction:column;gap:12px;transition:background .3s;position:relative;overflow:hidden;}
+.art-continue-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.16,1,.3,1);}
+.art-continue-card:hover{background:rgba(232,200,74,.03);}
+.art-continue-card:hover::before{transform:scaleY(1);}
+.art-continue-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.art-continue-title{font-family:var(--font-display);font-size:20px;letter-spacing:1px;text-transform:uppercase;color:var(--fg);line-height:1;flex:1;transition:color .3s;}
+.art-continue-card:hover .art-continue-title{color:var(--gold);}
+.art-continue-arrow{font-size:18px;color:var(--dim);transition:color .3s,transform .3s;}
+.art-continue-card:hover .art-continue-arrow{color:var(--gold);transform:translate(4px,-4px);}
+.art-sidebar-gold{background:rgba(232,200,74,.04)!important;border-color:rgba(232,200,74,.15)!important;}
+.art-sidebar-gold .art-sidebar-title{color:var(--gold)!important;}
+@media(max-width:1000px){
+  .art-cover{height:380px;}.art-cover-content{padding:0 24px 40px;}
+  .art-meta-bar{padding:20px 24px;}.art-meta-actions{display:none;}
+  .art-body{grid-template-columns:1fr;padding:40px 24px 80px;gap:0;}
+  .art-sidebar{display:none;}
+  .art-continue{padding:0 24px 80px;}.art-continue-grid{grid-template-columns:1fr;}
+  .art-footer-nav{padding:40px 24px 60px;}
 }
+@media(max-width:600px){.art-cover{height:300px;}.art-cover-title{font-size:clamp(28px,10vw,48px);}}
+
+
+
+
+/* ══════════════════════════════════════════
+   NEW ANIMATIONS & TOC — injected
+══════════════════════════════════════════ */
+
+/* ── EXPAND PAGE TRANSITION ── */
+#pt{position:fixed;inset:0;z-index:99997;pointer-events:none;display:flex;align-items:center;justify-content:center;}
+#pt-circle{
+  position:absolute;width:0;height:0;
+  background:var(--gold);border-radius:50%;
+  transform:translate(-50%,-50%);
+  transition:width 0s,height 0s;
+  left:50%;top:50%;
+}
+#pt.expand #pt-circle{
+  width:300vmax;height:300vmax;
+  transition:width .7s cubic-bezier(.86,0,.07,1),height .7s cubic-bezier(.86,0,.07,1);
+}
+#pt.shrink #pt-circle{
+  width:0;height:0;
+  transition:width .6s cubic-bezier(.86,0,.07,1) .05s,height .6s cubic-bezier(.86,0,.07,1) .05s;
+}
+
+/* ── MAGNETIC LINES (decorative) ── */
+.mag-line{
+  position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  transform:scaleX(0);transform-origin:center;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.art-content h2:hover .mag-line{transform:scaleX(1);}
+
+/* ── HEADING REVEAL ── */
+.h2-wrap{overflow:hidden;position:relative;}
+.art-content h2{
+  transform:translateY(60px);opacity:0;
+  transition:transform .9s cubic-bezier(.16,1,.3,1),opacity .9s cubic-bezier(.16,1,.3,1);
+}
+.art-content h2.vin{transform:translateY(0);opacity:1;}
+
+/* ── PARAGRAPH STAGGER ── */
+.art-content p, .art-content blockquote, .art-content ul{
+  opacity:0;transform:translateY(32px);
+  transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);
+}
+.art-content p.vin,.art-content blockquote.vin,.art-content ul.vin{
+  opacity:1;transform:translateY(0);
+}
+
+/* ── BLOCKQUOTE EXPAND ── */
+.art-content blockquote{
+  position:relative;overflow:hidden;
+  max-height:0;padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;
+  border-left-width:0;
+  transition:
+    max-height 1s cubic-bezier(.16,1,.3,1),
+    padding .6s ease,
+    margin .6s ease,
+    border-left-width .4s ease,
+    opacity .8s ease,
+    transform .8s cubic-bezier(.16,1,.3,1);
+}
+.art-content blockquote.vin{
+  max-height:300px;
+  padding-top:0;padding-bottom:0;
+  margin-top:44px;margin-bottom:44px;
+  border-left-width:2px;
+}
+
+/* ── LIST ITEM STAGGER ── */
+.art-content ul li{
+  opacity:0;transform:translateX(-16px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.art-content ul.vin li{opacity:1;transform:translateX(0);}
+.art-content ul.vin li:nth-child(1){transition-delay:.04s;}
+.art-content ul.vin li:nth-child(2){transition-delay:.09s;}
+.art-content ul.vin li:nth-child(3){transition-delay:.14s;}
+.art-content ul.vin li:nth-child(4){transition-delay:.19s;}
+.art-content ul.vin li:nth-child(5){transition-delay:.24s;}
+.art-content ul.vin li:nth-child(6){transition-delay:.29s;}
+.art-content ul.vin li:nth-child(7){transition-delay:.34s;}
+.art-content ul.vin li:nth-child(8){transition-delay:.39s;}
+
+/* ── COVER TITLE LETTER SPLIT ── */
+.cover-title .char{
+  display:inline-block;
+  animation:charDrop .6s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes charDrop{
+  from{opacity:0;transform:translateY(80%) skewY(6deg);}
+  to{opacity:1;transform:translateY(0) skewY(0);}
+}
+
+/* ── COUNTER ANIMATION ── */
+.stat-num{
+  display:inline-block;
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
+}
+
+/* ── COVER SCAN LINE ── */
+.cover::after{
+  content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+  animation:scanMove 12s linear infinite;
+}
+@keyframes scanMove{from{background-position:0 0;}to{background-position:0 100px;}}
+
+/* ── GOLD GLOW PULSE on h2 ── */
+@keyframes glowPulse{
+  0%,100%{text-shadow:none;}
+  50%{text-shadow:0 0 20px rgba(232,200,74,.3);}
+}
+.art-content h2.vin{animation:glowPulse 3s ease-in-out 1s 1;}
+
+/* ── NEW TOC STYLES ── */
+.toc-list,.art-toc-list{list-style:none;padding:0;}
+.toc-list li,.art-toc-list li{position:relative;margin:0;}
+.toc-list a,.art-toc-list a{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 0;text-decoration:none;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid transparent;
+  transition:border-color .3s;
+}
+.toc-list a::after,.art-toc-list a::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.16,1,.3,1);
+}
+.toc-list a:hover::after,.art-toc-list a:hover::after,
+.toc-list a.active::after,.art-toc-list a.active::after{transform:scaleX(1);}
+
+/* number */
+.tn{
+  font-family:var(--font-mono,monospace);font-size:8px;
+  color:rgba(240,237,230,.2);letter-spacing:1px;
+  flex-shrink:0;transition:color .25s;min-width:18px;
+}
+/* label */
+.tl{
+  font-size:11px;color:rgba(240,237,230,.28);
+  letter-spacing:.3px;flex:1;line-height:1.35;
+  transition:color .25s;
+}
+/* arrow */
+.ta{
+  font-size:10px;color:transparent;
+  transform:translateX(-6px);
+  transition:color .25s,transform .25s cubic-bezier(.16,1,.3,1);
+}
+
+.toc-list a:hover .tn,.art-toc-list a:hover .tn,
+.toc-list a.active .tn,.art-toc-list a.active .tn{color:var(--gold);}
+.toc-list a:hover .tl,.art-toc-list a:hover .tl,
+.toc-list a.active .tl,.art-toc-list a.active .tl{color:var(--fg);font-weight:500;}
+.toc-list a:hover .ta,.art-toc-list a:hover .ta,
+.toc-list a.active .ta,.art-toc-list a.active .ta{color:var(--gold);transform:translateX(0);}
+
+/* active indicator bar */
+.toc-list a.active::before,.art-toc-list a.active::before{
+  content:'';position:absolute;left:-28px;top:50%;
+  width:3px;height:0;background:var(--gold);
+  transform:translateY(-50%);
+  transition:height .4s cubic-bezier(.16,1,.3,1);
+  border-radius:2px;
+}
+.toc-list a.active::before,.art-toc-list a.active::before{height:60%;}
+
+/* old class compat */
+.art-sidebar-title{font-family:var(--font-mono,monospace);font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(240,237,230,.2);margin-bottom:14px;display:block;}
+.art-toc-list a{border-left:none!important;}
+
+/* ── META BAR ENTRANCE ── */
+.meta-bar,.art-meta-bar{
+  opacity:0;transform:translateY(-10px);
+  animation:metaIn .7s cubic-bezier(.16,1,.3,1) .9s forwards;
+}
+@keyframes metaIn{to{opacity:1;transform:translateY(0);}}
+
+/* ── CONTINUE CARDS SLIDE ── */
+.cnt-card,.art-continue-card{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .6s ease,transform .6s ease,background .3s;
+}
+.cnt-card.vin,.art-continue-card.vin{opacity:1;transform:translateY(0);}
+.cnt-card:nth-child(1),.art-continue-card:nth-child(1){transition-delay:.05s;}
+.cnt-card:nth-child(2),.art-continue-card:nth-child(2){transition-delay:.13s;}
+.cnt-card:nth-child(3),.art-continue-card:nth-child(3){transition-delay:.21s;}
+
+/* ── SCROLLBAR TRAIL ── */
+#scroll-trail{
+  position:fixed;right:0;top:0;width:2px;height:0%;
+  background:linear-gradient(to bottom,var(--gold),var(--gold2));
+  z-index:9990;pointer-events:none;box-shadow:0 0 8px rgba(232,200,74,.5);
+  transition:height .05s linear;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── H2 GOLD BAR ── */
+.art-content h2{position:relative;padding-left:18px;}
+.art-content h2::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:0;background:var(--gold);border-radius:2px;
+  transition:height .5s cubic-bezier(.16,1,.3,1) .2s;
+}
+.art-content h2.vin::before{height:70%;}
+
 </style>
 </head>
 <body>
-
-<!-- CURSOR -->
-<div id="cur-dot"></div>
-<div id="cur-ring"></div>
-
-<!-- PAGE TRANSITION -->
-<div id="pt"><div id="pt-inner"></div></div>
-
-<!-- READING PROGRESS -->
-<div id="rp"><div id="rp-bar"></div></div>
-
-<!-- HEADER -->
-<header id="hdr">
-  <a href="index.html" class="logo"><span class="logo-dot"></span>MindOnline</a>
+<div id="cur-dot"></div><div id="cur-ring"></div>
+<div id="progress"></div>
+<div id="pt"><div id="pt-circle"></div></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div></div>
+<div class="art-progress"><div class="art-progress-bar" id="progressBar"></div></div>
+<header id="header">
+  <a href="index.html" class="logo"><span class="logo-mark"></span>MindOnline</a>
   <nav id="navMenu">
-    <a href="index.html" class="nl">Início</a>
-    <a href="index.html#sobre" class="nl">Sobre</a>
-    <a href="index.html#dicas" class="nl">Dicas</a>
-    <a href="trabalhos.html" class="nl av">Trabalhos</a>
-    <a href="privacidade.html" class="nl">Privacidade</a>
+    <a href="index.html" class="nav-link">Início</a>
+    <a href="index.html#sobre" class="nav-link">Sobre</a>
+    <a href="index.html#dicas" class="nav-link">Dicas</a>
+    <a href="index.html#contato" class="nav-link">Contato</a>
+    <a href="trabalhos.html" class="nav-link ativo">Trabalhos</a>
+    <a href="privacidade.html" class="nav-link">Privacidade</a>
   </nav>
-  <button class="mtog" id="mTog" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
 
-<!-- COVER -->
-<section class="cover" id="cover">
-  <div class="cover-bg" id="coverBg"></div>
-  <div class="cover-grain"></div>
-  <div class="cover-grad"></div>
-  <div class="cover-content">
-    <a href="trabalhos.html" class="back-link">← Nossos Trabalhos</a>
-    <div class="badge">Fake News</div>
-    <h1 class="cover-title" id="coverTitle">Fake News: Por Que Acreditamos no Que <em>Queremos Acreditar?</em></h1>
-  </div>
-  <div class="cover-scrollhint">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
-</section>
-
-<!-- META BAR -->
-<div class="meta-bar">
-  <div style="display:flex;align-items:center;gap:12px;">
-    <div class="meta-av">JB</div>
-    <div>
-      <div class="meta-name">Joabe Barbosa Lima</div>
-      <div class="meta-school">Aluno — EREMCC Petrolina</div>
-    </div>
-  </div>
-  <div class="meta-div"></div>
-  <div class="meta-item"><span class="meta-lbl">Publicado em</span><span class="meta-val">Abril de 2026</span></div>
-  <div class="meta-item"><span class="meta-lbl">Leitura</span><span class="meta-val">~ 7 min</span></div>
-  <div class="meta-item"><span class="meta-lbl">Categoria</span><span class="meta-val">Fake News</span></div>
-  <div class="meta-actions">
-    <button onclick="baixarPDF()" class="btn-o"><span>⬇ PDF</span></button>
-    <a href="https://mind-online-community.vercel.app" target="_blank" rel="noopener" class="btn-o"><span>Comentar →</span></a>
+<div class="art-cover">
+  <img src="Artigo_2.jpg" alt="Fake News: Por Que Acreditamos no Que Queremos Acreditar?">
+  <div class="art-cover-overlay"></div>
+  <div class="art-cover-content">
+    <a href="trabalhos.html" class="art-cover-back">← Nossos Trabalhos</a>
+    <div class="art-badge">Fake News</div>
+    <h1 class="art-cover-title">Fake News: Por Que Acreditamos no Que <em>Queremos Acreditar?</em></h1>
   </div>
 </div>
 
-<!-- BODY -->
-<div class="art-wrap">
-  <article class="art-content" id="artContent">
+<div class="art-meta-bar">
+  <div class="art-meta-author">
+    <div class="art-meta-av">JB</div>
+    <div>
+      <div class="art-meta-name">Joabe Barbosa Lima</div>
+      <div class="art-meta-school">Aluno — EREMCC Petrolina</div>
+    </div>
+  </div>
+  <div class="art-meta-divider"></div>
+  <div class="art-meta-item"><span class="art-meta-label">Publicado em</span><span class="art-meta-val">Abril de 2026</span></div>
+  <div class="art-meta-item"><span class="art-meta-label">Leitura</span><span class="art-meta-val">~ 6 min</span></div>
+  <div class="art-meta-item"><span class="art-meta-label">Categoria</span><span class="art-meta-val">Fake News</span></div>
+  <div class="art-meta-actions">
+    <button onclick="baixarPDF()" class="art-btn-outline">⬇ PDF</button>
+    <a href="https://mind-online-community.vercel.app" target="_blank" rel="noopener" class="art-btn-outline">Comentar →</a>
+  </div>
+</div>
+
+<div class="art-body">
+  <article class="art-content rv">
     
 <h2 id="intro">Introdução</h2>
-<p>Em um cenário de sobrecarga informacional sem precedentes, distinguir fatos de ficção tornou-se um dos maiores desafios do século XXI. As fake news não são um fenômeno novo — a desinformação sempre existiu. O que mudou radicalmente foi a velocidade, o alcance e a sofisticação com que uma mentira consegue se propagar.</p>
-<p>Um estudo seminal do MIT publicado em 2018 na revista <em>Science</em> analisou mais de 126 mil histórias difundidas no Twitter por 3 milhões de usuários ao longo de 11 anos. Os resultados foram alarmantes: notícias falsas se espalhavam <strong>seis vezes mais rápido</strong> do que as verdadeiras. Mais perturbador ainda: eram os humanos — e não os bots — os principais responsáveis por essa disseminação.</p>
-<p>Por que, mesmo quando temos acesso fácil à informação e às ferramentas de verificação, continuamos acreditando e espalhando conteúdos falsos? A resposta está na forma como nosso cérebro foi moldado pela evolução para processar informações — e como as plataformas digitais exploram essas vulnerabilidades cognitivas.</p>
+<p>Em um cenário de sobrecarga informacional sem precedentes, distinguir fatos de ficção tornou-se um dos maiores desafios do século XXI. As fake news não são um fenômeno novo — a desinformação sempre existiu, dos panfletos falsos distribuídos durante guerras às lendas urbanas que circulavam de boca em boca. O que mudou radicalmente foi a velocidade, o alcance e a sofisticação com que uma mentira consegue se propagar.</p>
+<p>Um estudo seminal do MIT publicado em 2018 na revista <em>Science</em>, conduzido pelos pesquisadores Soroush Vosoughi, Deb Roy e Sinan Aral, analisou mais de 126 mil histórias difundidas no Twitter por 3 milhões de usuários ao longo de 11 anos. Os resultados foram alarmantes: notícias falsas se espalhavam seis vezes mais rápido do que as verdadeiras. Mais perturbador ainda: eram os humanos — e não os bots — os principais responsáveis por essa disseminação. E por quê? Porque mentiras bem construídas são mais interessantes. Elas exploram emoções, confirmam medos e validam preconceitos com uma eficiência que a realidade raramente consegue competir.</p>
+<p>Por que, mesmo quando temos acesso fácil à informação e às ferramentas de verificação, continuamos acreditando e espalhando conteúdos falsos? A resposta está muito menos na falta de inteligência e muito mais na forma como nosso cérebro foi moldado pela evolução para processar informações — e como as plataformas digitais, conscientemente ou não, exploram essas vulnerabilidades cognitivas para maximizar engajamento.</p>
 <blockquote><p>"A mente não é um vaso a ser preenchido, mas uma fogueira a ser acendida — e as fake news sabem exatamente como soprar nas chamas certas."</p></blockquote>
 
 <h2 id="vies">O Viés de Confirmação e Outros Erros Cognitivos</h2>
-<p>O principal motor por trás do espalhamento de fake news é o chamado <strong>viés de confirmação</strong>: a tendência natural de buscar, interpretar, favorecer e recordar informações que confirmam o que já acreditamos. Quando uma notícia valida nossa visão de mundo, nossa percepção crítica diminui automaticamente.</p>
-<p>Outros processos cognitivos contribuem para nossa vulnerabilidade à desinformação:</p>
+<p>O principal motor por trás do espalhamento de fake news é o chamado <strong>viés de confirmação</strong>: a tendência natural de buscar, interpretar, favorecer e recordar informações que confirmam o que já acreditamos. Quando uma notícia valida nossa visão de mundo — nossos valores, nossa identidade política, nossos medos —, nossa percepção crítica diminui automaticamente. Compartilhamos sem verificar. Acreditamos sem questionar.</p>
+<p>O viés de confirmação não é falha de caráter — é uma característica do sistema cognitivo humano, presente em todos nós, independente de nível de escolaridade ou inteligência. Pesquisas em neurociência mostram que quando lemos algo que confirma nossas crenças, o cérebro libera dopamina — o mesmo neurotransmissor associado ao prazer e à recompensa. Isso cria um ciclo vicioso: buscamos conteúdos que nos fazem sentir bem, e conteúdos que confirmam o que já pensamos nos fazem sentir bem.</p>
+<p>Mas o viés de confirmação não está sozinho. Outros processos cognitivos contribuem para nossa vulnerabilidade à desinformação:</p>
 <ul>
-  <li><strong>Efeito de mera exposição</strong>: quanto mais vezes vemos uma afirmação, mais tendemos a acreditar nela. A repetição cria sensação de familiaridade, que o cérebro confunde com verdade.</li>
-  <li><strong>Raciocínio motivado</strong>: quando queremos que algo seja verdade, usamos nossa capacidade racional para encontrar justificativas para a conclusão que já chegamos.</li>
-  <li><strong>Heurística da disponibilidade</strong>: julgamos a probabilidade de um evento pela facilidade com que exemplos vêm à mente.</li>
-  <li><strong>Viés de autoridade</strong>: tendemos a aceitar afirmações de pessoas que percebemos como autoridades — mesmo quando estão fora de sua área de competência.</li>
-  <li><strong>Pensamento tribal</strong>: em contextos de polarização, a identidade de grupo supera o compromisso com a verdade.</li>
+  <li><strong>Efeito de mera exposição</strong>: quanto mais vezes vemos uma afirmação — verdadeira ou não — mais tendemos a acreditar nela. A repetição cria sensação de familiaridade, que o cérebro confunde com verdade. Esse fenômeno, documentado pela primeira vez pelo psicólogo Robert Zajonc, é a base de estratégias deliberadas de desinformação que repetem a mesma mentira até que ela pareça fato estabelecido.</li>
+  <li><strong>Raciocínio motivado</strong>: quando queremos que algo seja verdade — porque nos beneficia, confirma nossa identidade ou se alinha com nossos valores —, usamos nossa capacidade racional não para avaliar a evidência imparcialmente, mas para encontrar justificativas para a conclusão que já chegamos. Somos advogados de nossas próprias crenças, não juízes imparciais.</li>
+  <li><strong>Heurística da disponibilidade</strong>: julgamos a probabilidade de um evento pela facilidade com que exemplos vêm à mente. Quando a mídia (ou as redes sociais) cobrem exaustivamente um tipo de evento — crime, acidente aéreo, epidemia —, superestimamos sua frequência, mesmo que estatisticamente seja raro.</li>
+  <li><strong>Viés de autoridade</strong>: tendemos a aceitar afirmações de pessoas que percebemos como autoridades — mesmo quando estão fora de sua área de competência. Fake news frequentemente exploram isso com "estudos" fictícios, especialistas inventados ou citações distorcidas de pesquisadores reais.</li>
+  <li><strong>Pensamento tribal</strong>: em contextos de polarização, a identidade de grupo supera o compromisso com a verdade. Acreditar em uma notícia falsa que denigre o "lado oposto" não é apenas um erro cognitivo — é um ato de lealdade ao próprio grupo.</li>
 </ul>
 
 <h2 id="como">Como as Fake News São Fabricadas</h2>
-<p>Fake news eficazes não são produzidas por acaso. Elas são resultado de conhecimento sofisticado sobre psicologia humana e dinâmicas das plataformas digitais. Mecanismos comuns de fabricação:</p>
+<p>Fake news eficazes não são produzidas por acaso. Elas são resultado de conhecimento sofisticado sobre psicologia humana, comunicação e dinâmicas das plataformas digitais. Compreender sua arquitetura é fundamental para resistir a elas.</p>
+<p>Os produtores de desinformação exploram sistematicamente as emoções humanas — especialmente medo, raiva e indignação — porque emoções fortes suprimem o pensamento crítico. Estudos de neuroimagem mostram que quando o sistema límbico (responsável pelas emoções) está altamente ativado, o córtex pré-frontal (responsável pelo raciocínio crítico) tem sua atividade reduzida. A raiva é particularmente eficaz: pesquisas mostram que conteúdo que provoca indignação moral é compartilhado de forma significativamente mais rápida e ampla do que conteúdo neutro.</p>
+<p>Mecanismos comuns de fabricação de fake news:</p>
 <ul>
-  <li><strong>Títulos desconectados do conteúdo</strong>: o título sensacionalista contradiz o que o texto diz. Muitas pessoas compartilham sem ler além do título.</li>
-  <li><strong>Fotos e vídeos fora de contexto</strong>: imagens reais são apresentadas como evidência de algo que nunca aconteceu.</li>
-  <li><strong>Citações fabricadas ou distorcidas</strong>: declarações atribuídas a figuras públicas que nunca foram feitas.</li>
-  <li><strong>Mistura de verdade e mentira</strong>: as fake news mais perigosas contêm elementos verídicos misturados com informações falsas.</li>
-  <li><strong>Deep fakes</strong>: com o avanço da IA, vídeos e áudios sintéticos de figuras públicas são cada vez mais convincentes.</li>
+  <li><strong>Títulos desconectados do conteúdo</strong>: o título sensacionalista contradiz ou exagera dramaticamente o que o texto diz. Muitas pessoas compartilham sem ler além do título — e os produtores de fake news sabem disso.</li>
+  <li><strong>Fotos e vídeos fora de contexto</strong>: imagens reais são apresentadas como evidência de algo que nunca aconteceu. Ferramentas de busca reversa de imagens (como Google Images ou TinEye) podem identificar a origem real de uma foto em segundos — mas poucos se dão ao trabalho.</li>
+  <li><strong>Citações fabricadas ou distorcidas</strong>: declarações atribuídas a figuras públicas, cientistas ou especialistas que nunca foram feitas, ou que foram gravemente distorcidas ao retiradas de contexto.</li>
+  <li><strong>Mistura de verdade e mentira</strong>: as fake news mais perigosas geralmente contêm elementos verídicos — nomes reais, eventos reais, números reais — misturados com informações falsas. Isso dificulta a verificação e empresta credibilidade à mentira.</li>
+  <li><strong>Sites que imitam veículos legítimos</strong>: domínios como "g1news.com.br" (ao invés de "g1.globo.com") ou layouts que imitam o design de jornais conhecidos enganam usuários menos atentos.</li>
+  <li><strong>Linguagem técnica falsa</strong>: termos científicos usados incorretamente criam aparência de credibilidade para afirmações sem fundamento. É a estratégia favorita de pseudociências, teorias conspiratórias e desinformação sobre saúde.</li>
+  <li><strong>Deep fakes</strong>: com o avanço da inteligência artificial, vídeos e áudios sintéticos de figuras públicas dizendo coisas que nunca disseram são cada vez mais convincentes e difíceis de detectar. Em 2024, deep fakes foram usados em campanhas eleitorais em pelo menos 12 países.</li>
 </ul>
 
 <h2 id="algoritmos">O Papel dos Algoritmos na Amplificação da Desinformação</h2>
-<p>Os algoritmos das redes sociais amplificam o problema da desinformação de forma estrutural. Projetados para maximizar o engajamento, eles priorizam conteúdos que geram reações emocionais fortes — e conteúdo falso frequentemente gera mais raiva, medo e indignação do que conteúdo verdadeiro.</p>
-<p>O fenômeno das <strong>câmaras de eco</strong> — ambientes informacionais onde a pessoa só encontra conteúdo que confirma suas crenças existentes — é parcialmente resultado dos algoritmos de recomendação. Ao longo do tempo, sua "bolha informacional" se torna cada vez mais fechada e homogênea.</p>
+<p>Os algoritmos das redes sociais amplificam o problema da desinformação de forma estrutural. Projetados para maximizar o engajamento do usuário — medido em tempo de permanência, cliques, curtidas e compartilhamentos —, eles priorizam conteúdos que geram reações emocionais fortes. E conteúdo falso frequentemente gera mais raiva, medo e indignação do que conteúdo verdadeiro.</p>
+<p>O resultado é que o próprio design das plataformas cria um ambiente sistematicamente favorável à desinformação, mesmo sem que haja intenção deliberada de enganar por parte das empresas. A lógica do engajamento e a lógica da verdade simplesmente não são a mesma coisa — e quando entram em conflito, o engajamento costuma vencer.</p>
+<p>O fenômeno das <strong>câmaras de eco</strong> — ambientes informacionais onde a pessoa só encontra conteúdo que confirma suas crenças existentes — é parcialmente resultado dos algoritmos de recomendação. Quanto mais você consome um tipo de conteúdo, mais o algoritmo te oferece conteúdo semelhante. Ao longo do tempo, sua "bolha informacional" se torna cada vez mais fechada e homogênea, reduzindo a exposição a perspectivas que poderiam desafiar suas crenças — incluindo a notícia que corrige uma fake news que você aceitou como verdade.</p>
+<p>Pesquisadores da Mozilla Foundation publicaram em 2022 um relatório devastador sobre o algoritmo de recomendação do YouTube, mostrando que ele sistematicamente recomenda conteúdo cada vez mais extremo — seja de desinformação política, teorias conspiratórias ou conteúdo de saúde não evidenciado. O mecanismo é o da radicalização progressiva: cada passo é pequeno, mas a direção é consistente.</p>
+<p>Isso não significa que as plataformas são completamente inocentes. Reguladores e pesquisadores em todo o mundo documentam casos em que empresas de tecnologia sabiam dos efeitos nocivos de seus algoritmos e optaram por não agir, priorizando métricas de crescimento. Documentos internos do Facebook (hoje Meta) vazados pela ex-funcionária Frances Haugen em 2021 revelaram que a empresa tinha evidências internas de que o Instagram prejudicava a imagem corporal de adolescentes e escolheu não alterar o produto.</p>
 
-<h2 id="identificar">Como Identificar e Combater Fake News</h2>
-<p>A boa notícia é que existem estratégias eficazes para identificar desinformação. Antes de compartilhar qualquer informação impactante, siga este protocolo:</p>
+<h2 id="brasil">O Contexto Brasileiro</h2>
+<p>O Brasil tem uma relação particularmente intensa com a desinformação digital. O país é um dos maiores mercados de WhatsApp do mundo — plataforma que se tornou vetor privilegiado de fake news por seu modelo de comunicação privada, que dificulta tanto a verificação quanto a moderação de conteúdo.</p>
+<p>Pesquisa do Instituto Reuters para o Estudo do Jornalismo mostrou que o Brasil lidera globalmente o índice de preocupação com desinformação: 84% dos brasileiros afirmam se preocupar com o que é real e o que é falso na internet. Apesar disso — ou talvez por causa da ansiedade gerada por esse contexto —, o país também lidera o compartilhamento de desinformação em momentos de crise.</p>
+<p>Durante a pandemia de COVID-19, o Instituto de Tecnologia e Sociedade do Rio (ITS Rio) documentou mais de 1.200 tipos diferentes de desinformação sobre saúde circulando no Brasil. Algumas causaram danos concretos: promoção de tratamentos sem eficácia comprovada, desconfiança em vacinas eficazes e atraso na adoção de medidas protetoras.</p>
+<p>Nas eleições de 2018 e 2022, fake news de caráter político foram documentadas em escala industrial, muitas vezes organizadas em estruturas de disparo massivo que inundavam grupos de WhatsApp com desinformação coordenada. O Tribunal Superior Eleitoral e agências de checagem como Aos Fatos e Agência Lupa se tornaram atores centrais no monitoramento e desmentido dessas campanhas.</p>
+
+<h2 id="identificar">Como Identificar e Resistir à Desinformação</h2>
+<p>Desenvolver <strong>letramento midiático</strong> é a principal ferramenta individual de defesa contra a desinformação. Não existe vacina perfeita — todos somos vulneráveis em algum grau —, mas hábitos e heurísticas específicos podem reduzir significativamente a probabilidade de ser enganado.</p>
+<p>Hábitos práticos de verificação:</p>
 <ul>
-  <li><strong>Verifique a fonte</strong>: o veículo de comunicação é legítimo e tem histórico verificável? O texto tem autoria identificada?</li>
-  <li><strong>Busque corroboração</strong>: outros veículos confiáveis noticiaram o mesmo fato? Se apenas um site divulga a informação, desconfie.</li>
-  <li><strong>Use agências de checagem</strong>: no Brasil, o Aos Fatos, a Lupa e o E-farsas são referências consolidadas em verificação de fatos.</li>
-  <li><strong>Verifique a data</strong>: notícias antigas são frequentemente recirculadas como se fossem recentes.</li>
-  <li><strong>Busca reversa de imagens</strong>: no Google Imagens, você pode verificar a origem de qualquer foto em segundos.</li>
+  <li><strong>Verifique a fonte</strong>: quem publicou essa informação? O site existe há quanto tempo? Tem responsáveis identificados? Histórico de publicações? Um endereço físico?</li>
+  <li><strong>Consulte agências de checagem</strong>: Aos Fatos, Agência Lupa, E-farsas e Boatos.org são especializadas na verificação de conteúdo viral no Brasil</li>
+  <li><strong>Busca reversa de imagens</strong>: qualquer imagem pode ser verificada no Google Images para encontrar seu contexto original</li>
+  <li><strong>Desconfie de emoções intensas</strong>: se uma notícia te deixou muito raivoso, muito com medo ou muito feliz, isso é sinal de alerta — não de veracidade</li>
+  <li><strong>Duas fontes independentes</strong>: uma informação importante e verdadeira geralmente aparece em pelo menos dois veículos diferentes e independentes</li>
+  <li><strong>Leia além do título</strong>: o título é a parte mais cuidadosamente manipulada; o conteúdo muitas vezes diz algo muito diferente</li>
+  <li><strong>Identifique a data</strong>: conteúdo antigo é frequentemente compartilhado como se fosse atual, criando falsa impressão de um problema recorrente ou urgência inexistente</li>
+  <li><strong>Questione sua própria reação</strong>: pergunte-se "quero que isso seja verdade?" — se sim, redobre o cuidado</li>
 </ul>
+<p>A técnica do <strong>"lateral reading"</strong> (leitura lateral), desenvolvida pelos pesquisadores do Stanford History Education Group, consiste em abrir novas abas imediatamente ao se deparar com uma fonte desconhecida e pesquisar sobre ela antes de ler seu conteúdo. É o que checadores profissionais fazem — e é muito mais eficaz do que tentar avaliar a credibilidade de um site apenas pelo seu conteúdo.</p>
+
+<h2 id="responsabilidade">Responsabilidade Compartilhada</h2>
+<p>Combater a desinformação exige esforço em múltiplos níveis simultaneamente. Nenhum ator sozinho tem capacidade de resolver o problema — é necessária uma abordagem sistêmica.</p>
+<p><strong>Usuários</strong> têm responsabilidade de verificar antes de compartilhar, reportar conteúdo falso nas plataformas e resistir ao impulso de espalhar informação que provoca emoção forte sem evidência sólida.</p>
+<p><strong>Plataformas</strong> precisam investir em sistemas de moderação que reduzam o alcance de desinformação, sejam transparentes sobre seus algoritmos e deixem de beneficiar economicamente a viralização de mentiras. Mudanças como reduzir o número de encaminhamentos permitidos no WhatsApp — implementada em 2019 após crises de violência causadas por fake news na Índia — mostraram efeitos positivos mensuráveis.</p>
+<p><strong>Governos e reguladores</strong> precisam criar marcos legais que responsabilizem plataformas por danos causados pela desinformação que amplificam, sem criar instrumentos de censura política. Esse equilíbrio é difícil — mas não impossível. A União Europeia tem avançado nessa direção com o Digital Services Act.</p>
+<p><strong>Educadores e escolas</strong> têm papel fundamental em construir letramento midiático desde a infância. Estudos mostram consistentemente que adultos com maior educação midiática são significativamente mais resistentes à desinformação — e que essa competência pode ser ensinada de forma eficaz.</p>
 
 <h2 id="conclusao">Conclusão</h2>
-<p>A alfabetização midiática não é um luxo — é uma necessidade urgente e democrática em um mundo onde a desinformação pode custar vidas, contaminar eleições e destruir reputações de pessoas inocentes.</p>
+<p>Ninguém está imune às fake news. Reconhecer essa vulnerabilidade — incluindo a nossa própria — é o primeiro e mais importante passo para superá-la. A arrogância de achar que "só os outros" são enganados é, ela própria, um fator de risco: a superconfiança reduz a vigilância crítica.</p>
+<p>A alfabetização midiática não é um luxo — é uma necessidade urgente e democrática em um mundo onde a desinformação pode custar vidas, contaminar eleições e destruir reputações de pessoas inocentes. Não é exagero dizer que a saúde das democracias depende, em parte, da capacidade de seus cidadãos de distinguir fato de ficção.</p>
+<p>A responsabilidade é genuinamente coletiva: das plataformas, que precisam parar de lucrar com a amplificação de mentiras; dos governos, que precisam criar marcos regulatórios adequados sem instrumentalizar o combate à desinformação como pretexto para censura; e de cada usuário, que tem o poder de quebrar ou de alimentar correntes de mentira com cada compartilhamento.</p>
 <p>A próxima vez que você se sentir tentado a compartilhar uma informação impactante — especialmente uma que confirma exatamente o que você já pensa —, pare. Respire. Verifique. Esse gesto simples, repetido por milhões de pessoas, pode quebrar correntes de mentiras que afetam comunidades inteiras.</p>
 
   </article>
-
   <aside class="art-sidebar">
-    <div class="toc-box">
-      <div class="toc-hd">Neste artigo</div>
-      <ul class="toc-list" id="tocList">
-        <li><a href="#intro" class="active"><span class="toc-num">01</span><span class="toc-label">Introdução</span></a></li>
-<li><a href="#vies"><span class="toc-num">02</span><span class="toc-label">O Viés de Confirmação</span></a></li>
-<li><a href="#como"><span class="toc-num">03</span><span class="toc-label">Como São Fabricadas</span></a></li>
-<li><a href="#algoritmos"><span class="toc-num">04</span><span class="toc-label">O Papel dos Algoritmos</span></a></li>
-<li><a href="#identificar"><span class="toc-num">05</span><span class="toc-label">Como Identificar</span></a></li>
-<li><a href="#conclusao"><span class="toc-num">06</span><span class="toc-label">Conclusão</span></a></li>
-      </ul>
+    <div class="art-sidebar-box">
+      <span class="art-sidebar-title">Neste artigo</span>
+      <ul class="art-toc-list" id="tocList"><li><a href="#intro" class="active"><span class="tn">01</span><span class="tl">Introdução</span><span class="ta">→</span></a></li><li><a href="#vies"><span class="tn">02</span><span class="tl">Viés de Confirmação</span><span class="ta">→</span></a></li><li><a href="#como"><span class="tn">03</span><span class="tl">Como São Fabricadas</span><span class="ta">→</span></a></li><li><a href="#algoritmos"><span class="tn">04</span><span class="tl">O Papel dos Algoritmos</span><span class="ta">→</span></a></li><li><a href="#brasil"><span class="tn">05</span><span class="tl">Contexto Brasileiro</span><span class="ta">→</span></a></li><li><a href="#identificar"><span class="tn">06</span><span class="tl">Como Identificar</span><span class="ta">→</span></a></li><li><a href="#responsabilidade"><span class="tn">07</span><span class="tl">Responsabilidade</span><span class="ta">→</span></a></li><li><a href="#conclusao"><span class="tn">08</span><span class="tl">Conclusão</span><span class="ta">→</span></a></li></ul>
     </div>
-    <div class="sb-sep"></div>
-    <div>
-      <div class="tags-hd">Tags</div>
-      <span class="tag-pill">Fake News</span> <span class="tag-pill">Desinformação</span> <span class="tag-pill">Viés Cognitivo</span> <span class="tag-pill">Mídia</span>
+    <div class="art-sidebar-box">
+      <span class="art-sidebar-title">Tags</span>
+      <div class="art-tag-list"><span class="art-tag">Fake News</span> <span class="art-tag">Desinformação</span> <span class="art-tag">Viés Cognitivo</span> <span class="art-tag">Mídia</span></div>
     </div>
-    <div class="sb-sep"></div>
-    <div class="proj-box">
-      <div class="proj-hd">Sobre o projeto</div>
-      <p class="proj-txt">Produzido por alunos da EREMCC Petrolina com mentoria do IF Sertão PE.</p>
-      <a href="index.html#sobre" class="proj-link">Saiba mais →</a>
+    <div class="art-sidebar-box art-sidebar-gold">
+      <span class="art-sidebar-title">Sobre o projeto</span>
+      <p style="font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:14px;">Produzido por alunos da EREMCC Petrolina com mentoria do IF Sertão PE.</p>
+      <a href="index.html#sobre" style="font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);text-decoration:none;">Saiba mais →</a>
     </div>
   </aside>
 </div>
 
-<!-- FOOTER NAV -->
-<div class="fn">
+<div class="art-footer-nav">
   <a href="trabalhos.html">← Ver todos os artigos</a>
   <a href="https://mind-online-community.vercel.app" target="_blank" rel="noopener">Comentar na comunidade →</a>
 </div>
 
-<!-- CONTINUE READING -->
-<div class="continue-section">
-  <div class="continue-lbl">Continue lendo</div>
-  <div class="cnt-grid">
-    <a href="artigo1.html" class="cnt-card">
-  <span class="cnt-tag">Comunicação Digital</span>
-  <span class="cnt-title">Como Nossas Palavras Constroem ou Destroem Comunidades</span>
-  <span class="cnt-arrow">↗</span>
-</a>
-<a href="artigo3.html" class="cnt-card">
-  <span class="cnt-tag">Privacidade</span>
-  <span class="cnt-title">O Que Você Entrega Sem Perceber</span>
-  <span class="cnt-arrow">↗</span>
-</a>
-<a href="artigo4.html" class="cnt-card">
-  <span class="cnt-tag">Cyberbullying</span>
-  <span class="cnt-title">A Violência Que Não Deixa Marcas Visíveis</span>
-  <span class="cnt-arrow">↗</span>
-</a>
-  </div>
+<div class="art-continue">
+  <span class="art-continue-label">Continue lendo</span>
+  <div class="art-continue-grid"><a href="artigo1.html" class="art-continue-card"><span class="art-continue-tag">Comunicação Digital</span><span class="art-continue-title">Como Nossas Palavras Constroem ou Destroem Comunidades</span><span class="art-continue-arrow">↗</span></a>
+<a href="artigo3.html" class="art-continue-card"><span class="art-continue-tag">Privacidade</span><span class="art-continue-title">O Que Você Entrega Sem Perceber</span><span class="art-continue-arrow">↗</span></a>
+<a href="artigo4.html" class="art-continue-card"><span class="art-continue-tag">Cyberbullying</span><span class="art-continue-title">A Violência Que Não Deixa Marcas Visíveis</span><span class="art-continue-arrow">↗</span></a></div>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="fi">
-    <span class="fl">MindOnline</span>
-    <span class="fc">© 2026 — Todos os direitos reservados</span>
-    <span class="fo">Petrolina, PE — Brasil</span>
-  </div>
-</footer>
-
+<footer><div class="footer-inner">
+  <span class="footer-logo">MindOnline</span>
+  <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
+  <span class="footer-origin">Petrolina, PE — Brasil</span>
+</div></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-// ── PAGE TRANSITION ──
-const PT=document.getElementById('pt');
-const PTI=document.getElementById('pt-inner');
+
+function baixarPDF(){
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  const pw=210, ph=297, ml=22, mr=22, mt=0, w=pw-ml-mr;
+  let y=0;
+
+  // ── CAPA ──────────────────────────────────────────
+  // Fundo preto total
+  doc.setFillColor(8,8,8);
+  doc.rect(0,0,pw,ph,'F');
+
+  // Faixa dourada lateral esquerda
+  doc.setFillColor(232,200,74);
+  doc.rect(0,0,8,ph,'F');
+
+  // Linha decorativa fina
+  doc.setFillColor(50,50,50);
+  doc.rect(8,0,1,ph,'F');
+
+  // Logo
+  doc.setFontSize(32);
+  doc.setFont('helvetica','bold');
+  doc.setTextColor(232,200,74);
+  doc.text('MindOnline',ml+4,38);
+
+  // Subtítulo do projeto
+  doc.setFontSize(9);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(120,120,120);
+  doc.text('COMUNICAÇÃO ÉTICA DIGITAL — EREMCC PETROLINA',ml+4,46);
+
+  // Linha separadora
+  doc.setDrawColor(40,40,40);
+  doc.setLineWidth(0.3);
+  doc.line(ml+4,52,pw-ml,52);
+
+  // Badge da categoria
+  doc.setFillColor(232,200,74);
+  doc.roundedRect(ml+4,62,doc.getTextWidth('Fake News'.toUpperCase())+14,8,1,1,'F');
+  doc.setFontSize(8);
+  doc.setFont('helvetica','bold');
+  doc.setTextColor(0,0,0);
+  doc.text('Fake News'.toUpperCase(),ml+11,67.5);
+
+  // Título do artigo — grande
+  doc.setTextColor(240,237,230);
+  doc.setFont('helvetica','bold');
+  // Quebrar título em linhas
+  const titleLines=doc.splitTextToSize('Fake News: Por Que Acreditamos no Que Queremos Acreditar?',w-4);
+  const titleFontSize=titleLines.length>3?20:titleLines.length>2?24:28;
+  doc.setFontSize(titleFontSize);
+  let ty=82;
+  titleLines.forEach(line=>{
+    doc.text(line,ml+4,ty);
+    ty+=titleFontSize*0.42;
+  });
+
+  // Linha abaixo do título
+  doc.setDrawColor(232,200,74);
+  doc.setLineWidth(0.5);
+  doc.line(ml+4,ty+6,ml+4+60,ty+6);
+
+  // Info do autor
+  ty+=20;
+  doc.setFontSize(10);
+  doc.setFont('helvetica','bold');
+  doc.setTextColor(232,200,74);
+  doc.text('Joabe Barbosa Lima',ml+4,ty);
+  ty+=6;
+  doc.setFontSize(9);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(100,100,100);
+  doc.text('Abril de 2026  ·  Leitura: ~ 5 min',ml+4,ty);
+  ty+=6;
+  doc.text('Categoria: Fake News',ml+4,ty);
+
+  // Decoração geométrica no canto inferior direito
+  doc.setDrawColor(30,30,30);
+  doc.setLineWidth(0.3);
+  for(let i=0;i<8;i++){
+    doc.line(pw-60+i*7,ph-60,pw-8,ph-60+i*7);
+  }
+
+  // Rodapé da capa
+  doc.setFillColor(15,15,15);
+  doc.rect(8,ph-20,pw-8,20,'F');
+  doc.setFontSize(8);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(80,80,80);
+  doc.text('mindonline.com.br',ml+4,ph-12);
+  doc.text('© 2026 MindOnline — Todos os direitos reservados',pw-mr,ph-12,{align:'right'});
+
+  // ── PÁGINAS DE CONTEÚDO ──────────────────────────
+  const secoes=[["Introdução","Em um cenário de sobrecarga informacional, distinguir fatos de ficção tornou-se um dos maiores desafios do século XXI. As fake news não são um fenômeno novo — a desinformação sempre existiu. O que mudou foi a velocidade e o alcance com que uma mentira consegue se propagar. Um estudo do MIT publicado em 2018 demonstrou que notícias falsas se espalham seis vezes mais rápido do que as verdadeiras nas redes sociais. E por quê? Porque mentem de forma mais interessante."],
+["O Viés de Confirmação","O principal motor por trás do espalhamento de fake news é o chamado viés de confirmação: a tendência natural de buscar, interpretar e lembrar informações que confirmam o que já acreditamos. Quando uma notícia valida nossa visão de mundo, nossa percepção crítica diminui automaticamente. Compartilhamos sem verificar. Acreditamos sem questionar. O viés de confirmação não é falha de caráter — é uma característica do sistema cognitivo humano, presente em todos nós, independente de nível de escolaridade ou inteligência."],
+["Como as Fake News Funcionam","As fake news são cuidadosamente construídas para explorar emoções — especialmente medo, raiva e indignação. Quanto mais intensa a emoção provocada, menor o filtro crítico e maior a probabilidade de compartilhamento. Usam títulos sensacionalistas que distorcem o conteúdo real, fotos fora de contexto, citações falsas atribuídas a autoridades, mistura de informações verdadeiras com dados inventados e sites que imitam veículos jornalísticos reais."],
+["O Papel dos Algoritmos","Os algoritmos das redes sociais amplificam esse problema. Projetados para maximizar o engajamento, eles priorizam conteúdos que geram reações emocionais fortes — e conteúdo falso frequentemente gera mais raiva, medo e indignação do que conteúdo verdadeiro. O resultado é que o próprio design das plataformas cria um ambiente favorável à desinformação, mesmo sem que haja intenção deliberada de enganar."],
+["Como Identificar e Resistir","Desenvolver letramento midiático é a principal ferramenta de defesa contra a desinformação. Verificar a fonte original antes de compartilhar, consultar agências de checagem como Aos Fatos e Agência Lupa, desconfiar de conteúdos que provoquem reação emocional intensa, pesquisar o histórico de sites e perfis desconhecidos e questionar informações que confirmem exatamente o que você já pensa são hábitos simples que fazem grande diferença."],
+["Conclusão","Ninguém está imune às fake news. Reconhecer essa vulnerabilidade é o primeiro passo para superá-la. A alfabetização midiática não é um luxo — é uma necessidade urgente em um mundo onde a desinformação pode custar vidas, contaminar eleições e destruir reputações. A próxima vez que você se sentir tentado a compartilhar uma informação impactante, pare. Respire. Verifique."]];
+
+  secoes.forEach(([titulo,corpo],idx)=>{
+    doc.addPage();
+    // Fundo
+    doc.setFillColor(8,8,8);
+    doc.rect(0,0,pw,ph,'F');
+    // Faixa lateral
+    doc.setFillColor(232,200,74);
+    doc.rect(0,0,8,ph,'F');
+    doc.setFillColor(50,50,50);
+    doc.rect(8,0,1,ph,'F');
+
+    // Header da página
+    doc.setFillColor(15,15,15);
+    doc.rect(8,0,pw-8,18,'F');
+    doc.setFontSize(8);
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(232,200,74);
+    doc.text('MINDONLINE',ml+4,11);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(80,80,80);
+    doc.text(`${idx+1} / ${secoes.length}`,pw-mr,11,{align:'right'});
+    doc.setDrawColor(30,30,30);
+    doc.setLineWidth(0.3);
+    doc.line(8,18,pw,18);
+
+    let py=32;
+
+    // Número da seção
+    doc.setFontSize(9);
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(232,200,74);
+    doc.text(`0${idx+1}`,ml+4,py);
+    py+=2;
+
+    // Linha dourada
+    doc.setDrawColor(232,200,74);
+    doc.setLineWidth(0.4);
+    doc.line(ml+4,py+2,ml+4+20,py+2);
+    py+=10;
+
+    // Título da seção
+    doc.setFontSize(17);
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(240,237,230);
+    const tLines=doc.splitTextToSize(titulo.toUpperCase(),w-4);
+    tLines.forEach(l=>{ doc.text(l,ml+4,py); py+=8; });
+    py+=4;
+
+    // Linha separadora
+    doc.setDrawColor(30,30,30);
+    doc.setLineWidth(0.2);
+    doc.line(ml+4,py,pw-mr,py);
+    py+=10;
+
+    // Corpo do texto
+    doc.setFontSize(10.5);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(160,155,148);
+    doc.setLineHeightFactor(1.5);
+    const bodyLines=doc.splitTextToSize(corpo,w-4);
+    bodyLines.forEach(l=>{
+      if(py>ph-22){
+        // Rodapé
+        doc.setFillColor(15,15,15);
+        doc.rect(8,ph-16,pw-8,16,'F');
+        doc.setFontSize(7.5);
+        doc.setTextColor(60,60,60);
+        doc.text('MindOnline — Comunicação Ética Digital',ml+4,ph-8);
+        doc.text('artigo2-mindonline.pdf',pw-mr,ph-8,{align:'right'});
+        doc.addPage();
+        doc.setFillColor(8,8,8);doc.rect(0,0,pw,ph,'F');
+        doc.setFillColor(232,200,74);doc.rect(0,0,8,ph,'F');
+        doc.setFillColor(50,50,50);doc.rect(8,0,1,ph,'F');
+        doc.setFillColor(15,15,15);doc.rect(8,0,pw-8,18,'F');
+        doc.setDrawColor(30,30,30);doc.setLineWidth(0.3);doc.line(8,18,pw,18);
+        doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(80,80,80);
+        doc.text('Continuação...',ml+4,11);
+        py=30;
+        doc.setFontSize(10.5);doc.setFont('helvetica','normal');doc.setTextColor(160,155,148);
+      }
+      doc.text(l,ml+4,py);
+      py+=5.8;
+    });
+
+    // Rodapé da página
+    doc.setFillColor(15,15,15);
+    doc.rect(8,ph-16,pw-8,16,'F');
+    doc.setFontSize(7.5);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(60,60,60);
+    doc.text('MindOnline — Comunicação Ética Digital',ml+4,ph-8);
+    doc.text('artigo2-mindonline.pdf',pw-mr,ph-8,{align:'right'});
+  });
+
+  doc.save('artigo2-mindonline.pdf');
+}
+
+
+/* ═══════════ NEW ANIMATIONS JS ═══════════ */
+(function(){
+
+// ── EXPAND CIRCLE PAGE TRANSITION ──
+const PT = document.getElementById('pt');
+let ptCircle = document.getElementById('pt-circle');
+if(!ptCircle){
+  // rebuild if needed
+  PT.innerHTML='<div id="pt-circle"></div>';
+  ptCircle = document.getElementById('pt-circle');
+}
+PT.style.display='flex';
+
 function ptEnter(){
-  PT.style.display='block';
-  PT.classList.add('enter');
-  PT.classList.remove('leave');
+  PT.style.display='flex';
+  ptCircle.style.left='50%';
+  ptCircle.style.top='50%';
+  PT.classList.remove('shrink');
+  PT.classList.add('expand');
   setTimeout(()=>{
-    PT.classList.add('leave');
-    setTimeout(()=>{PT.style.display='none';PT.classList.remove('enter','leave');},600);
-  },600);
+    PT.classList.remove('expand');
+    PT.classList.add('shrink');
+    setTimeout(()=>{
+      PT.style.display='none';
+      PT.classList.remove('shrink');
+    },700);
+  },650);
 }
-function ptLeave(cb){
-  PT.style.display='block';
-  PT.classList.remove('leave');
-  PT.classList.add('enter');
-  setTimeout(()=>{
-    PT.classList.add('leave');
-    setTimeout(cb,550);
-  },80);
+
+function ptLeave(cb, originX, originY){
+  PT.style.display='flex';
+  ptCircle.style.left=(originX||window.innerWidth/2)+'px';
+  ptCircle.style.top=(originY||window.innerHeight/2)+'px';
+  PT.classList.remove('shrink');
+  PT.classList.add('expand');
+  setTimeout(()=>{ cb(); },680);
 }
-window.addEventListener('load',ptEnter);
+
+window.addEventListener('load', ptEnter);
+
 document.querySelectorAll('a[href]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const h=a.getAttribute('href');
-    if(!h||h.startsWith('#')||h.startsWith('http')||h.startsWith('mailto')||h.startsWith('//'))return;
-    e.preventDefault();ptLeave(()=>window.location.href=h);
+  a.addEventListener('click', e=>{
+    const h = a.getAttribute('href');
+    if(!h||h.startsWith('#')||h.startsWith('http')||h.startsWith('mailto')||h.startsWith('//')) return;
+    e.preventDefault();
+    const r = a.getBoundingClientRect();
+    ptLeave(()=>window.location.href=h, r.left+r.width/2, r.top+r.height/2);
   });
 });
 
-// ── CURSOR ──
+// ── SCROLL TRAIL ──
+let trail = document.getElementById('scroll-trail');
+if(!trail){ trail=document.createElement('div'); trail.id='scroll-trail'; document.body.appendChild(trail); }
+window.addEventListener('scroll',()=>{
+  const d=document.documentElement;
+  const pct=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100);
+  trail.style.height=pct+'%';
+  const rp=document.getElementById('rp-bar');
+  if(rp)rp.style.width=pct+'%';
+},{passive:true});
+
+// ── COVER TITLE CHARACTER SPLIT ──
+(function(){
+  const title=document.getElementById('coverTitle');
+  if(!title)return;
+  const processText = (node, baseDelay)=>{
+    if(node.nodeType===3){
+      const chars=[...node.textContent];
+      const frag=document.createDocumentFragment();
+      chars.forEach((ch,i)=>{
+        if(ch===' '){frag.appendChild(document.createTextNode(' '));return;}
+        const s=document.createElement('span');
+        s.className='char';
+        s.textContent=ch;
+        s.style.animationDelay=(baseDelay[0]+i*0.03)+'s';
+        baseDelay[0]+=0.005;
+        frag.appendChild(s);
+      });
+      node.parentNode.replaceChild(frag,node);
+    } else if(node.nodeType===1){
+      [...node.childNodes].forEach(n=>processText(n,baseDelay));
+    }
+  };
+  const d=[0.6];
+  [...title.childNodes].forEach(n=>processText(n,d));
+})();
+
+// ── INTERSECTION OBSERVER: scroll reveals ──
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.classList.add('vin');
+    obs.unobserve(e.target);
+  });
+},{threshold:0.06, rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('#artContent h2, #artContent p, #artContent blockquote, #artContent ul').forEach(el=>obs.observe(el));
+document.querySelectorAll('.cnt-card, .art-continue-card').forEach(el=>obs.observe(el));
+
+// ── TOC ACTIVE via IntersectionObserver ──
+const tocLinks = document.querySelectorAll('.toc-list a, .art-toc-list a');
+const headings = document.querySelectorAll('#artContent h2, .art-content h2');
+if(headings.length && tocLinks.length){
+  const tocObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        tocLinks.forEach(l=>l.classList.remove('active'));
+        const id=e.target.getAttribute('id');
+        const a=document.querySelector(`.toc-list a[href="#${id}"], .art-toc-list a[href="#${id}"]`);
+        if(a)a.classList.add('active');
+      }
+    });
+  },{rootMargin:'-12% 0px -80% 0px'});
+  headings.forEach(h=>tocObs.observe(h));
+}
+
+// ── MAGNETIC CURSOR on headings ──
 const isMob=('ontouchstart' in window)||window.innerWidth<=900;
+if(!isMob){
+  document.querySelectorAll('.art-content h2, .art-wrap h2').forEach(h=>{
+    h.addEventListener('mousemove',e=>{
+      const r=h.getBoundingClientRect();
+      const mx=e.clientX-r.left-r.width/2;
+      const my=e.clientY-r.top-r.height/2;
+      h.style.transform=`translate(${mx*.04}px,${my*.08}px)`;
+    });
+    h.addEventListener('mouseleave',()=>h.style.transform='');
+  });
+}
+
+// ── TEXT SCRAMBLE on cover badge ──
+const badge=document.querySelector('.badge,.art-badge');
+if(badge){
+  const original=badge.textContent;
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#';
+  let frame=0,total=18;
+  const scramble=()=>{
+    badge.textContent=original.split('').map((c,i)=>{
+      if(i<Math.floor(frame/total*original.length))return c;
+      return c===' '?' ':chars[Math.floor(Math.random()*chars.length)];
+    }).join('');
+    frame++;
+    if(frame<=total)requestAnimationFrame(scramble);
+    else badge.textContent=original;
+  };
+  setTimeout(scramble,700);
+}
+
+// ── PARALLAX COVER on scroll ──
+const coverBg=document.querySelector('.cover-bg');
+if(coverBg){
+  window.addEventListener('scroll',()=>{
+    const s=scrollY;
+    if(s<window.innerHeight*1.5){
+      coverBg.style.transform=`scale(1.04) translateY(${s*0.22}px)`;
+    }
+  },{passive:true});
+  window.addEventListener('load',()=>coverBg.classList.add('loaded'));
+}
+
+// ── HEADER scroll ──
+const hdr=document.getElementById('hdr')||document.getElementById('header');
+if(hdr) window.addEventListener('scroll',()=>hdr.classList.toggle('sc',scrollY>50)||hdr.classList.toggle('scrolled',scrollY>60),{passive:true});
+
+// ── MOBILE MENU ──
+const mTog=document.getElementById('mTog')||document.getElementById('menuToggle');
+const navMenu=document.getElementById('navMenu');
+mTog?.addEventListener('click',()=>{
+  const open=navMenu.classList.toggle('open');
+  const s=mTog.querySelectorAll('span');
+  if(open){s[0].style.transform='translateY(6px) rotate(45deg)';s[1].style.opacity='0';s[2].style.transform='translateY(-6px) rotate(-45deg)';}
+  else{s.forEach(x=>{x.style.transform='';x.style.opacity='';})}
+});
+navMenu?.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click',()=>{navMenu.classList.remove('open');mTog?.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});});
+});
+
+// ── CURSOR ──
 const dot=document.getElementById('cur-dot');
 const ring=document.getElementById('cur-ring');
-let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
-if(!isMob){
+let mx2=window.innerWidth/2,my2=window.innerHeight/2,rx=mx2,ry=my2;
+if(!isMob && dot && ring){
   document.addEventListener('mousemove',e=>{
-    mx=e.clientX;my=e.clientY;
-    dot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    mx2=e.clientX;my2=e.clientY;
+    dot.style.transform=`translate(${mx2}px,${my2}px) translate(-50%,-50%)`;
   });
   (function loop(){
-    rx+=(mx-rx)*.11;ry+=(my-ry)*.11;
+    rx+=(mx2-rx)*.11;ry+=(my2-ry)*.11;
     ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;
     requestAnimationFrame(loop);
   })();
@@ -600,237 +901,8 @@ if(!isMob){
   });
 }
 
-// ── HEADER SCROLL ──
-const hdr=document.getElementById('hdr');
-window.addEventListener('scroll',()=>hdr.classList.toggle('sc',scrollY>50),{passive:true});
-
-// ── READING PROGRESS ──
-const rpBar=document.getElementById('rp-bar');
-window.addEventListener('scroll',()=>{
-  const el=document.documentElement;
-  rpBar.style.width=((el.scrollTop/(el.scrollHeight-el.clientHeight))*100)+'%';
-},{passive:true});
-
-// ── COVER PARALLAX + LOAD ──
-const coverBg=document.getElementById('coverBg');
-coverBg.style.backgroundImage="url('Artigo_2.jpg')";
-window.addEventListener('load',()=>coverBg.classList.add('loaded'));
-window.addEventListener('scroll',()=>{
-  const s=scrollY;
-  if(s<window.innerHeight){
-    coverBg.style.transform=`scale(1) translateY(${s*.25}px)`;
-  }
-},{passive:true});
-
-// ── TITLE WORD SPLIT ANIMATION ──
-(function(){
-  const title=document.getElementById('coverTitle');
-  if(!title)return;
-  const html=title.innerHTML;
-  // Replace text nodes only, preserve <em>
-  const words=[];
-  let delay=0.65;
-  function processNode(node){
-    if(node.nodeType===3){
-      const parts=node.textContent.split(/(\s+)/);
-      const frag=document.createDocumentFragment();
-      parts.forEach(p=>{
-        if(!p.trim()){frag.appendChild(document.createTextNode(p));return;}
-        const w=document.createElement('span');
-        w.className='word';
-        const inner=document.createElement('span');
-        inner.textContent=p;
-        inner.style.animationDelay=delay+'s';
-        delay+=0.06;
-        w.appendChild(inner);
-        frag.appendChild(w);
-        if(p.trim())frag.appendChild(document.createTextNode(' '));
-      });
-      node.parentNode.replaceChild(frag,node);
-    } else if(node.nodeType===1){
-      [...node.childNodes].forEach(processNode);
-    }
-  }
-  [...title.childNodes].forEach(processNode);
 })();
 
-// ── REVEAL ON SCROLL ──
-const rvObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
-},{threshold:0.06,rootMargin:'0px 0px -30px 0px'});
-
-// Wrap each block element in article with rv class
-document.querySelectorAll('#artContent > h2, #artContent > p, #artContent > blockquote, #artContent > ul').forEach((el,i)=>{
-  el.classList.add('rv');
-  if(i%3===1)el.classList.add('rv-d1');
-  if(i%3===2)el.classList.add('rv-d2');
-  rvObs.observe(el);
-});
-
-// ── TOC ACTIVE ──
-const tocLinks=document.querySelectorAll('#tocList a');
-const headings=document.querySelectorAll('#artContent h2');
-if(headings.length){
-  const tocObs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        tocLinks.forEach(l=>l.classList.remove('active'));
-        const a=document.querySelector(`#tocList a[href="#${e.target.id}"]`);
-        if(a)a.classList.add('active');
-      }
-    });
-  },{rootMargin:'-15% 0px -75% 0px'});
-  headings.forEach(h=>tocObs.observe(h));
-}
-
-// ── MOBILE MENU ──
-const mTog=document.getElementById('mTog');
-const navMenu=document.getElementById('navMenu');
-mTog?.addEventListener('click',()=>{
-  const open=navMenu.classList.toggle('open');
-  const s=mTog.querySelectorAll('span');
-  if(open){s[0].style.transform='translateY(6px) rotate(45deg)';s[1].style.opacity='0';s[2].style.transform='translateY(-6px) rotate(-45deg)';}
-  else{s.forEach(x=>x.style.cssText='');}
-});
-navMenu?.querySelectorAll('a').forEach(a=>{
-  a.addEventListener('click',()=>{navMenu.classList.remove('open');mTog?.querySelectorAll('span').forEach(s=>s.style.cssText='');});
-});
-
-// ── PDF ──
-function baixarPDF(){
-  const{jsPDF}=window.jspdf;
-  const doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
-  const pw=210,ph=297,ml=20,mr=20,w=pw-ml-mr;
-
-  // ── CAPA ──
-  doc.setFillColor(8,8,8); doc.rect(0,0,pw,ph,'F');
-  doc.setFillColor(232,200,74); doc.rect(0,0,6,ph,'F');
-  doc.setFillColor(18,18,18); doc.rect(6,0,pw-6,ph,'F');
-
-  // Decoração geométrica
-  doc.setDrawColor(232,200,74); doc.setLineWidth(0.2);
-  doc.rect(ml,20,pw-ml-mr,ph-40,'S');
-  doc.setLineWidth(0.5);
-  doc.line(ml,60,pw-mr,60);
-
-  // Logo
-  doc.setFontSize(38); doc.setFont('helvetica','bold');
-  doc.setTextColor(232,200,74);
-  doc.text('MindOnline',ml+4,44);
-
-  doc.setFontSize(8); doc.setFont('helvetica','normal');
-  doc.setTextColor(100,95,85);
-  doc.text('COMUNICAÇÃO ÉTICA DIGITAL · EREMCC PETROLINA',ml+4,52);
-
-  // Badge categoria
-  doc.setFontSize(8); doc.setFont('helvetica','bold');
-  doc.setTextColor(0,0,0);
-  const badgeTxt='Fake News'.toUpperCase();
-  const bw=doc.getTextWidth(badgeTxt)+10;
-  doc.setFillColor(232,200,74); doc.roundedRect(ml+4,68,bw,7,1,1,'F');
-  doc.text(badgeTxt,ml+9,73.5);
-
-  // Título
-  doc.setTextColor(240,237,230); doc.setFont('helvetica','bold');
-  const tLines=doc.splitTextToSize('Fake News: Por Que Acreditamos no Que Queremos Acreditar?',w-8);
-  const tSize=tLines.length>3?18:tLines.length>2?22:26;
-  doc.setFontSize(tSize);
-  let ty=88;
-  tLines.forEach(l=>{doc.text(l,ml+4,ty);ty+=tSize*0.45;});
-
-  // Linha separadora
-  doc.setDrawColor(40,40,40); doc.setLineWidth(0.3);
-  doc.line(ml+4,ty+8,pw-mr,ty+8);
-  ty+=18;
-
-  // Autor e data
-  doc.setFontSize(10); doc.setFont('helvetica','bold');
-  doc.setTextColor(232,200,74);
-  doc.text('Joabe Barbosa Lima',ml+4,ty);
-  doc.setFontSize(9); doc.setFont('helvetica','normal');
-  doc.setTextColor(100,95,85);
-  doc.text('Aluno — EREMCC Petrolina',ml+4,ty+6);
-  doc.text('Abril de 2026 · Leitura: ~ 7 min',ml+4,ty+12);
-
-  // Rodapé da capa
-  doc.setFillColor(12,12,12); doc.rect(6,ph-18,pw-6,18,'F');
-  doc.setDrawColor(232,200,74); doc.setLineWidth(0.3);
-  doc.line(6,ph-18,pw,ph-18);
-  doc.setFontSize(8); doc.setFont('helvetica','normal');
-  doc.setTextColor(80,75,65);
-  doc.text('MindOnline — Comunicação Ética Digital',ml+4,ph-8);
-  doc.text('artigo2-mindonline.pdf',pw-mr,ph-8,{align:'right'});
-
-  // ── SEÇÕES ──
-  const secoes=[
-    ['Introdução','Em um cenário de sobrecarga informacional sem precedentes, distinguir fatos de ficção tornou-se um dos maiores desafios do século XXI. As fake news não são um fenômeno novo — a desinformação sempre existiu. O que mudou radicalmente foi a velocidade, o alcance e a sofisticação com que uma mentira consegue se propagar. Um estudo seminal do MIT publicado em 2018 na revista Science analisou mais de 126 mil histórias difundidas no Twitter por 3 milhões de usuários ao longo de 11 anos. Os resultados foram alarmantes: notícias falsas se espalhavam seis vezes mais rápido do que as verdadeiras. Mais perturbador ainda: eram os humanos — e não os bots — os principais responsáveis por essa disseminação. Por que, mesmo quando temos acesso fácil à informação e às ferramentas de verificação, continuamos acreditando e espalhando conteúdos falsos? A resposta está na forma como nosso cérebro foi moldado p'],
-['O Viés de Confirmação e Outros Erros Cognitivos','O principal motor por trás do espalhamento de fake news é o chamado viés de confirmação: a tendência natural de buscar, interpretar, favorecer e recordar informações que confirmam o que já acreditamos. Quando uma notícia valida nossa visão de mundo, nossa percepção crítica diminui automaticamente. Outros processos cognitivos contribuem para nossa vulnerabilidade à desinformação: Efeito de mera exposição: quanto mais vezes vemos uma afirmação, mais tendemos a acreditar nela. A repetição cria sensação de familiaridade, que o cérebro confunde com verdade. Raciocínio motivado: quando queremos que algo seja verdade, usamos nossa capacidade racional para encontrar justificativas para a conclusão que já chegamos. Heurística da disponibilidade: julgamos a probabilidade de um evento pela facilidade com que exemplos vêm à mente. Viés de autoridade: tendemos a aceitar afirmações de pessoas que perc'],
-['Como as Fake News São Fabricadas','Fake news eficazes não são produzidas por acaso. Elas são resultado de conhecimento sofisticado sobre psicologia humana e dinâmicas das plataformas digitais. Mecanismos comuns de fabricação: Títulos desconectados do conteúdo: o título sensacionalista contradiz o que o texto diz. Muitas pessoas compartilham sem ler além do título. Fotos e vídeos fora de contexto: imagens reais são apresentadas como evidência de algo que nunca aconteceu. Citações fabricadas ou distorcidas: declarações atribuídas a figuras públicas que nunca foram feitas. Mistura de verdade e mentira: as fake news mais perigosas contêm elementos verídicos misturados com informações falsas. Deep fakes: com o avanço da IA, vídeos e áudios sintéticos de figuras públicas são cada vez mais convincentes.'],
-['O Papel dos Algoritmos na Amplificação da Desinformação','Os algoritmos das redes sociais amplificam o problema da desinformação de forma estrutural. Projetados para maximizar o engajamento, eles priorizam conteúdos que geram reações emocionais fortes — e conteúdo falso frequentemente gera mais raiva, medo e indignação do que conteúdo verdadeiro. O fenômeno das câmaras de eco — ambientes informacionais onde a pessoa só encontra conteúdo que confirma suas crenças existentes — é parcialmente resultado dos algoritmos de recomendação. Ao longo do tempo, sua "bolha informacional" se torna cada vez mais fechada e homogênea.'],
-['Como Identificar e Combater Fake News','A boa notícia é que existem estratégias eficazes para identificar desinformação. Antes de compartilhar qualquer informação impactante, siga este protocolo: Verifique a fonte: o veículo de comunicação é legítimo e tem histórico verificável? O texto tem autoria identificada? Busque corroboração: outros veículos confiáveis noticiaram o mesmo fato? Se apenas um site divulga a informação, desconfie. Use agências de checagem: no Brasil, o Aos Fatos, a Lupa e o E-farsas são referências consolidadas em verificação de fatos. Verifique a data: notícias antigas são frequentemente recirculadas como se fossem recentes. Busca reversa de imagens: no Google Imagens, você pode verificar a origem de qualquer foto em segundos.'],
-['Conclusão','A alfabetização midiática não é um luxo — é uma necessidade urgente e democrática em um mundo onde a desinformação pode custar vidas, contaminar eleições e destruir reputações de pessoas inocentes. A próxima vez que você se sentir tentado a compartilhar uma informação impactante — especialmente uma que confirma exatamente o que você já pensa —, pare. Respire. Verifique. Esse gesto simples, repetido por milhões de pessoas, pode quebrar correntes de mentiras que afetam comunidades inteiras.']
-  ];
-
-  secoes.forEach(([titulo,corpo],idx)=>{
-    doc.addPage();
-    doc.setFillColor(8,8,8); doc.rect(0,0,pw,ph,'F');
-    doc.setFillColor(6,6,6); doc.rect(0,0,pw,20,'F');
-    doc.setFillColor(232,200,74); doc.rect(0,0,4,ph,'F');
-    doc.setDrawColor(20,20,20); doc.setLineWidth(0.2);
-    doc.line(0,20,pw,20);
-
-    // Header
-    doc.setFontSize(7.5); doc.setFont('helvetica','normal');
-    doc.setTextColor(232,200,74); doc.text('MINDONLINE',ml,13);
-    doc.setTextColor(60,55,50); doc.text(`${idx+1}/${secoes.length}`,pw-mr,13,{align:'right'});
-
-    let py=32;
-    // Número
-    doc.setFontSize(28); doc.setFont('helvetica','bold');
-    doc.setTextColor(25,25,25);
-    doc.text(String(idx+1).padStart(2,'0'),pw-mr-2,py+8,{align:'right'});
-
-    // Título
-    doc.setFontSize(15); doc.setFont('helvetica','bold');
-    doc.setTextColor(240,237,230);
-    const tl=doc.splitTextToSize(titulo.toUpperCase(),w-14);
-    tl.forEach(l=>{doc.text(l,ml,py);py+=7;});
-
-    // Linha ouro
-    doc.setDrawColor(232,200,74); doc.setLineWidth(0.4);
-    doc.line(ml,py+2,ml+24,py+2); py+=8;
-    doc.setDrawColor(25,25,25); doc.setLineWidth(0.2);
-    doc.line(ml,py,pw-mr,py); py+=8;
-
-    // Corpo
-    doc.setFontSize(10); doc.setFont('helvetica','normal');
-    doc.setTextColor(155,150,140);
-    const bl=doc.splitTextToSize(corpo,w-4);
-    bl.forEach(l=>{
-      if(py>ph-24){
-        // rodapé e nova página
-        doc.setFillColor(12,12,12); doc.rect(0,ph-18,pw,18,'F');
-        doc.setDrawColor(30,30,30); doc.setLineWidth(0.2); doc.line(0,ph-18,pw,ph-18);
-        doc.setFontSize(7); doc.setTextColor(60,55,50);
-        doc.text('MindOnline',ml,ph-8); doc.text('artigo2-mindonline.pdf',pw-mr,ph-8,{align:'right'});
-        doc.addPage();
-        doc.setFillColor(8,8,8); doc.rect(0,0,pw,ph,'F');
-        doc.setFillColor(232,200,74); doc.rect(0,0,4,ph,'F');
-        py=24; doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(155,150,140);
-      }
-      doc.text(l,ml,py); py+=5.5;
-    });
-
-    // Rodapé
-    doc.setFillColor(12,12,12); doc.rect(0,ph-18,pw,18,'F');
-    doc.setDrawColor(30,30,30); doc.setLineWidth(0.2); doc.line(0,ph-18,pw,ph-18);
-    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(60,55,50);
-    doc.text('MindOnline — Comunicação Ética Digital',ml,ph-8);
-    doc.text('artigo2-mindonline.pdf',pw-mr,ph-8,{align:'right'});
-  });
-
-  doc.save('artigo2-mindonline.pdf');
-}
 </script>
 </body>
 </html>
