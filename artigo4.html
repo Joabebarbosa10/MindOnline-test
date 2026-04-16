@@ -114,14 +114,37 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
 .art-sidebar-gold{background:rgba(232,200,74,.04)!important;border-color:rgba(232,200,74,.15)!important;}
 .art-sidebar-gold .art-sidebar-title{color:var(--gold)!important;}
 @media(max-width:1000px){
+<<<<<<< HEAD
   .art-cover{height:380px;}.art-cover-content{padding:0 24px 40px;}
   .art-meta-bar{padding:20px 24px;}
   .art-body{grid-template-columns:1fr;padding:40px 24px 80px;gap:0;}
+=======
+  .art-cover{height:380px;}.art-cover-content{padding:0 20px 40px;}
+  .art-meta-bar{padding:20px 20px;}
+  .art-body{grid-template-columns:1fr;padding:40px 20px 80px;gap:0;}
+>>>>>>> f2c477e (feat: alterações nos artigos)
   .art-sidebar{display:none;}
-  .art-continue{padding:0 24px 80px;}.art-continue-grid{grid-template-columns:1fr;}
-  .art-footer-nav{padding:40px 24px 60px;}
+  .art-continue{padding:0 20px 80px;}.art-continue-grid{grid-template-columns:1fr;}
+  .art-footer-nav{padding:40px 20px 60px;}
 }
-@media(max-width:600px){.art-cover{height:300px;}.art-cover-title{font-size:clamp(28px,10vw,48px);}}
+@media(max-width:600px){
+  .art-cover{height:300px;}
+  .art-cover-title{font-size:clamp(28px,10vw,48px);}
+  .art-cover-content{padding:0 16px 32px;}
+  .art-body{padding:28px 16px 60px;}
+  .art-content h2{font-size:22px;margin:40px 0 16px;padding-top:40px;}
+  .art-content p{font-size:15px;line-height:1.8;}
+  .art-content blockquote{margin:24px 0;padding-left:18px;}
+  .art-content blockquote p{font-size:18px;}
+  .art-content ul li{padding:14px 16px;font-size:14px;}
+  .art-meta-bar{flex-direction:column;align-items:flex-start;gap:10px;padding:16px;}
+  .art-meta-divider{display:none;}
+  .art-meta-actions{display:none;}
+  .art-continue{padding:0 16px 60px;}
+  .art-continue-card{padding:20px 18px;}
+  .art-footer-nav{padding:32px 16px 48px;flex-direction:column;gap:16px;}
+  footer{padding:24px 16px;}
+}
 
 
 
