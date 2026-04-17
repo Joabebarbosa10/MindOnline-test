@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyberbullying: A Violência Que Não Deixa Marcas Visíveis — MindOnline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080808;--fg:#f0ede6;--gold:#e8c84a;--gold2:#f5d76e;--dim:rgba(240,237,230,.5);--border:rgba(240,237,230,.08);--font-display:'Bebas Neue',sans-serif;--font-serif:'Instrument Serif',serif;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;cursor:none;}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::selection{background:var(--gold);color:#000;}
+::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-thumb{background:var(--gold);}
+#cur-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;will-change:transform;}
+#cur-ring{position:fixed;top:0;left:0;width:40px;height:40px;border:1px solid rgba(232,200,74,.35);border-radius:50%;pointer-events:none;z-index:99998;will-change:transform;transition:width .3s cubic-bezier(.16,1,.3,1),height .3s cubic-bezier(.16,1,.3,1),border-color .3s;}
+body.ch #cur-ring{width:56px;height:56px;border-color:rgba(232,200,74,.15);}
+#progress{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;z-index:9998;box-shadow:0 0 8px rgba(232,200,74,.6);}
+header{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;}
+header.scrolled{background:rgba(8,8,8,.92);backdrop-filter:blur(24px);border-bottom-color:var(--border);}
+.logo{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:8px;}
+.logo-mark{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulseDot 2.5s ease-in-out infinite;}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,200,74,.4);}50%{opacity:.6;transform:scale(1.3);box-shadow:0 0 0 6px rgba(232,200,74,0);}}
+nav{display:flex;align-items:center;gap:2px;}
+.nav-link{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:8px 14px;position:relative;transition:color .25s;}
+.nav-link::after{content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.nav-link:hover{color:var(--fg);}.nav-link:hover::after,.nav-link.ativo::after{transform:scaleX(1);}.nav-link.ativo{color:var(--gold);}
+.menu-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:4px;}
+.menu-toggle span{width:24px;height:1px;background:var(--fg);transition:transform .3s,opacity .3s;display:block;}
+.rv{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+.rv.in{opacity:1;transform:translateY(0);}
+footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40px;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.footer-logo{font-family:var(--font-display);font-size:20px;letter-spacing:4px;}
+.footer-copy,.footer-origin{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--dim);}
+@media(max-width:900px){
+  header{padding:0 20px;}nav{display:none;}
+  nav.open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:40px 24px;align-items:flex-start;justify-content:center;border-top:1px solid var(--border);overflow-y:auto;z-index:800;}
+  nav.open .nav-link{font-family:var(--font-display);font-size:32px;letter-spacing:3px;text-transform:uppercase;color:var(--fg);padding:14px 0;border-bottom:1px solid var(--border);width:100%;}
+  nav.open .nav-link::after{display:none;}
+  .menu-toggle{display:flex;}
+  #cur-dot,#cur-ring{display:none;}html{cursor:auto;}body *{cursor:auto!important;}
+  footer{padding:28px 20px;}.footer-inner{flex-direction:column;align-items:flex-start;gap:10px;}
+}
+
+.art-progress{position:fixed;top:64px;left:0;right:0;height:2px;background:rgba(240,237,230,.05);z-index:100;}
+.art-progress-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;transition:width .1s linear;box-shadow:0 0 8px rgba(232,200,74,.5);}
+.art-cover{position:relative;width:100%;height:560px;overflow:hidden;}
+.art-cover img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.5) saturate(.7);}
+.art-cover-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.5) 45%,transparent 100%);}
+.art-cover-content{position:absolute;bottom:0;left:0;right:0;padding:0 60px 60px;max-width:1100px;}
+.art-cover-back{display:inline-flex;align-items:center;gap:10px;color:var(--dim);font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .25s;margin-bottom:28px;}
+.art-cover-back:hover{color:var(--gold);}
+.art-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;background:var(--gold);color:#000;padding:4px 10px;display:inline-block;margin-bottom:20px;}
+.art-cover-title{font-family:var(--font-display);font-size:clamp(36px,5vw,68px);line-height:.92;letter-spacing:2px;text-transform:uppercase;color:var(--fg);max-width:900px;}
+.art-cover-title em{font-family:var(--font-serif);font-style:italic;text-transform:none;color:var(--gold);letter-spacing:0;}
+.art-meta-bar{max-width:1000px;margin:0 auto;padding:28px 60px;display:flex;align-items:center;gap:24px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.art-meta-author{display:flex;align-items:center;gap:12px;}
+.art-meta-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:500;color:#000;background:var(--gold);flex-shrink:0;overflow:hidden;}
+.art-meta-name{font-size:14px;font-weight:500;color:var(--fg);}
+.art-meta-school{font-family:var(--font-mono);font-size:10px;color:var(--dim);letter-spacing:.5px;}
+.art-meta-divider{width:1px;height:32px;background:var(--border);flex-shrink:0;}
+.art-meta-item{display:flex;flex-direction:column;gap:3px;}
+.art-meta-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,237,230,.25);}
+.art-meta-val{font-family:var(--font-mono);font-size:11px;color:var(--dim);letter-spacing:.5px;}
+.art-meta-actions{margin-left:auto;display:flex;gap:8px;flex-shrink:0;}
+.art-btn-outline{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--border);background:transparent;color:var(--dim);font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .25s;}
+.art-btn-outline:hover{border-color:rgba(232,200,74,.4);color:var(--gold);}
+.art-body{max-width:1200px;margin:0 auto;padding:80px 60px 100px;display:grid;grid-template-columns:1fr 260px;gap:80px;align-items:start;}
+.art-content h2{font-family:var(--font-display);font-size:28px;letter-spacing:1px;text-transform:uppercase;color:var(--fg);margin:60px 0 20px;padding-top:60px;border-top:1px solid var(--border);}
+.art-content h2:first-child{margin-top:0;padding-top:0;border-top:none;}
+.art-content p{font-size:17px;color:var(--dim);line-height:1.9;margin-bottom:20px;}
+.art-content strong{color:var(--fg);font-weight:500;}
+.art-content blockquote{margin:40px 0;padding:0 0 0 32px;border-left:2px solid var(--gold);}
+.art-content blockquote p{font-family:var(--font-serif);font-size:22px;font-style:italic;color:rgba(240,237,230,.8);line-height:1.6;margin:0;}
+.art-content ul{list-style:none;display:flex;flex-direction:column;gap:1px;margin:24px 0 32px;border:1px solid var(--border);background:var(--border);}
+.art-content ul li{display:flex;align-items:flex-start;gap:16px;padding:18px 24px;background:var(--bg);font-size:15px;color:var(--dim);line-height:1.65;transition:background .25s;}
+.art-content ul li:hover{background:rgba(232,200,74,.03);}
+.art-content ul li::before{content:'→';color:var(--gold);font-family:var(--font-mono);font-size:13px;flex-shrink:0;margin-top:2px;}
+.art-sidebar{position:sticky;top:90px;}
+.art-sidebar-box{border:1px solid var(--border);padding:24px;margin-bottom:1px;background:rgba(240,237,230,.02);}
+.art-sidebar-title{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:16px;display:block;}
+.art-toc-list{list-style:none;display:flex;flex-direction:column;}
+.art-toc-list a{display:flex;align-items:center;gap:10px;padding:9px 0;text-decoration:none;position:relative;overflow:hidden;border-bottom:1px solid transparent;transition:border-color .3s;}
+.art-toc-list a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.16,1,.3,1);}
+.art-toc-list a:hover::after,.art-toc-list a.active::after{transform:scaleX(1);}
+.tn{font-family:var(--font-mono);font-size:8px;color:rgba(240,237,230,.2);letter-spacing:1px;flex-shrink:0;transition:color .25s;min-width:18px;}
+.tl{font-size:11px;color:rgba(240,237,230,.28);letter-spacing:.3px;flex:1;line-height:1.35;transition:color .25s;}
+.ta{font-size:10px;color:transparent;transform:translateX(-6px);transition:color .25s,transform .25s cubic-bezier(.16,1,.3,1);}
+.art-toc-list a:hover .tn,.art-toc-list a.active .tn{color:var(--gold);}
+.art-toc-list a:hover .tl,.art-toc-list a.active .tl{color:var(--fg);font-weight:500;}
+.art-toc-list a:hover .ta,.art-toc-list a.active .ta{color:var(--gold);transform:translateX(0);}
+.art-tag-list{display:flex;flex-wrap:wrap;gap:6px;}
+.art-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border);color:var(--dim);}
+.art-footer-nav{max-width:1000px;margin:0 auto;padding:48px 60px 80px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);gap:20px;flex-wrap:wrap;}
+.art-footer-nav a{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .25s;}
+.art-footer-nav a:hover{color:var(--gold);}
+.art-continue{max-width:1200px;margin:0 auto;padding:0 60px 100px;border-top:1px solid var(--border);}
+.art-continue-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);padding-top:48px;margin-bottom:28px;display:block;}
+.art-continue-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.art-continue-card{background:var(--bg);padding:28px;text-decoration:none;display:flex;flex-direction:column;gap:12px;transition:background .3s;position:relative;overflow:hidden;}
+.art-continue-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.16,1,.3,1);}
+.art-continue-card:hover{background:rgba(232,200,74,.03);}.art-continue-card:hover::before{transform:scaleY(1);}
+.art-continue-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.art-continue-title{font-family:var(--font-display);font-size:20px;letter-spacing:1px;text-transform:uppercase;color:var(--fg);line-height:1;flex:1;transition:color .3s;}
+.art-continue-card:hover .art-continue-title{color:var(--gold);}
+.art-continue-arrow{font-size:18px;color:var(--dim);transition:color .3s,transform .3s;}
+.art-continue-card:hover .art-continue-arrow{color:var(--gold);transform:translate(4px,-4px);}
+.art-sidebar-gold{background:rgba(232,200,74,.04)!important;border-color:rgba(232,200,74,.15)!important;}
+.art-sidebar-gold .art-sidebar-title{color:var(--gold)!important;}
+
+/* ANIMATIONS */
+#pt{position:fixed;inset:0;z-index:99997;pointer-events:none;display:flex;align-items:center;justify-content:center;}
+#pt-circle{position:absolute;width:0;height:0;background:var(--gold);border-radius:50%;transform:translate(-50%,-50%);transition:width 0s,height 0s;left:50%;top:50%;}
+#pt.expand #pt-circle{width:300vmax;height:300vmax;transition:width .7s cubic-bezier(.86,0,.07,1),height .7s cubic-bezier(.86,0,.07,1);}
+#pt.shrink #pt-circle{width:0;height:0;transition:width .6s cubic-bezier(.86,0,.07,1) .05s,height .6s cubic-bezier(.86,0,.07,1) .05s;}
+.art-content h2{transform:translateY(60px);opacity:0;transition:transform .9s cubic-bezier(.16,1,.3,1),opacity .9s cubic-bezier(.16,1,.3,1);position:relative;padding-left:18px;}
+.art-content h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:0;background:var(--gold);border-radius:2px;transition:height .5s cubic-bezier(.16,1,.3,1) .2s;}
+.art-content h2.vin{transform:translateY(0);opacity:1;}
+.art-content h2.vin::before{height:70%;}
+.art-content p,.art-content blockquote,.art-content ul{opacity:0;transform:translateY(32px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
+.art-content p.vin,.art-content blockquote.vin,.art-content ul.vin{opacity:1;transform:translateY(0);}
+.art-content blockquote{position:relative;overflow:hidden;max-height:0;padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;border-left-width:0;transition:max-height 1s cubic-bezier(.16,1,.3,1),padding .6s ease,margin .6s ease,border-left-width .4s ease,opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1);}
+.art-content blockquote.vin{max-height:300px;padding-top:0;padding-bottom:0;margin-top:44px;margin-bottom:44px;border-left-width:2px;}
+.art-content ul li{opacity:0;transform:translateX(-16px);transition:opacity .5s ease,transform .5s ease;}
+.art-content ul.vin li{opacity:1;transform:translateX(0);}
+.art-content ul.vin li:nth-child(1){transition-delay:.04s;}.art-content ul.vin li:nth-child(2){transition-delay:.09s;}.art-content ul.vin li:nth-child(3){transition-delay:.14s;}.art-content ul.vin li:nth-child(4){transition-delay:.19s;}.art-content ul.vin li:nth-child(5){transition-delay:.24s;}.art-content ul.vin li:nth-child(6){transition-delay:.29s;}
+.cover-title .char{display:inline-block;animation:charDrop .6s cubic-bezier(.16,1,.3,1) both;}
+@keyframes charDrop{from{opacity:0;transform:translateY(80%) skewY(6deg);}to{opacity:1;transform:translateY(0) skewY(0);}}
+.art-continue-card{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease,background .3s;}
+.art-continue-card.vin{opacity:1;transform:translateY(0);}
+.art-continue-card:nth-child(1){transition-delay:.05s;}.art-continue-card:nth-child(2){transition-delay:.13s;}.art-continue-card:nth-child(3){transition-delay:.21s;}
+#scroll-trail{position:fixed;right:0;top:0;width:2px;height:0%;background:linear-gradient(to bottom,var(--gold),var(--gold2));z-index:9990;pointer-events:none;box-shadow:0 0 8px rgba(232,200,74,.5);transition:height .05s linear;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.art-meta-bar{opacity:0;transform:translateY(-10px);animation:metaIn .7s cubic-bezier(.16,1,.3,1) .9s forwards;}
+@keyframes metaIn{to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:1000px){
+  .art-cover{height:380px;}.art-cover-content{padding:0 24px 40px;}
+  .art-meta-bar{padding:20px 24px;}
+  .art-body{grid-template-columns:1fr;padding:40px 24px 80px;gap:0;}
+  .art-sidebar{display:none;}
+  .art-continue{padding:0 24px 80px;}.art-continue-grid{grid-template-columns:1fr;}
+  .art-footer-nav{padding:40px 24px 60px;}
+  /* Fix overflow on mobile */
+  .art-content p,.art-content li,.art-content blockquote p{word-break:break-word;overflow-wrap:break-word;}
+  .art-content ul li{display:block;padding:16px 20px;word-break:break-word;overflow-wrap:break-word;}
+  .art-content ul li::before{display:inline;margin-right:10px;}
+  .art-content ul{overflow:hidden;}
+  .art-meta-bar{overflow:hidden;}
+  .art-meta-actions{margin-left:0;width:100%;}
+}
+@media(max-width:600px){
+  .art-cover{height:300px;}.art-cover-title{font-size:clamp(28px,10vw,48px);}
+  .art-body{padding:32px 16px 60px;}
+  .art-continue{padding:0 16px 60px;}
+  .art-footer-nav{padding:32px 16px 48px;}
+  .art-cover-content{padding:0 16px 32px;}
+  .art-meta-bar{padding:16px;}
+  .art-content p{font-size:16px;}
+}
+</style>
+</head>
+<body>
+<div id="cur-dot"></div><div id="cur-ring"></div>
+<div id="progress"></div>
+<div id="pt"><div id="pt-circle"></div></div>
+<div id="scroll-trail"></div>
+<div class="art-progress"><div class="art-progress-bar" id="progressBar"></div></div>
+<header id="header">
+  <a href="index.html" class="logo"><span class="logo-mark"></span>MindOnline</a>
+  <nav id="navMenu">
+    <a href="index.html" class="nav-link">Início</a>
+    <a href="index.html#sobre" class="nav-link">Sobre</a>
+    <a href="index.html#dicas" class="nav-link">Dicas</a>
+    <a href="index.html#contato" class="nav-link">Contato</a>
+    <a href="trabalhos.html" class="nav-link ativo">Trabalhos</a>
+    <a href="privacidade.html" class="nav-link">Privacidade</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<div class="art-cover">
+  <img src="Artigo_4.jpg" alt="Cyberbullying: A Violência Que Não Deixa Marcas Visíveis">
+  <div class="art-cover-overlay"></div>
+  <div class="art-cover-content">
+    <a href="trabalhos.html" class="art-cover-back">← Nossos Trabalhos</a>
+    <div class="art-badge">Cyberbullying</div>
+    <h1 class="art-cover-title" id="coverTitle">Cyberbullying: A Violência Que Não Deixa <em>Marcas Visíveis</em></h1>
+  </div>
+</div>
+
+<div class="art-meta-bar">
+  <div class="art-meta-author">
+    <div class="art-meta-av">JB</div>
+    <div>
+      <div class="art-meta-name">Joabe Barbosa Lima</div>
+      <div class="art-meta-school">Aluno — EREMCC Petrolina</div>
+    </div>
+  </div>
+  <div class="art-meta-divider"></div>
+  <div class="art-meta-item"><span class="art-meta-label">Publicado em</span><span class="art-meta-val">Abril de 2026</span></div>
+  <div class="art-meta-item"><span class="art-meta-label">Leitura</span><span class="art-meta-val">~ 6 min</span></div>
+  <div class="art-meta-item"><span class="art-meta-label">Categoria</span><span class="art-meta-val">Cyberbullying</span></div>
+  <div class="art-meta-actions">
+    <button onclick="baixarPDF()" class="art-btn-outline">⬇ PDF</button>
+    <a href="https://mind-online-community.vercel.app" target="_blank" rel="noopener" class="art-btn-outline">Comentar →</a>
+  </div>
+</div>
+
+<div class="art-body">
+  <article class="art-content" id="artContent">
+<h2 id="intro">Introdução</h2>
+<p>Uma mensagem enviada às 23h. Uma foto compartilhada sem permissão. Um apelido humilhante repetido por dezenas de pessoas em um grupo de WhatsApp. O cyberbullying não precisa de local, horário ou testemunhas físicas para acontecer — e é exatamente por isso que sua violência é tão profunda e tão difícil de combater.</p>
+<p>Ao contrário do bullying presencial, a versão digital não tem fim de expediente. Ela invade a casa, o quarto, o travesseiro da vítima. A escola — que poderia ser um espaço de alívio — é conectada ao mesmo ambiente onde a violência ocorre. Os fins de semana não trazem trégua. O sono não oferece escape, porque o celular, com suas notificações, é o primeiro e o último objeto com o qual muitos adolescentes interagem a cada dia.</p>
+<p>E as marcas que o cyberbullying deixa, embora invisíveis para os olhos, podem durar toda uma vida. Pesquisas longitudinais acompanham vítimas por anos após o término das agressões e documentam sequelas que incluem ansiedade generalizada, dificuldades nos relacionamentos adultos e traumas que se reativam décadas depois. Entender o que é o cyberbullying, como ele se manifesta em toda sua complexidade e quais são seus impactos reais é o primeiro passo para combatê-lo — seja como vítima, como testemunha, como familiar, educador ou como membro da sociedade que precisa coletivamente produzir respostas à altura do problema.</p>
+
+<h2 id="formas">As Formas que o Cyberbullying Assume</h2>
+<p>O cyberbullying se manifesta de diversas formas, algumas das quais sequer são reconhecidas como violência por quem as pratica — o que não diminui em nada seu impacto na vítima. Os pesquisadores identificam categorias distintas que merecem ser nomeadas com precisão:</p>
+<ul>
+  <li><strong>Assédio direto</strong>: envio repetido de mensagens ofensivas, ameaçadoras ou humilhantes por mensagem direta ou em grupos. A palavra-chave é <em>repetido</em> — a frequência é parte constitutiva do bullying.</li>
+  <li><strong>Difamação</strong>: publicação de informações falsas ou verdadeiras, mas intencionalmente prejudiciais, sobre a vítima — fotos, vídeos, textos — em perfis públicos ou grupos com o objetivo de denegrir a reputação.</li>
+  <li><strong>Exposição não consensual de imagens íntimas</strong>: compartilhamento de fotos ou vídeos íntimos sem consentimento — prática conhecida como <em>revenge porn</em> ou, mais adequadamente, exposição íntima não consensual. No Brasil, é criminalizada pelo artigo 218-C do Código Penal, com pena de 1 a 5 anos. É uma das formas mais devastadoras de cyberbullying, com impacto desproporcional em mulheres e meninas.</li>
+  <li><strong>Exclusão e ostracismo</strong>: remoção deliberada da vítima de grupos, chats e atividades online como forma de isolamento social. Para adolescentes, cujas redes sociais são cada vez mais digitais, a exclusão online é vivida com a mesma intensidade que a exclusão presencial — ou mais.</li>
+  <li><strong>Impersonação</strong>: criação de perfis falsos para se passar pela vítima, publicar conteúdo que a envergonhe ou dê falsas impressões aos outros, ou enganar outras pessoas em seu nome.</li>
+  <li><strong>Outing</strong>: revelar publicamente informações privadas da vítima — orientação sexual, problemas de saúde, segredos pessoais — sem seu consentimento, com o objetivo de causar vergonha ou dano.</li>
+  <li><strong>Brigadas e pile-ons</strong>: ataques coordenados de múltiplas pessoas contra um único alvo. A vítima recebe simultaneamente centenas ou milhares de comentários negativos, ameaças ou insultos — o que torna a experiência esmagadora e impossível de ignorar.</li>
+  <li><strong>Doxing</strong>: publicação de informações pessoais identificáveis da vítima (endereço, número de telefone, local de trabalho ou escola, rotina) com o objetivo implícito ou explícito de facilitar assédio ou violência física.</li>
+</ul>
+<p>Em muitos casos, o agressor acredita estar "apenas brincando". Mas a intenção de quem envia nunca determina o impacto em quem recebe. O que parece uma piada inofensiva para o grupo pode ser devastador para a pessoa que é o alvo — e "não sabia que estava machucando" não é defesa suficiente quando há evidências claras de sofrimento.</p>
+
+<h2 id="impacto">O Impacto Psicológico: O que a Pesquisa Diz</h2>
+<p>A adolescência é um período de construção de identidade, busca por pertencimento e enorme sensibilidade ao julgamento alheio. É também o período de maior exposição às redes sociais — e o que mais concentra vítimas de cyberbullying. A confluência desses fatores cria condições excepcionalmente favoráveis para que o impacto psicológico seja severo e duradouro.</p>
+<p>As consequências psicológicas documentadas pela literatura científica incluem:</p>
+<ul>
+  <li><strong>Ansiedade generalizada</strong>: estado de preocupação e medo crônicos que se estende além das situações específicas de bullying para afetar todas as áreas da vida</li>
+  <li><strong>Depressão clínica</strong>: sintomas que vão além da tristeza situacional e incluem anedonia (incapacidade de sentir prazer), distúrbios do sono, alterações no apetite e pensamentos negativos persistentes</li>
+  <li><strong>Queda no desempenho escolar</strong>: a combinação de sofrimento emocional, dificuldade de concentração e medo de ambientes sociais (incluindo a escola) compromete significativamente o rendimento acadêmico</li>
+  <li><strong>Isolamento social</strong>: para evitar novos ataques ou a humilhação pública, a vítima se retrai progressivamente das interações sociais — primeiro online, depois presencialmente</li>
+  <li><strong>Insônia e perturbações do sono</strong>: o ciclo de verificação ansiosa do celular durante a madrugada, combinado com a hipervigilância, compromete gravemente a qualidade do sono</li>
+  <li><strong>Ideação suicida e autolesão</strong>: nos casos mais graves, especialmente quando o bullying é prolongado e intenso, os riscos de comportamentos autodestrutivos aumentam significativamente. Uma metanálise publicada no <em>JAMA Pediatrics</em> (2018) confirmou associação entre cyberbullying e pensamentos suicidas</li>
+</ul>
+<blockquote><p>"A maior crueldade do cyberbullying é que a vítima carrega a dor sozinha, enquanto o agressor muitas vezes nem percebe o estrago que causou."</p></blockquote>
+<p>O silêncio da vítima — por vergonha, medo de represálias ou por não saber a quem recorrer — agrava ainda mais o quadro. Pesquisas mostram consistentemente que apenas uma pequena fração das vítimas relata o problema a adultos. Muitos jovens preferem suportar o sofrimento a arriscar que a situação piore ao ser revelada, ou sentem que os adultos não entenderiam ou não poderiam ajudar.</p>
+<p>Um aspecto particularmente cruel do cyberbullying é sua <strong>permanência</strong>. A vítima pode reler as mensagens, revisitar os posts, reviver o trauma de forma repetida e voluntária — o que em psicologia é chamado de ruminação. Diferente do bullying presencial, que existe apenas na memória, o digital deixa registros que podem ser acessados, guardados e compartilhados indefinidamente.</p>
+
+<h2 id="numeros">Os Números no Brasil e no Mundo</h2>
+<p>O Brasil ocupa posição de destaque negativo nos rankings globais de cyberbullying — e os números revelam uma crise de saúde mental silenciosa que afeta milhões de jovens brasileiros.</p>
+<p>De acordo com pesquisa da <strong>SaferNet Brasil</strong>, organização dedicada à segurança na internet:</p>
+<ul>
+  <li>65% dos adolescentes brasileiros já sofreram alguma forma de assédio online</li>
+  <li>Apenas 10% das vítimas reportam o problema a um adulto de confiança</li>
+  <li>Meninas são proporcionalmente mais afetadas, especialmente por exposição de imagens íntimas não consentidas</li>
+  <li>O período de isolamento social da pandemia (2020-2021) elevou em 40% os casos registrados nas centrais de denúncia</li>
+  <li>Instagram, TikTok e WhatsApp lideram como principais ambientes onde o assédio ocorre</li>
+</ul>
+<p>Globalmente, o levantamento <em>Cyberbullying Research Center</em>, conduzido nos Estados Unidos desde 2002, mostra que aproximadamente 27% dos adolescentes já foram vítimas de cyberbullying. A UNICEF, em relatório de 2019 baseado em dados de 30 países, estimou que 1 em cada 3 jovens entre 13 e 24 anos já sofreu cyberbullying — e que em vários países esse número ultrapassa 50%.</p>
+<p>Casos emblemáticos internacionais ajudam a dimensionar a gravidade: Amanda Todd, adolescente canadense que documentou seu sofrimento em um vídeo viral antes de tirar a própria vida em 2012; Tyler Clementi, estudante universitário americano que se suicidou após ter um encontro íntimo transmitido online sem seu consentimento; Dolly Everett, de 14 anos, na Austrália. Cada um desses casos gerou comoção, campanhas e — tragicamente — não impediu que situações similares se repetissem ao redor do mundo.</p>
+
+<h2 id="agressor">O Perfil do Agressor — e Por Que Isso Importa</h2>
+<p>Compreender o agressor não significa justificar a agressão. Mas entender as motivações por trás do cyberbullying é fundamental para intervenções eficazes — seja na prevenção ou no tratamento.</p>
+<p>Pesquisas mostram que agressores de cyberbullying raramente formam um grupo homogêneo. Alguns são também vítimas de bullying (presencial ou digital) que encontram no anonimato da internet um espaço para liberar frustração e exercer poder. Outros são movidos por desejo de popularidade e aprovação do grupo — o cyberbullying pode ser, paradoxalmente, um comportamento socialmente recompensado quando realizado em grupos. Há ainda aqueles que genuinamente não percebem a gravidade do que fazem — a distância da tela remove pistas de sofrimento que deteriam o comportamento presencial.</p>
+<p>O efeito de desinibição online, discutido em detalhes no artigo sobre Comunicação Digital, desempenha papel central: sem ver o rosto da vítima, sem ouvir sua voz, sem testemunhar seu sofrimento em tempo real, o agressor não tem os sinais sociais que normalmente funcionam como freios morais.</p>
+<p>Isso não significa que agressores são inevitavelmente "monstros" irrecuperáveis. Muitos, quando confrontados com o impacto real de suas ações — seja por um adulto, seja pelo sistema legal — demonstram arrependimento genuíno. Abordagens restaurativas, que colocam agressor e vítima (mediados por profissional) em contato com as consequências das ações, mostram resultados promissores em vários contextos.</p>
+
+<h2 id="escola">O Papel da Escola e da Família</h2>
+<p>Combater o cyberbullying eficazmente exige ação coletiva. A escola e a família têm papéis fundamentais — não apenas na prevenção, mas também no acolhimento de quem já foi afetado. Infelizmente, a resposta de ambas as instituições ainda é frequentemente inadequada.</p>
+<p>Erros comuns na abordagem de adultos incluem minimização ("é só brincadeira, ignore"), culpabilização da vítima ("por que você postou isso?"), soluções superficiais ("apaga as redes por um tempo") e incapacidade de oferecer apoio emocional genuíno. O resultado é que muitos jovens concluem — erroneamente, mas compreensível de seu ponto de vista — que não vale a pena falar.</p>
+<p>O que realmente funciona:</p>
+<ul>
+  <li><strong>Criar espaços seguros e não julgadores</strong> onde o jovem se sinta à vontade para falar, sem medo de punição ou perda do acesso ao celular como consequência imediata</li>
+  <li><strong>Acreditar na vítima</strong>: a primeira resposta deve ser de acolhimento e crédito, não de questionamento ou investigação do que a vítima "fez para merecer"</li>
+  <li><strong>Educar sobre mecanismos de denúncia</strong>: todas as principais plataformas têm ferramentas de denúncia e bloqueio. Saber usá-las é competência fundamental</li>
+  <li><strong>Documentar as evidências</strong>: antes de bloquear ou deletar mensagens, fazer capturas de tela com data e hora visíveis — fundamental para eventual ação legal</li>
+  <li><strong>Buscar apoio profissional</strong>: psicólogos especializados em adolescência têm ferramentas que pais e educadores não têm para ajudar na elaboração do trauma</li>
+  <li><strong>Envolver autoridades quando necessário</strong>: quando o cyberbullying configura crime (ameaça, difamação, calúnia, exposição íntima não consensual), o boletim de ocorrência é necessário</li>
+</ul>
+<p>Programas de prevenção ao cyberbullying que demonstraram eficácia combinam três abordagens: educação sobre empatia e responsabilidade digital, treinamento de espectadores para intervir de forma segura (a maioria dos casos de bullying tem testemunhas), e mudanças no ambiente escolar que tornam o bullying menos aceitável socialmente.</p>
+
+<h2 id="legal">O Marco Legal no Brasil</h2>
+<p>O cyberbullying é crime no Brasil — e é importante que vítimas, familiares e educadores conheçam o marco legal disponível.</p>
+<p>A <strong>Lei 14.811/2024</strong> (Lei do Bullying e Cyberbullying) criou tipos penais específicos para o bullying e o cyberbullying no ambiente escolar, com penas que variam de 2 a 4 anos de reclusão, podendo ser aumentadas se praticado por meio de tecnologia da informação.</p>
+<p>Além dessa lei específica, diversas condutas associadas ao cyberbullying já eram tipificadas no Código Penal e em outras leis:</p>
+<ul>
+  <li><strong>Ameaça</strong> (art. 147 CP): pena de 1 a 6 meses ou multa</li>
+  <li><strong>Calúnia, difamação e injúria</strong> (arts. 138-140 CP): penas de 6 meses a 2 anos, podendo ser qualificadas quando praticadas pela internet</li>
+  <li><strong>Exposição íntima não consensual</strong> (art. 218-C CP, incluído pela Lei 13.772/2018): pena de 1 a 5 anos</li>
+  <li><strong>Stalking digital</strong> (art. 147-A CP, incluído pela Lei 14.132/2021): pena de 1 a 2 anos, com agravante quando praticado por tecnologia</li>
+  <li><strong>Racismo e injúria racial</strong> (Lei 7.716/89 e art. 140 §3º CP): quando o cyberbullying tem motivação racial, as penas são mais severas</li>
+</ul>
+<p>O <strong>Marco Civil da Internet</strong> (Lei 12.965/2014) estabelece que plataformas têm responsabilidade por danos decorrentes de conteúdo gerado por terceiros quando, após notificação judicial, não tomam providências para remover o conteúdo. Isso significa que a vítima pode obter judicialmente a remoção de conteúdo prejudicial — e responsabilizar a plataforma se ela não cumprir.</p>
+
+<h2 id="conclusao">Conclusão</h2>
+<p>Se você está passando por cyberbullying agora, há algumas coisas importantes a saber. Primeiro: <strong>não é culpa sua</strong>. Segundo: <strong>não está sozinho</strong>, mesmo que assim pareça. Terceiro: <strong>existe ajuda disponível</strong> — fale com alguém de confiança, procure apoio profissional, denuncie nas plataformas, guarde as evidências.</p>
+<p>Se você testemunha cyberbullying acontecendo: não seja conivente. A maioria dos casos de bullying tem espectadores — e a passividade dos espectadores é um dos principais fatores que permitem que o bullying continue. Uma palavra de apoio à vítima, uma denúncia na plataforma ou um relato a um adulto responsável podem fazer toda a diferença. A bystander intervention — a intervenção do espectador — é uma das estratégias mais eficazes documentadas na literatura sobre prevenção ao bullying.</p>
+<p>Se você é educador ou familiar: a conversa mais difícil é frequentemente a mais necessária. Perguntar diretamente — "você está sofrendo alguma forma de assédio online?" — pode ser o primeiro passo para que um adolescente encontre a coragem de pedir ajuda. Oferecer apoio sem julgamento e sem minimizar vale mais do que qualquer conselho técnico.</p>
+<p>Nenhuma violência, mesmo que digital, deve ser tolerada ou suportada em silêncio. E nenhuma criança ou adolescente deve precisar enfrentar isso sozinha.</p>
+  </article>
+  <aside class="art-sidebar">
+    <div class="art-sidebar-box">
+      <span class="art-sidebar-title">Neste artigo</span>
+      <ul class="art-toc-list" id="tocList"><li><a href="#intro" class="active"><span class="tn">01</span><span class="tl">Introdução</span><span class="ta">→</span></a></li><li><a href="#formas"><span class="tn">02</span><span class="tl">Formas de Cyberbullying</span><span class="ta">→</span></a></li><li><a href="#impacto"><span class="tn">03</span><span class="tl">Impacto Psicológico</span><span class="ta">→</span></a></li><li><a href="#numeros"><span class="tn">04</span><span class="tl">Números no Brasil</span><span class="ta">→</span></a></li><li><a href="#agressor"><span class="tn">05</span><span class="tl">Perfil do Agressor</span><span class="ta">→</span></a></li><li><a href="#escola"><span class="tn">06</span><span class="tl">Escola e Família</span><span class="ta">→</span></a></li><li><a href="#legal"><span class="tn">07</span><span class="tl">Marco Legal</span><span class="ta">→</span></a></li><li><a href="#conclusao"><span class="tn">08</span><span class="tl">Conclusão</span><span class="ta">→</span></a></li></ul>
+    </div>
+    <div class="art-sidebar-box">
+      <span class="art-sidebar-title">Tags</span>
+      <div class="art-tag-list"><span class="art-tag">Cyberbullying</span> <span class="art-tag">Saúde Mental</span> <span class="art-tag">Adolescência</span> <span class="art-tag">Violência Online</span> </div>
+    </div>
+    <div class="art-sidebar-box art-sidebar-gold">
+      <span class="art-sidebar-title">Sobre o projeto</span>
+      <p style="font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:14px;">Produzido por alunos da EREMCC Petrolina com mentoria do IF Sertão PE.</p>
+      <a href="index.html#sobre" style="font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);text-decoration:none;">Saiba mais →</a>
+    </div>
+  </aside>
+</div>
+
+<div class="art-footer-nav">
+  <a href="trabalhos.html">← Ver todos os artigos</a>
+  <a href="https://mind-online-community.vercel.app" target="_blank" rel="noopener">Comentar na comunidade →</a>
+</div>
+
+<div class="art-continue">
+  <span class="art-continue-label">Continue lendo</span>
+  <div class="art-continue-grid"><a href="artigo1.html" class="art-continue-card"><span class="art-continue-tag">Comunicação Digital</span><span class="art-continue-title">Como Nossas Palavras Constroem ou Destroem Comunidades</span><span class="art-continue-arrow">↗</span></a>
+<a href="artigo5.html" class="art-continue-card"><span class="art-continue-tag">Saúde Digital</span><span class="art-continue-title">Quando o Scroll Vira Vício</span><span class="art-continue-arrow">↗</span></a>
+<a href="artigo6.html" class="art-continue-card"><span class="art-continue-tag">Ética Digital</span><span class="art-continue-title">Empatia Digital: É Possível Ser Humano Atrás de uma Tela?</span><span class="art-continue-arrow">↗</span></a>
+</div>
+</div>
+
+<footer><div class="footer-inner">
+  <span class="footer-logo">MindOnline</span>
+  <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
+  <span class="footer-origin">Petrolina, PE — Brasil</span>
+</div></footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+
+
+function baixarPDF(){
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  const pw=210, ph=297, ml=22, mr=22, w=pw-ml-mr;
+
+  // ── DADOS DO ARTIGO ──────────────────────────────
+  const TITULO = `Cyberbullying: A Violência Que Não Deixa Marcas Visíveis`;
+  const CATEGORIA = `Cyberbullying`;
+  const AUTOR = `Joabe Barbosa Lima`;
+  const ESCOLA = `Aluno — EREMCC Petrolina`;
+  const DATA_PUB = `Abril de 2026`;
+  const LEITURA = `~ 6 min`;
+  const FILENAME = `artigo4-mindonline.pdf`;
+
+const SECOES = [
+  [`Introdução`, [
+  ["p", `Uma mensagem enviada às 23h. Uma foto compartilhada sem permissão. Um apelido humilhante repetido por dezenas de pessoas em um grupo de WhatsApp. O cyberbullying não precisa de local, horário ou testemunhas físicas para acontecer — e é exatamente por isso que sua violência é tão profunda e tão difícil de combater.`],
+  ["p", `Ao contrário do bullying presencial, a versão digital não tem fim de expediente. Ela invade a casa, o quarto, o travesseiro da vítima. A escola — que poderia ser um espaço de alívio — é conectada ao mesmo ambiente onde a violência ocorre. Os fins de semana não trazem trégua. O sono não oferece escape, porque o celular, com suas notificações, é o primeiro e o último objeto com o qual muitos adolescentes interagem a cada dia.`],
+  ["p", `E as marcas que o cyberbullying deixa, embora invisíveis para os olhos, podem durar toda uma vida. Pesquisas longitudinais acompanham vítimas por anos após o término das agressões e documentam sequelas que incluem ansiedade generalizada, dificuldades nos relacionamentos adultos e traumas que se reativam décadas depois. Entender o que é o cyberbullying, como ele se manifesta em toda sua complexidade e quais são seus impactos reais é o primeiro passo para combatê-lo — seja como vítima, como testemunha, como familiar, educador ou como membro da sociedade que precisa coletivamente produzir respostas à altura do problema.`]
+  ]],
+  [`As Formas que o Cyberbullying Assume`, [
+  ["p", `O cyberbullying se manifesta de diversas formas, algumas das quais sequer são reconhecidas como violência por quem as pratica — o que não diminui em nada seu impacto na vítima. Os pesquisadores identificam categorias distintas que merecem ser nomeadas com precisão:`],
+  ["ul", [`Assédio direto: envio repetido de mensagens ofensivas, ameaçadoras ou humilhantes por mensagem direta ou em grupos. A palavra-chave é repetido — a frequência é parte constitutiva do bullying.`, `Difamação: publicação de informações falsas ou verdadeiras, mas intencionalmente prejudiciais, sobre a vítima — fotos, vídeos, textos — em perfis públicos ou grupos com o objetivo de denegrir a reputação.`, `Exposição não consensual de imagens íntimas: compartilhamento de fotos ou vídeos íntimos sem consentimento — prática conhecida como revenge porn ou, mais adequadamente, exposição íntima não consensual. No Brasil, é criminalizada pelo artigo 218-C do Código Penal, com pena de 1 a 5 anos. É uma das formas mais devastadoras de cyberbullying, com impacto desproporcional em mulheres e meninas.`, `Exclusão e ostracismo: remoção deliberada da vítima de grupos, chats e atividades online como forma de isolamento social. Para adolescentes, cujas redes sociais são cada vez mais digitais, a exclusão online é vivida com a mesma intensidade que a exclusão presencial — ou mais.`, `Impersonação: criação de perfis falsos para se passar pela vítima, publicar conteúdo que a envergonhe ou dê falsas impressões aos outros, ou enganar outras pessoas em seu nome.`, `Outing: revelar publicamente informações privadas da vítima — orientação sexual, problemas de saúde, segredos pessoais — sem seu consentimento, com o objetivo de causar vergonha ou dano.`, `Brigadas e pile-ons: ataques coordenados de múltiplas pessoas contra um único alvo. A vítima recebe simultaneamente centenas ou milhares de comentários negativos, ameaças ou insultos — o que torna a experiência esmagadora e impossível de ignorar.`, `Doxing: publicação de informações pessoais identificáveis da vítima (endereço, número de telefone, local de trabalho ou escola, rotina) com o objetivo implícito ou explícito de facilitar assédio ou violência física.`]],
+  ["p", `Em muitos casos, o agressor acredita estar "apenas brincando". Mas a intenção de quem envia nunca determina o impacto em quem recebe. O que parece uma piada inofensiva para o grupo pode ser devastador para a pessoa que é o alvo — e "não sabia que estava machucando" não é defesa suficiente quando há evidências claras de sofrimento.`]
+  ]],
+  [`O Impacto Psicológico: O que a Pesquisa Diz`, [
+  ["p", `A adolescência é um período de construção de identidade, busca por pertencimento e enorme sensibilidade ao julgamento alheio. É também o período de maior exposição às redes sociais — e o que mais concentra vítimas de cyberbullying. A confluência desses fatores cria condições excepcionalmente favoráveis para que o impacto psicológico seja severo e duradouro.`],
+  ["p", `As consequências psicológicas documentadas pela literatura científica incluem:`],
+  ["ul", [`Ansiedade generalizada: estado de preocupação e medo crônicos que se estende além das situações específicas de bullying para afetar todas as áreas da vida`, `Depressão clínica: sintomas que vão além da tristeza situacional e incluem anedonia (incapacidade de sentir prazer), distúrbios do sono, alterações no apetite e pensamentos negativos persistentes`, `Queda no desempenho escolar: a combinação de sofrimento emocional, dificuldade de concentração e medo de ambientes sociais (incluindo a escola) compromete significativamente o rendimento acadêmico`, `Isolamento social: para evitar novos ataques ou a humilhação pública, a vítima se retrai progressivamente das interações sociais — primeiro online, depois presencialmente`, `Insônia e perturbações do sono: o ciclo de verificação ansiosa do celular durante a madrugada, combinado com a hipervigilância, compromete gravemente a qualidade do sono`, `Ideação suicida e autolesão: nos casos mais graves, especialmente quando o bullying é prolongado e intenso, os riscos de comportamentos autodestrutivos aumentam significativamente. Uma metanálise publicada no JAMA Pediatrics (2018) confirmou associação entre cyberbullying e pensamentos suicidas`]],
+  ["p", `O silêncio da vítima — por vergonha, medo de represálias ou por não saber a quem recorrer — agrava ainda mais o quadro. Pesquisas mostram consistentemente que apenas uma pequena fração das vítimas relata o problema a adultos. Muitos jovens preferem suportar o sofrimento a arriscar que a situação piore ao ser revelada, ou sentem que os adultos não entenderiam ou não poderiam ajudar.`],
+  ["p", `Um aspecto particularmente cruel do cyberbullying é sua permanência. A vítima pode reler as mensagens, revisitar os posts, reviver o trauma de forma repetida e voluntária — o que em psicologia é chamado de ruminação. Diferente do bullying presencial, que existe apenas na memória, o digital deixa registros que podem ser acessados, guardados e compartilhados indefinidamente.`]
+  ]],
+  [`Os Números no Brasil e no Mundo`, [
+  ["p", `O Brasil ocupa posição de destaque negativo nos rankings globais de cyberbullying — e os números revelam uma crise de saúde mental silenciosa que afeta milhões de jovens brasileiros.`],
+  ["p", `De acordo com pesquisa da SaferNet Brasil, organização dedicada à segurança na internet:`],
+  ["ul", [`65% dos adolescentes brasileiros já sofreram alguma forma de assédio online`, `Apenas 10% das vítimas reportam o problema a um adulto de confiança`, `Meninas são proporcionalmente mais afetadas, especialmente por exposição de imagens íntimas não consentidas`, `O período de isolamento social da pandemia (2020-2021) elevou em 40% os casos registrados nas centrais de denúncia`, `Instagram, TikTok e WhatsApp lideram como principais ambientes onde o assédio ocorre`]],
+  ["p", `Globalmente, o levantamento Cyberbullying Research Center, conduzido nos Estados Unidos desde 2002, mostra que aproximadamente 27% dos adolescentes já foram vítimas de cyberbullying. A UNICEF, em relatório de 2019 baseado em dados de 30 países, estimou que 1 em cada 3 jovens entre 13 e 24 anos já sofreu cyberbullying — e que em vários países esse número ultrapassa 50%.`],
+  ["p", `Casos emblemáticos internacionais ajudam a dimensionar a gravidade: Amanda Todd, adolescente canadense que documentou seu sofrimento em um vídeo viral antes de tirar a própria vida em 2012; Tyler Clementi, estudante universitário americano que se suicidou após ter um encontro íntimo transmitido online sem seu consentimento; Dolly Everett, de 14 anos, na Austrália. Cada um desses casos gerou comoção, campanhas e — tragicamente — não impediu que situações similares se repetissem ao redor do mundo.`]
+  ]],
+  [`O Perfil do Agressor — e Por Que Isso Importa`, [
+  ["p", `Compreender o agressor não significa justificar a agressão. Mas entender as motivações por trás do cyberbullying é fundamental para intervenções eficazes — seja na prevenção ou no tratamento.`],
+  ["p", `Pesquisas mostram que agressores de cyberbullying raramente formam um grupo homogêneo. Alguns são também vítimas de bullying (presencial ou digital) que encontram no anonimato da internet um espaço para liberar frustração e exercer poder. Outros são movidos por desejo de popularidade e aprovação do grupo — o cyberbullying pode ser, paradoxalmente, um comportamento socialmente recompensado quando realizado em grupos. Há ainda aqueles que genuinamente não percebem a gravidade do que fazem — a distância da tela remove pistas de sofrimento que deteriam o comportamento presencial.`],
+  ["p", `O efeito de desinibição online, discutido em detalhes no artigo sobre Comunicação Digital, desempenha papel central: sem ver o rosto da vítima, sem ouvir sua voz, sem testemunhar seu sofrimento em tempo real, o agressor não tem os sinais sociais que normalmente funcionam como freios morais.`],
+  ["p", `Isso não significa que agressores são inevitavelmente "monstros" irrecuperáveis. Muitos, quando confrontados com o impacto real de suas ações — seja por um adulto, seja pelo sistema legal — demonstram arrependimento genuíno. Abordagens restaurativas, que colocam agressor e vítima (mediados por profissional) em contato com as consequências das ações, mostram resultados promissores em vários contextos.`]
+  ]],
+  [`O Papel da Escola e da Família`, [
+  ["p", `Combater o cyberbullying eficazmente exige ação coletiva. A escola e a família têm papéis fundamentais — não apenas na prevenção, mas também no acolhimento de quem já foi afetado. Infelizmente, a resposta de ambas as instituições ainda é frequentemente inadequada.`],
+  ["p", `Erros comuns na abordagem de adultos incluem minimização ("é só brincadeira, ignore"), culpabilização da vítima ("por que você postou isso?"), soluções superficiais ("apaga as redes por um tempo") e incapacidade de oferecer apoio emocional genuíno. O resultado é que muitos jovens concluem — erroneamente, mas compreensível de seu ponto de vista — que não vale a pena falar.`],
+  ["p", `O que realmente funciona:`],
+  ["ul", [`Criar espaços seguros e não julgadores onde o jovem se sinta à vontade para falar, sem medo de punição ou perda do acesso ao celular como consequência imediata`, `Acreditar na vítima: a primeira resposta deve ser de acolhimento e crédito, não de questionamento ou investigação do que a vítima "fez para merecer"`, `Educar sobre mecanismos de denúncia: todas as principais plataformas têm ferramentas de denúncia e bloqueio. Saber usá-las é competência fundamental`, `Documentar as evidências: antes de bloquear ou deletar mensagens, fazer capturas de tela com data e hora visíveis — fundamental para eventual ação legal`, `Buscar apoio profissional: psicólogos especializados em adolescência têm ferramentas que pais e educadores não têm para ajudar na elaboração do trauma`, `Envolver autoridades quando necessário: quando o cyberbullying configura crime (ameaça, difamação, calúnia, exposição íntima não consensual), o boletim de ocorrência é necessário`]],
+  ["p", `Programas de prevenção ao cyberbullying que demonstraram eficácia combinam três abordagens: educação sobre empatia e responsabilidade digital, treinamento de espectadores para intervir de forma segura (a maioria dos casos de bullying tem testemunhas), e mudanças no ambiente escolar que tornam o bullying menos aceitável socialmente.`]
+  ]],
+  [`O Marco Legal no Brasil`, [
+  ["p", `O cyberbullying é crime no Brasil — e é importante que vítimas, familiares e educadores conheçam o marco legal disponível.`],
+  ["p", `A Lei 14.811/2024 (Lei do Bullying e Cyberbullying) criou tipos penais específicos para o bullying e o cyberbullying no ambiente escolar, com penas que variam de 2 a 4 anos de reclusão, podendo ser aumentadas se praticado por meio de tecnologia da informação.`],
+  ["p", `Além dessa lei específica, diversas condutas associadas ao cyberbullying já eram tipificadas no Código Penal e em outras leis:`],
+  ["ul", [`Ameaça (art. 147 CP): pena de 1 a 6 meses ou multa`, `Calúnia, difamação e injúria (arts. 138-140 CP): penas de 6 meses a 2 anos, podendo ser qualificadas quando praticadas pela internet`, `Exposição íntima não consensual (art. 218-C CP, incluído pela Lei 13.772/2018): pena de 1 a 5 anos`, `Stalking digital (art. 147-A CP, incluído pela Lei 14.132/2021): pena de 1 a 2 anos, com agravante quando praticado por tecnologia`, `Racismo e injúria racial (Lei 7.716/89 e art. 140 §3º CP): quando o cyberbullying tem motivação racial, as penas são mais severas`]],
+  ["p", `O Marco Civil da Internet (Lei 12.965/2014) estabelece que plataformas têm responsabilidade por danos decorrentes de conteúdo gerado por terceiros quando, após notificação judicial, não tomam providências para remover o conteúdo. Isso significa que a vítima pode obter judicialmente a remoção de conteúdo prejudicial — e responsabilizar a plataforma se ela não cumprir.`]
+  ]],
+  [`Conclusão`, [
+  ["p", `Se você está passando por cyberbullying agora, há algumas coisas importantes a saber. Primeiro: não é culpa sua. Segundo: não está sozinho, mesmo que assim pareça. Terceiro: existe ajuda disponível — fale com alguém de confiança, procure apoio profissional, denuncie nas plataformas, guarde as evidências.`],
+  ["p", `Se você testemunha cyberbullying acontecendo: não seja conivente. A maioria dos casos de bullying tem espectadores — e a passividade dos espectadores é um dos principais fatores que permitem que o bullying continue. Uma palavra de apoio à vítima, uma denúncia na plataforma ou um relato a um adulto responsável podem fazer toda a diferença. A bystander intervention — a intervenção do espectador — é uma das estratégias mais eficazes documentadas na literatura sobre prevenção ao bullying.`],
+  ["p", `Se você é educador ou familiar: a conversa mais difícil é frequentemente a mais necessária. Perguntar diretamente — "você está sofrendo alguma forma de assédio online?" — pode ser o primeiro passo para que um adolescente encontre a coragem de pedir ajuda. Oferecer apoio sem julgamento e sem minimizar vale mais do que qualquer conselho técnico.`],
+  ["p", `Nenhuma violência, mesmo que digital, deve ser tolerada ou suportada em silêncio. E nenhuma criança ou adolescente deve precisar enfrentar isso sozinha.`]
+  ]]
+];
+
+
+  // ── HELPERS ──────────────────────────────────────
+  function bgPage(){
+    doc.setFillColor(8,8,8); doc.rect(0,0,pw,ph,'F');
+    doc.setFillColor(232,200,74); doc.rect(0,0,8,ph,'F');
+    doc.setFillColor(30,30,30); doc.rect(8,0,1,ph,'F');
+  }
+  function pageFooter(label){
+    doc.setFillColor(12,12,12); doc.rect(9,ph-16,pw-9,16,'F');
+    doc.setDrawColor(30,30,30); doc.setLineWidth(0.2); doc.line(9,ph-16,pw,ph-16);
+    doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(70,70,70);
+    doc.text('MindOnline — Comunicação Ética Digital', ml+4, ph-8);
+    doc.text(label||FILENAME, pw-mr, ph-8, {align:'right'});
+  }
+  function pageHeader(left, right){
+    doc.setFillColor(12,12,12); doc.rect(9,0,pw-9,18,'F');
+    doc.setDrawColor(30,30,30); doc.setLineWidth(0.2); doc.line(9,18,pw,18);
+    doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(232,200,74);
+    doc.text(left||'MINDONLINE', ml+4, 11);
+    doc.setFont('helvetica','normal'); doc.setTextColor(70,70,70);
+    if(right) doc.text(right, pw-mr, 11, {align:'right'});
+  }
+
+  // ── CAPA ──────────────────────────────────────────
+  bgPage();
+
+  // Logo
+  doc.setFontSize(30); doc.setFont('helvetica','bold');
+  doc.setTextColor(232,200,74);
+  doc.text('MindOnline', ml+4, 36);
+  doc.setFontSize(8.5); doc.setFont('helvetica','normal');
+  doc.setTextColor(100,100,100);
+  doc.text('COMUNICAÇÃO ÉTICA DIGITAL — EREMCC PETROLINA', ml+4, 44);
+  doc.setDrawColor(35,35,35); doc.setLineWidth(0.3); doc.line(ml+4,50,pw-mr,50);
+
+  // Badge categoria
+  const badgeText = CATEGORIA.toUpperCase();
+  const badgeW = doc.getTextWidth(badgeText) + 16;
+  doc.setFillColor(232,200,74);
+  doc.roundedRect(ml+4, 60, badgeW, 8, 1, 1, 'F');
+  doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(0,0,0);
+  doc.text(badgeText, ml+12, 65.5);
+
+  // Título — tamanho calculado primeiro, depois quebra com esse tamanho
+  doc.setTextColor(240,237,230);
+  // Testar qual tamanho cabe sem cortar
+  let baseSz = 26;
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(baseSz);
+  let titleLines = doc.splitTextToSize(TITULO, w-4);
+  if(titleLines.length > 3){ baseSz = 18; doc.setFontSize(baseSz); titleLines = doc.splitTextToSize(TITULO, w-4); }
+  else if(titleLines.length > 2){ baseSz = 22; doc.setFontSize(baseSz); titleLines = doc.splitTextToSize(TITULO, w-4); }
+  let ty = 80;
+  titleLines.forEach(line => { doc.text(line, ml+4, ty); ty += baseSz * 0.50; });
+
+  // Linha dourada sob título
+  doc.setDrawColor(232,200,74); doc.setLineWidth(0.5);
+  doc.line(ml+4, ty+4, ml+4+55, ty+4);
+  ty += 18;
+
+  // Autor
+  doc.setFontSize(11); doc.setFont('helvetica','bold');
+  doc.setTextColor(232,200,74);
+  doc.text(AUTOR, ml+4, ty); ty += 6;
+  doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.setTextColor(90,90,90);
+  doc.text(ESCOLA, ml+4, ty); ty += 6;
+  doc.text(DATA_PUB + '  ·  Leitura: ' + LEITURA, ml+4, ty);
+
+  // Decoração geométrica
+  doc.setDrawColor(25,25,25); doc.setLineWidth(0.25);
+  for(let i=0;i<10;i++) doc.line(pw-70+i*8,ph-70,pw-8,ph-70+i*8);
+
+  // Rodapé capa
+  doc.setFillColor(12,12,12); doc.rect(9,ph-20,pw-9,20,'F');
+  doc.setDrawColor(30,30,30); doc.setLineWidth(0.2); doc.line(9,ph-20,pw,ph-20);
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(65,65,65);
+  doc.text('mindonline.com.br', ml+4, ph-10);
+  doc.text('© 2026 MindOnline', pw-mr, ph-10, {align:'right'});
+
+  // ── PÁGINAS DE CONTEÚDO ──────────────────────────
+  SECOES.forEach(([titulo, elementos], idx) => {
+    doc.addPage();
+    bgPage();
+    pageHeader('MINDONLINE', (idx+1)+' / '+SECOES.length);
+
+    let py = 30;
+
+    // Número e título da seção
+    doc.setFontSize(9); doc.setFont('helvetica','bold');
+    doc.setTextColor(232,200,74);
+    doc.text('0'+(idx+1), ml+4, py); py += 3;
+    doc.setDrawColor(232,200,74); doc.setLineWidth(0.5);
+    doc.line(ml+4, py+1, ml+4+18, py+1); py += 9;
+
+    doc.setFontSize(16); doc.setFont('helvetica','bold');
+    doc.setTextColor(240,237,230);
+    const tLines = doc.splitTextToSize(titulo.toUpperCase(), w-4);
+    tLines.forEach(l => { doc.text(l, ml+4, py); py += 7.5; });
+    py += 2;
+
+    doc.setDrawColor(30,30,30); doc.setLineWidth(0.2);
+    doc.line(ml+4, py, pw-mr, py); py += 9;
+
+    // Conteúdo
+    elementos.forEach(([tipo, conteudo]) => {
+      if(tipo === 'p') {
+        doc.setFontSize(10.5); doc.setFont('helvetica','normal');
+        doc.setTextColor(155,150,143); doc.setLineHeightFactor(1.55);
+        const lines = doc.splitTextToSize(conteudo, w-4);
+        lines.forEach(l => {
+          if(py > ph-24) {
+            pageFooter(); doc.addPage(); bgPage();
+            pageHeader('MINDONLINE'); py = 26;
+            doc.setFontSize(10.5); doc.setFont('helvetica','normal');
+            doc.setTextColor(155,150,143); doc.setLineHeightFactor(1.55);
+          }
+          doc.text(l, ml+4, py); py += 5.8;
+        });
+        py += 3;
+
+      } else if(tipo === 'blockquote') {
+        if(py > ph-50) {
+          pageFooter(); doc.addPage(); bgPage();
+          pageHeader('MINDONLINE'); py = 26;
+        }
+        // Barra dourada lateral
+        doc.setFillColor(232,200,74); doc.rect(ml+4, py-3, 2.5, 0.1, 'F');
+        const bqLines = doc.splitTextToSize(conteudo, w-14);
+        const bqH = bqLines.length * 6.8 + 10;
+        doc.setFillColor(232,200,74);
+        doc.rect(ml+4, py-4, 2.5, bqH, 'F');
+        doc.setFontSize(11.5); doc.setFont('helvetica','bolditalic');
+        doc.setTextColor(210,190,100); doc.setLineHeightFactor(1.6);
+        bqLines.forEach(l => {
+          doc.text(l, ml+12, py); py += 6.8;
+        });
+        py += 8;
+
+      } else if(tipo === 'ul') {
+        conteudo.forEach((item, ii) => {
+          if(py > ph-24) {
+            pageFooter(); doc.addPage(); bgPage();
+            pageHeader('MINDONLINE'); py = 26;
+          }
+          // bullet dourado
+          doc.setFillColor(232,200,74); doc.circle(ml+7, py-1.5, 1, 'F');
+          doc.setFontSize(10.5); doc.setFont('helvetica','normal');
+          doc.setTextColor(155,150,143); doc.setLineHeightFactor(1.5);
+          const iLines = doc.splitTextToSize(item, w-14);
+          iLines.forEach((l,li) => {
+            doc.text(l, ml+12, py); py += 5.5;
+          });
+          py += 1.5;
+        });
+        py += 4;
+      }
+    });
+
+    pageFooter(FILENAME);
+  });
+
+  doc.save(FILENAME);
+}
+
+
+/* ═══════════ NEW ANIMATIONS JS ═══════════ */
+(function(){
+
+// ── EXPAND CIRCLE PAGE TRANSITION ──
+const PT = document.getElementById('pt');
+let ptCircle = document.getElementById('pt-circle');
+if(!ptCircle){
+  // rebuild if needed
+  PT.innerHTML='<div id="pt-circle"></div>';
+  ptCircle = document.getElementById('pt-circle');
+}
+PT.style.display='flex';
+
+function ptEnter(){
+  PT.style.display='flex';
+  ptCircle.style.left='50%';
+  ptCircle.style.top='50%';
+  PT.classList.remove('shrink');
+  PT.classList.add('expand');
+  setTimeout(()=>{
+    PT.classList.remove('expand');
+    PT.classList.add('shrink');
+    setTimeout(()=>{
+      PT.style.display='none';
+      PT.classList.remove('shrink');
+    },700);
+  },650);
+}
+
+function ptLeave(cb, originX, originY){
+  PT.style.display='flex';
+  ptCircle.style.left=(originX||window.innerWidth/2)+'px';
+  ptCircle.style.top=(originY||window.innerHeight/2)+'px';
+  PT.classList.remove('shrink');
+  PT.classList.add('expand');
+  setTimeout(()=>{ cb(); },680);
+}
+
+window.addEventListener('load', ptEnter);
+
+document.querySelectorAll('a[href]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const h = a.getAttribute('href');
+    if(!h||h.startsWith('#')||h.startsWith('http')||h.startsWith('mailto')||h.startsWith('//')) return;
+    e.preventDefault();
+    const r = a.getBoundingClientRect();
+    ptLeave(()=>window.location.href=h, r.left+r.width/2, r.top+r.height/2);
+  });
+});
+
+// ── SCROLL TRAIL ──
+let trail = document.getElementById('scroll-trail');
+if(!trail){ trail=document.createElement('div'); trail.id='scroll-trail'; document.body.appendChild(trail); }
+window.addEventListener('scroll',()=>{
+  const d=document.documentElement;
+  const pct=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100);
+  trail.style.height=pct+'%';
+  const rp=document.getElementById('rp-bar');
+  if(rp)rp.style.width=pct+'%';
+  const pb=document.getElementById('progressBar');
+  if(pb)pb.style.width=pct+'%';
+},{passive:true});
+
+// ── COVER TITLE CHARACTER SPLIT ──
+(function(){
+  const title=document.getElementById('coverTitle');
+  if(!title)return;
+  const processText = (node, baseDelay)=>{
+    if(node.nodeType===3){
+      const chars=[...node.textContent];
+      const frag=document.createDocumentFragment();
+      chars.forEach((ch,i)=>{
+        if(ch===' '){frag.appendChild(document.createTextNode(' '));return;}
+        const s=document.createElement('span');
+        s.className='char';
+        s.textContent=ch;
+        s.style.animationDelay=(baseDelay[0]+i*0.03)+'s';
+        baseDelay[0]+=0.005;
+        frag.appendChild(s);
+      });
+      node.parentNode.replaceChild(frag,node);
+    } else if(node.nodeType===1){
+      [...node.childNodes].forEach(n=>processText(n,baseDelay));
+    }
+  };
+  const d=[0.6];
+  [...title.childNodes].forEach(n=>processText(n,d));
+})();
+
+// ── INTERSECTION OBSERVER: scroll reveals ──
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.classList.add('vin');
+    obs.unobserve(e.target);
+  });
+},{threshold:0.06, rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('#artContent h2, #artContent p, #artContent blockquote, #artContent ul').forEach(el=>obs.observe(el));
+document.querySelectorAll('.cnt-card, .art-continue-card').forEach(el=>obs.observe(el));
+
+// ── REVEAL .rv ELEMENTS (adiciona classe 'in') ──
+const rvObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.classList.add('in');
+    rvObs.unobserve(e.target);
+  });
+},{threshold:0.05, rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
+// Revela imediatamente elementos já visíveis no carregamento
+window.addEventListener('load', ()=>{
+  document.querySelectorAll('.rv').forEach(el=>{
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight) el.classList.add('in');
+  });
+  // Revela imediatamente elementos de conteúdo já visíveis
+  document.querySelectorAll('#artContent h2, #artContent p, #artContent blockquote, #artContent ul, .cnt-card, .art-continue-card').forEach(el=>{
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight) el.classList.add('vin');
+  });
+});
+
+// ── TOC ACTIVE via IntersectionObserver ──
+const tocLinks = document.querySelectorAll('.toc-list a, .art-toc-list a');
+const headings = document.querySelectorAll('#artContent h2, .art-content h2');
+if(headings.length && tocLinks.length){
+  const tocObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        tocLinks.forEach(l=>l.classList.remove('active'));
+        const id=e.target.getAttribute('id');
+        const a=document.querySelector(`.toc-list a[href="#${id}"], .art-toc-list a[href="#${id}"]`);
+        if(a)a.classList.add('active');
+      }
+    });
+  },{rootMargin:'-12% 0px -80% 0px'});
+  headings.forEach(h=>tocObs.observe(h));
+}
+
+// ── MAGNETIC CURSOR on headings ──
+const isMob=('ontouchstart' in window)||window.innerWidth<=900;
+if(!isMob){
+  document.querySelectorAll('.art-content h2, .art-wrap h2').forEach(h=>{
+    h.addEventListener('mousemove',e=>{
+      const r=h.getBoundingClientRect();
+      const mx=e.clientX-r.left-r.width/2;
+      const my=e.clientY-r.top-r.height/2;
+      h.style.transform=`translate(${mx*.04}px,${my*.08}px)`;
+    });
+    h.addEventListener('mouseleave',()=>h.style.transform='');
+  });
+}
+
+// ── TEXT SCRAMBLE on cover badge ──
+const badge=document.querySelector('.badge,.art-badge');
+if(badge){
+  const original=badge.textContent;
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#';
+  let frame=0,total=18;
+  const scramble=()=>{
+    badge.textContent=original.split('').map((c,i)=>{
+      if(i<Math.floor(frame/total*original.length))return c;
+      return c===' '?' ':chars[Math.floor(Math.random()*chars.length)];
+    }).join('');
+    frame++;
+    if(frame<=total)requestAnimationFrame(scramble);
+    else badge.textContent=original;
+  };
+  setTimeout(scramble,700);
+}
+
+// ── PARALLAX COVER on scroll ──
+const coverBg=document.querySelector('.cover-bg');
+if(coverBg){
+  window.addEventListener('scroll',()=>{
+    const s=scrollY;
+    if(s<window.innerHeight*1.5){
+      coverBg.style.transform=`scale(1.04) translateY(${s*0.22}px)`;
+    }
+  },{passive:true});
+  window.addEventListener('load',()=>coverBg.classList.add('loaded'));
+}
+
+// ── HEADER scroll ──
+const hdr=document.getElementById('hdr')||document.getElementById('header');
+if(hdr) window.addEventListener('scroll',()=>hdr.classList.toggle('sc',scrollY>50)||hdr.classList.toggle('scrolled',scrollY>60),{passive:true});
+
+// ── MOBILE MENU ──
+const mTog=document.getElementById('mTog')||document.getElementById('menuToggle');
+const navMenu=document.getElementById('navMenu');
+mTog?.addEventListener('click',()=>{
+  const open=navMenu.classList.toggle('open');
+  const s=mTog.querySelectorAll('span');
+  if(open){s[0].style.transform='translateY(6px) rotate(45deg)';s[1].style.opacity='0';s[2].style.transform='translateY(-6px) rotate(-45deg)';}
+  else{s.forEach(x=>{x.style.transform='';x.style.opacity='';})}
+});
+navMenu?.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click',()=>{navMenu.classList.remove('open');mTog?.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});});
+});
+
+// ── CURSOR ──
+const dot=document.getElementById('cur-dot');
+const ring=document.getElementById('cur-ring');
+let mx2=window.innerWidth/2,my2=window.innerHeight/2,rx=mx2,ry=my2;
+if(!isMob && dot && ring){
+  document.addEventListener('mousemove',e=>{
+    mx2=e.clientX;my2=e.clientY;
+    dot.style.transform=`translate(${mx2}px,${my2}px) translate(-50%,-50%)`;
+  });
+  (function loop(){
+    rx+=(mx2-rx)*.11;ry+=(my2-ry)*.11;
+    ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('ch'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('ch'));
+  });
+}
+
+})();
+
+
+</script>
+</body>
+</html>
