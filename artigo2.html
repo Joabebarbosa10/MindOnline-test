@@ -957,5 +957,243 @@ if(!isMob && dot && ring){
 })();
 
 </script>
+
+<hr class="quiz-divider">
+
+<style>
+/* ── QUIZ ── */
+.quiz-section{max-width:800px;margin:0 auto 80px;padding:0 60px;}
+.quiz-header{margin-bottom:40px;}
+.quiz-label{font-family:var(--font-mono, 'DM Mono', monospace);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold,#e8c84a);display:inline-block;margin-bottom:14px;border:1px solid rgba(232,200,74,.3);padding:4px 10px;}
+.quiz-title{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:clamp(28px,4vw,48px);letter-spacing:2px;text-transform:uppercase;color:var(--fg,#f0ede6);line-height:1;}
+.quiz-title em{font-family:var(--font-serif,'Instrument Serif',serif);font-style:italic;text-transform:none;color:var(--gold,#e8c84a);}
+.quiz-progress-bar-wrap{width:100%;height:2px;background:rgba(240,237,230,.07);margin:28px 0;position:relative;}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold,#e8c84a),var(--gold2,#f5d76e));transition:width .4s cubic-bezier(.16,1,.3,1);box-shadow:0 0 8px rgba(232,200,74,.5);}
+.quiz-counter{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:1.5px;color:rgba(240,237,230,.3);margin-bottom:32px;}
+.quiz-q{opacity:0;transform:translateY(20px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);pointer-events:none;display:none;}
+.quiz-q.active{opacity:1;transform:translateY(0);pointer-events:all;display:block;}
+.quiz-q-text{font-family:var(--font-serif,'Instrument Serif',serif);font-size:clamp(18px,2.2vw,24px);color:var(--fg,#f0ede6);margin-bottom:24px;line-height:1.45;}
+.quiz-options{display:flex;flex-direction:column;gap:10px;}
+.quiz-opt{background:rgba(240,237,230,.03);border:1px solid rgba(240,237,230,.08);padding:16px 20px;cursor:pointer;font-family:var(--font-body,'DM Sans',sans-serif);font-size:14px;font-weight:300;color:rgba(240,237,230,.75);text-align:left;transition:all .25s;position:relative;overflow:hidden;}
+.quiz-opt::before{content:'';position:absolute;inset:0;background:var(--gold,#e8c84a);opacity:0;transition:opacity .25s;}
+.quiz-opt:hover{border-color:rgba(232,200,74,.35);color:var(--fg,#f0ede6);}
+.quiz-opt:hover::before{opacity:.04;}
+.quiz-opt.correct{border-color:rgba(100,220,120,.5);background:rgba(100,220,120,.06);color:#7de89a;cursor:default;}
+.quiz-opt.wrong{border-color:rgba(220,80,80,.4);background:rgba(220,80,80,.05);color:#e87d7d;cursor:default;}
+.quiz-opt.disabled{cursor:default;pointer-events:none;}
+.quiz-opt-letter{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:1px;color:var(--gold,#e8c84a);margin-right:12px;opacity:.7;}
+.quiz-feedback{margin-top:16px;padding:14px 18px;font-size:13px;line-height:1.55;border-left:2px solid;opacity:0;transition:opacity .35s;font-family:var(--font-body,'DM Sans',sans-serif);}
+.quiz-feedback.show{opacity:1;}
+.quiz-feedback.correct-fb{border-color:#7de89a;background:rgba(100,220,120,.05);color:#9ef0b4;}
+.quiz-feedback.wrong-fb{border-color:#e87d7d;background:rgba(220,80,80,.04);color:#f0a0a0;}
+.quiz-nav{margin-top:28px;display:flex;align-items:center;justify-content:space-between;}
+.quiz-btn{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(232,200,74,.4);background:transparent;color:var(--gold,#e8c84a);padding:12px 24px;cursor:pointer;transition:all .25s;}
+.quiz-btn:hover{background:var(--gold,#e8c84a);color:#000;}
+.quiz-btn:disabled{opacity:.25;cursor:default;pointer-events:none;}
+.quiz-result{display:none;text-align:center;padding:40px 0;}
+.quiz-result.show{display:block;}
+.quiz-score-num{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:80px;letter-spacing:4px;color:var(--gold,#e8c84a);line-height:1;}
+.quiz-score-label{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(240,237,230,.35);margin-bottom:20px;}
+.quiz-result-msg{font-family:var(--font-serif,'Instrument Serif',serif);font-size:clamp(18px,2vw,22px);color:var(--fg,#f0ede6);margin-bottom:32px;line-height:1.4;}
+.quiz-restart{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(232,200,74,.4);background:transparent;color:var(--gold,#e8c84a);padding:12px 28px;cursor:pointer;transition:all .25s;}
+.quiz-restart:hover{background:var(--gold,#e8c84a);color:#000;}
+.quiz-divider{border:none;border-top:1px solid rgba(240,237,230,.07);margin:60px 0 0;}
+@media(max-width:900px){
+  .quiz-section{padding:0 20px;}
+}
+</style>
+
+<section class="quiz-section" id="quiz-art2">
+  <div class="quiz-header">
+    <span class="quiz-label">Quiz</span>
+    <h2 class="quiz-title">Teste seus conhecimentos: <em>Fake News</em></h2>
+  </div>
+  <div class="quiz-progress-bar-wrap"><div class="quiz-progress-fill" id="quiz-art2-prog" style="width:0%"></div></div>
+  <div id="quiz-art2-questions">
+    
+<div class="quiz-q  active" id="quiz-art2-q0" data-correct="2" data-feedback-right="Correto! O estudo analisou 126 mil histórias ao longo de 11 anos e concluiu que notícias falsas se espalham 6× mais rápido — impulsionadas por humanos, não por bots." data-feedback-wrong="Incorreto. O MIT descobriu que notícias falsas se espalham seis vezes mais rápido que as verdadeiras — e que são os humanos, não os bots, os principais responsáveis.">
+  <p class="quiz-counter"><span id="quiz-art2-cnum">1</span>/5</p>
+  <p class="quiz-q-text">Segundo o estudo do MIT publicado na revista Science, qual a diferença de velocidade entre a propagação de notícias falsas e verdadeiras no Twitter?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Notícias falsas se espalham o dobro da velocidade das verdadeiras.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Notícias verdadeiras e falsas se espalham na mesma velocidade.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Notícias falsas se espalham seis vezes mais rápido que as verdadeiras.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Notícias falsas se espalham três vezes mais rápido apenas em momentos de crise.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art2-fb0"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art2-next0" disabled onclick="quizNext('quiz-art2',0,5)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art2-q1" data-correct="2" data-feedback-right="Perfeito! O viés de confirmação faz com que nossa percepção crítica diminua quando uma informação valida nossa visão de mundo — e o cérebro libera dopamina nesse processo." data-feedback-wrong="Incorreto. O viés de confirmação é a tendência de buscar e favorecer informações que já confirmam o que acreditamos — independente de nível de escolaridade ou inteligência.">
+  <p class="quiz-counter"><span id="quiz-art2-cnum">2</span>/5</p>
+  <p class="quiz-q-text">O que é o 'viés de confirmação' no contexto das fake news?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>A tendência de verificar todas as informações antes de compartilhá-las.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>A capacidade de identificar conteúdo falso automaticamente.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>A tendência natural de buscar e aceitar informações que confirmam crenças já existentes.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>O hábito de confirmar notícias em múltiplas fontes.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art2-fb1"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art2-next1" disabled onclick="quizNext('quiz-art2',1,5)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art2-q2" data-correct="1" data-feedback-right="Exato! Os algoritmos maximizam engajamento — e conteúdo falso gera mais raiva, medo e indignação. A lógica do engajamento e a lógica da verdade não são a mesma coisa." data-feedback-wrong="Incorreto. Os algoritmos são projetados para maximizar engajamento, e conteúdo falso frequentemente gera reações emocionais mais fortes — o que o torna mais 'valioso' para o sistema.">
+  <p class="quiz-counter"><span id="quiz-art2-cnum">3</span>/5</p>
+  <p class="quiz-q-text">Por que os algoritmos das redes sociais tendem a amplificar a desinformação?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Porque foram programados deliberadamente para espalhar mentiras.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Porque priorizam conteúdos que geram mais engajamento emocional, e fake news geram mais reações fortes.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Porque as plataformas cobram menos para impulsionar conteúdo falso.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Porque usuários preferem explicitamente conteúdo falso ao verdadeiro.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art2-fb2"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art2-next2" disabled onclick="quizNext('quiz-art2',2,5)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art2-q3" data-correct="1" data-feedback-right="Correto! A leitura lateral foi desenvolvida pelo Stanford History Education Group e é o método usado por checadores profissionais — mais eficaz do que avaliar a credibilidade pelo conteúdo." data-feedback-wrong="Incorreto. A técnica é chamada 'leitura lateral' (lateral reading), desenvolvida pelo Stanford History Education Group, e consiste em abrir novas abas para pesquisar a fonte antes de ler o conteúdo.">
+  <p class="quiz-counter"><span id="quiz-art2-cnum">4</span>/5</p>
+  <p class="quiz-q-text">Qual técnica de verificação consiste em pesquisar sobre uma fonte desconhecida em novas abas antes de ler seu conteúdo?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Fact-checking reverso.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Leitura lateral (lateral reading).</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Verificação cruzada progressiva.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Análise de metadados.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art2-fb3"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art2-next3" disabled onclick="quizNext('quiz-art2',3,5)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art2-q4" data-correct="1" data-feedback-right="Correto! Os documentos vazados em 2021 mostraram que a Meta tinha evidências internas dos danos e priorizou métricas de crescimento em vez de alterar o produto." data-feedback-wrong="Incorreto. Os documentos revelaram o contrário: a empresa tinha evidências claras de que o Instagram prejudicava a imagem corporal de adolescentes — e escolheu não agir, priorizando crescimento.">
+  <p class="quiz-counter"><span id="quiz-art2-cnum">5</span>/5</p>
+  <p class="quiz-q-text">O que os documentos internos vazados por Frances Haugen revelaram sobre o Facebook e o Instagram?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Que a empresa não tinha dados sobre os efeitos do Instagram em adolescentes.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Que a empresa tinha evidências de que o Instagram prejudicava a imagem corporal de adolescentes e optou por não agir.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Que o Instagram reduzia os índices de ansiedade entre adolescentes.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Que o Facebook planejava proibir o uso da plataforma por menores de 16 anos.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art2-fb4"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art2-next4" disabled onclick="quizNext('quiz-art2',4,5)">Ver resultado →</button>
+  </div>
+</div>
+
+  </div>
+  <div class="quiz-result" id="quiz-art2-result">
+    <p class="quiz-score-label">Você acertou</p>
+    <div class="quiz-score-num" id="quiz-art2-score">0</div>
+    <p class="quiz-score-label">de 5 questões</p>
+    <p class="quiz-result-msg" id="quiz-art2-msg"></p>
+    <button class="quiz-restart" onclick="quizRestart('quiz-art2',5)">↺ Tentar novamente</button>
+  </div>
+</section>
+
+<script>
+(function(){
+  var scores = {};
+  scores['quiz-art2'] = 0;
+
+  window.quizAnswer = window.quizAnswer || function(qid, qnum, total) {};
+  window.quizNext = window.quizNext || function(qid, qnum, total) {};
+  window.quizRestart = window.quizRestart || function(qid, total) {};
+
+  window.quizAnswer = function(qid, qnum, total) {
+    // handled inline
+  };
+
+  // Attach click to options
+  var qEl = document.getElementById(qid+'-q'+0);
+  for(var qi=0; qi<total; qi++){
+    (function(i){
+      var el = document.getElementById(qid+'-q'+i);
+      if(!el) return;
+      var opts = el.querySelectorAll('.quiz-opt');
+      opts.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if(btn.classList.contains('disabled')) return;
+          var correct = parseInt(el.getAttribute('data-correct'));
+          var chosen = parseInt(btn.getAttribute('data-idx'));
+          opts.forEach(function(b){ b.classList.add('disabled'); });
+          var fb = document.getElementById(qid+'-fb'+i);
+          if(chosen === correct){
+            btn.classList.add('correct');
+            scores[qid] = (scores[qid]||0)+1;
+            fb.textContent = '✓ ' + el.getAttribute('data-feedback-right');
+            fb.className = 'quiz-feedback correct-fb show';
+          } else {
+            btn.classList.add('wrong');
+            opts[correct].classList.add('correct');
+            fb.textContent = '✗ ' + el.getAttribute('data-feedback-wrong');
+            fb.className = 'quiz-feedback wrong-fb show';
+          }
+          var nextBtn = document.getElementById(qid+'-next'+i);
+          if(nextBtn) nextBtn.disabled = false;
+          // update progress
+          var prog = document.getElementById(qid+'-prog');
+          if(prog) prog.style.width = (((i+1)/total)*100)+'%';
+        });
+      });
+    })(qi);
+  }
+
+  window.quizNext = function(qid, current, total) {
+    var curr = document.getElementById(qid+'-q'+current);
+    if(curr) { curr.classList.remove('active'); curr.style.display='none'; }
+    var next = current+1;
+    if(next < total) {
+      var nextEl = document.getElementById(qid+'-q'+next);
+      if(nextEl) { nextEl.style.display='block'; setTimeout(function(){ nextEl.classList.add('active'); },20); }
+    } else {
+      // show result
+      var res = document.getElementById(qid+'-result');
+      var scoreEl = document.getElementById(qid+'-score');
+      var msgEl = document.getElementById(qid+'-msg');
+      var s = scores[qid]||0;
+      scoreEl.textContent = s+'/'+total;
+      var msg='';
+      if(s==0)msg='Não desanime — reler o artigo vai ajudar muito!';
+if(s==1)msg='Você captou algumas ideias. Vale revisitar o conteúdo.';
+if(s==2)msg='Bom começo! Você entendeu os pontos principais.';
+if(s==3)msg='Muito bem! Você absorveu bem o conteúdo.';
+if(s==4)msg='Excelente! Domínio quase completo do tema.';
+if(s==5)msg='Perfeito! Você leu com atenção e entendeu tudo.';
+
+      msgEl.textContent = msg;
+      res.style.display='block'; setTimeout(function(){ res.classList.add('show'); },20);
+    }
+  };
+
+  window.quizRestart = function(qid, total) {
+    scores[qid]=0;
+    var res=document.getElementById(qid+'-result');
+    res.classList.remove('show'); res.style.display='none';
+    var prog=document.getElementById(qid+'-prog');
+    if(prog) prog.style.width='0%';
+    for(var i=0;i<total;i++){
+      var el=document.getElementById(qid+'-q'+i);
+      if(!el) continue;
+      el.querySelectorAll('.quiz-opt').forEach(function(b){
+        b.classList.remove('correct','wrong','disabled');
+      });
+      var fb=document.getElementById(qid+'-fb'+i);
+      if(fb){ fb.className='quiz-feedback'; fb.textContent=''; }
+      var nb=document.getElementById(qid+'-next'+i);
+      if(nb) nb.disabled=true;
+      el.classList.remove('active'); el.style.display='none';
+    }
+    var first=document.getElementById(qid+'-q0');
+    if(first){ first.style.display='block'; setTimeout(function(){ first.classList.add('active'); },20); }
+  };
+})();
+</script>
+
 </body>
 </html>

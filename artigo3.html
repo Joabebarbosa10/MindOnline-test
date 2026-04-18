@@ -951,5 +951,243 @@ if(!isMob && dot && ring){
 })();
 
 </script>
+
+<hr class="quiz-divider">
+
+<style>
+/* ── QUIZ ── */
+.quiz-section{max-width:800px;margin:0 auto 80px;padding:0 60px;}
+.quiz-header{margin-bottom:40px;}
+.quiz-label{font-family:var(--font-mono, 'DM Mono', monospace);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold,#e8c84a);display:inline-block;margin-bottom:14px;border:1px solid rgba(232,200,74,.3);padding:4px 10px;}
+.quiz-title{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:clamp(28px,4vw,48px);letter-spacing:2px;text-transform:uppercase;color:var(--fg,#f0ede6);line-height:1;}
+.quiz-title em{font-family:var(--font-serif,'Instrument Serif',serif);font-style:italic;text-transform:none;color:var(--gold,#e8c84a);}
+.quiz-progress-bar-wrap{width:100%;height:2px;background:rgba(240,237,230,.07);margin:28px 0;position:relative;}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold,#e8c84a),var(--gold2,#f5d76e));transition:width .4s cubic-bezier(.16,1,.3,1);box-shadow:0 0 8px rgba(232,200,74,.5);}
+.quiz-counter{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:1.5px;color:rgba(240,237,230,.3);margin-bottom:32px;}
+.quiz-q{opacity:0;transform:translateY(20px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);pointer-events:none;display:none;}
+.quiz-q.active{opacity:1;transform:translateY(0);pointer-events:all;display:block;}
+.quiz-q-text{font-family:var(--font-serif,'Instrument Serif',serif);font-size:clamp(18px,2.2vw,24px);color:var(--fg,#f0ede6);margin-bottom:24px;line-height:1.45;}
+.quiz-options{display:flex;flex-direction:column;gap:10px;}
+.quiz-opt{background:rgba(240,237,230,.03);border:1px solid rgba(240,237,230,.08);padding:16px 20px;cursor:pointer;font-family:var(--font-body,'DM Sans',sans-serif);font-size:14px;font-weight:300;color:rgba(240,237,230,.75);text-align:left;transition:all .25s;position:relative;overflow:hidden;}
+.quiz-opt::before{content:'';position:absolute;inset:0;background:var(--gold,#e8c84a);opacity:0;transition:opacity .25s;}
+.quiz-opt:hover{border-color:rgba(232,200,74,.35);color:var(--fg,#f0ede6);}
+.quiz-opt:hover::before{opacity:.04;}
+.quiz-opt.correct{border-color:rgba(100,220,120,.5);background:rgba(100,220,120,.06);color:#7de89a;cursor:default;}
+.quiz-opt.wrong{border-color:rgba(220,80,80,.4);background:rgba(220,80,80,.05);color:#e87d7d;cursor:default;}
+.quiz-opt.disabled{cursor:default;pointer-events:none;}
+.quiz-opt-letter{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:1px;color:var(--gold,#e8c84a);margin-right:12px;opacity:.7;}
+.quiz-feedback{margin-top:16px;padding:14px 18px;font-size:13px;line-height:1.55;border-left:2px solid;opacity:0;transition:opacity .35s;font-family:var(--font-body,'DM Sans',sans-serif);}
+.quiz-feedback.show{opacity:1;}
+.quiz-feedback.correct-fb{border-color:#7de89a;background:rgba(100,220,120,.05);color:#9ef0b4;}
+.quiz-feedback.wrong-fb{border-color:#e87d7d;background:rgba(220,80,80,.04);color:#f0a0a0;}
+.quiz-nav{margin-top:28px;display:flex;align-items:center;justify-content:space-between;}
+.quiz-btn{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(232,200,74,.4);background:transparent;color:var(--gold,#e8c84a);padding:12px 24px;cursor:pointer;transition:all .25s;}
+.quiz-btn:hover{background:var(--gold,#e8c84a);color:#000;}
+.quiz-btn:disabled{opacity:.25;cursor:default;pointer-events:none;}
+.quiz-result{display:none;text-align:center;padding:40px 0;}
+.quiz-result.show{display:block;}
+.quiz-score-num{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:80px;letter-spacing:4px;color:var(--gold,#e8c84a);line-height:1;}
+.quiz-score-label{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(240,237,230,.35);margin-bottom:20px;}
+.quiz-result-msg{font-family:var(--font-serif,'Instrument Serif',serif);font-size:clamp(18px,2vw,22px);color:var(--fg,#f0ede6);margin-bottom:32px;line-height:1.4;}
+.quiz-restart{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(232,200,74,.4);background:transparent;color:var(--gold,#e8c84a);padding:12px 28px;cursor:pointer;transition:all .25s;}
+.quiz-restart:hover{background:var(--gold,#e8c84a);color:#000;}
+.quiz-divider{border:none;border-top:1px solid rgba(240,237,230,.07);margin:60px 0 0;}
+@media(max-width:900px){
+  .quiz-section{padding:0 20px;}
+}
+</style>
+
+<section class="quiz-section" id="quiz-art3">
+  <div class="quiz-header">
+    <span class="quiz-label">Quiz</span>
+    <h2 class="quiz-title">Teste seus conhecimentos: <em>Privacidade Digital</em></h2>
+  </div>
+  <div class="quiz-progress-bar-wrap"><div class="quiz-progress-fill" id="quiz-art3-prog" style="width:0%"></div></div>
+  <div id="quiz-art3-questions">
+    
+<div class="quiz-q  active" id="quiz-art3-q0" data-correct="2" data-feedback-right="Correto! Estudos da Universidade de Cambridge mostraram que com base apenas nas curtidas, algoritmos formam perfis psicométricos mais precisos do que os de pessoas próximas." data-feedback-wrong="Incorreto. Estudos da Universidade de Cambridge demonstraram que algoritmos conseguem prever a personalidade de uma pessoa com mais precisão do que seu cônjuge — apenas com as curtidas.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">1</span>/5</p>
+  <p class="quiz-q-text">Segundo estudos citados no artigo, o que um algoritmo consegue prever a partir apenas das curtidas do Facebook de uma pessoa?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Apenas preferências de consumo e publicidade relevante.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>O histórico de navegação completo do usuário.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>A personalidade da pessoa com mais precisão do que seu próprio cônjuge.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>A renda familiar aproximada do usuário.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb0"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next0" disabled onclick="quizNext('quiz-art3',0,5)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art3-q1" data-correct="1" data-feedback-right="Exato! O escândalo mostrou como dados de 87 milhões de usuários foram usados para influenciar a eleição americana de 2016 e o referendo do Brexit com mensagens micro-segmentadas." data-feedback-wrong="Incorreto. O escândalo revelou que dados de 87 milhões de usuários do Facebook foram usados para criar mensagens políticas personalizadas durante a eleição de 2016 e o Brexit.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">2</span>/5</p>
+  <p class="quiz-q-text">O que revelou o escândalo da Cambridge Analytica em 2018?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Que o Facebook vendia dados diretamente para governos autoritários.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Que dados de 87 milhões de usuários foram usados para criar mensagens políticas micro-segmentadas.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Que o Cambridge Analytica invadiu servidores do Facebook ilegalmente.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Que algoritmos de IA podiam prever resultados eleitorais com precisão.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb1"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next1" disabled onclick="quizNext('quiz-art3',1,5)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art3-q2" data-correct="2" data-feedback-right="Correto! A LGPD garante, entre outros direitos, acesso aos dados coletados, correção de dados incorretos, portabilidade e eliminação — e aplica-se a qualquer organização que trate dados de brasileiros." data-feedback-wrong="Incorreto. A LGPD garante direitos como acesso aos seus dados, correção, portabilidade e eliminação, além de exigir consentimento claro para coleta de dados sensíveis.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">3</span>/5</p>
+  <p class="quiz-q-text">O que a LGPD (Lei Geral de Proteção de Dados) brasileira garante aos cidadãos?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Acesso gratuito à internet como direito fundamental.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Proibição total de coleta de dados por empresas estrangeiras.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Direitos como acesso, correção, portabilidade e eliminação de dados pessoais.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Responsabilização criminal imediata de qualquer empresa que colete dados.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb2"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next2" disabled onclick="quizNext('quiz-art3',2,5)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art3-q3" data-correct="2" data-feedback-right="Correto! O modo anônimo apenas não salva seu histórico no dispositivo — mas seu provedor de internet, empregador e os sites que você visita ainda podem ver sua atividade." data-feedback-wrong="Incorreto. O artigo esclarece que o modo anônimo do Chrome apenas não salva o histórico localmente — seu provedor de internet e os sites visitados ainda podem rastrear sua navegação.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">4</span>/5</p>
+  <p class="quiz-q-text">Por que o 'modo anônimo' do Chrome não oferece proteção completa de privacidade?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Porque exige login com conta Google para funcionar.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Porque não funciona em conexões HTTPS.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Porque apenas evita salvar histórico localmente, mas seu provedor de internet e sites ainda podem rastrear você.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Porque o Google ainda coleta dados do modo anônimo para seus servidores.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb3"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next3" disabled onclick="quizNext('quiz-art3',3,5)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art3-q4" data-correct="2" data-feedback-right="Correto! O Signal é código aberto, sem fins lucrativos, coleta pouquíssimos metadados e é recomendado por especialistas como Edward Snowden e a Electronic Frontier Foundation." data-feedback-wrong="Incorreto. O artigo indica o Signal como padrão ouro: código aberto, sem fins lucrativos, recomendado por especialistas em segurança como Edward Snowden — diferente do WhatsApp, que coleta muito mais metadados.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">5</span>/5</p>
+  <p class="quiz-q-text">Qual aplicativo de mensagens é descrito como 'padrão ouro' de privacidade no artigo?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>WhatsApp</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Telegram</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Signal</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>iMessage</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb4"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next4" disabled onclick="quizNext('quiz-art3',4,5)">Ver resultado →</button>
+  </div>
+</div>
+
+  </div>
+  <div class="quiz-result" id="quiz-art3-result">
+    <p class="quiz-score-label">Você acertou</p>
+    <div class="quiz-score-num" id="quiz-art3-score">0</div>
+    <p class="quiz-score-label">de 5 questões</p>
+    <p class="quiz-result-msg" id="quiz-art3-msg"></p>
+    <button class="quiz-restart" onclick="quizRestart('quiz-art3',5)">↺ Tentar novamente</button>
+  </div>
+</section>
+
+<script>
+(function(){
+  var scores = {};
+  scores['quiz-art3'] = 0;
+
+  window.quizAnswer = window.quizAnswer || function(qid, qnum, total) {};
+  window.quizNext = window.quizNext || function(qid, qnum, total) {};
+  window.quizRestart = window.quizRestart || function(qid, total) {};
+
+  window.quizAnswer = function(qid, qnum, total) {
+    // handled inline
+  };
+
+  // Attach click to options
+  var qEl = document.getElementById(qid+'-q'+0);
+  for(var qi=0; qi<total; qi++){
+    (function(i){
+      var el = document.getElementById(qid+'-q'+i);
+      if(!el) return;
+      var opts = el.querySelectorAll('.quiz-opt');
+      opts.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if(btn.classList.contains('disabled')) return;
+          var correct = parseInt(el.getAttribute('data-correct'));
+          var chosen = parseInt(btn.getAttribute('data-idx'));
+          opts.forEach(function(b){ b.classList.add('disabled'); });
+          var fb = document.getElementById(qid+'-fb'+i);
+          if(chosen === correct){
+            btn.classList.add('correct');
+            scores[qid] = (scores[qid]||0)+1;
+            fb.textContent = '✓ ' + el.getAttribute('data-feedback-right');
+            fb.className = 'quiz-feedback correct-fb show';
+          } else {
+            btn.classList.add('wrong');
+            opts[correct].classList.add('correct');
+            fb.textContent = '✗ ' + el.getAttribute('data-feedback-wrong');
+            fb.className = 'quiz-feedback wrong-fb show';
+          }
+          var nextBtn = document.getElementById(qid+'-next'+i);
+          if(nextBtn) nextBtn.disabled = false;
+          // update progress
+          var prog = document.getElementById(qid+'-prog');
+          if(prog) prog.style.width = (((i+1)/total)*100)+'%';
+        });
+      });
+    })(qi);
+  }
+
+  window.quizNext = function(qid, current, total) {
+    var curr = document.getElementById(qid+'-q'+current);
+    if(curr) { curr.classList.remove('active'); curr.style.display='none'; }
+    var next = current+1;
+    if(next < total) {
+      var nextEl = document.getElementById(qid+'-q'+next);
+      if(nextEl) { nextEl.style.display='block'; setTimeout(function(){ nextEl.classList.add('active'); },20); }
+    } else {
+      // show result
+      var res = document.getElementById(qid+'-result');
+      var scoreEl = document.getElementById(qid+'-score');
+      var msgEl = document.getElementById(qid+'-msg');
+      var s = scores[qid]||0;
+      scoreEl.textContent = s+'/'+total;
+      var msg='';
+      if(s==0)msg='Não desanime — reler o artigo vai ajudar muito!';
+if(s==1)msg='Você captou algumas ideias. Vale revisitar o conteúdo.';
+if(s==2)msg='Bom começo! Você entendeu os pontos principais.';
+if(s==3)msg='Muito bem! Você absorveu bem o conteúdo.';
+if(s==4)msg='Excelente! Domínio quase completo do tema.';
+if(s==5)msg='Perfeito! Você leu com atenção e entendeu tudo.';
+
+      msgEl.textContent = msg;
+      res.style.display='block'; setTimeout(function(){ res.classList.add('show'); },20);
+    }
+  };
+
+  window.quizRestart = function(qid, total) {
+    scores[qid]=0;
+    var res=document.getElementById(qid+'-result');
+    res.classList.remove('show'); res.style.display='none';
+    var prog=document.getElementById(qid+'-prog');
+    if(prog) prog.style.width='0%';
+    for(var i=0;i<total;i++){
+      var el=document.getElementById(qid+'-q'+i);
+      if(!el) continue;
+      el.querySelectorAll('.quiz-opt').forEach(function(b){
+        b.classList.remove('correct','wrong','disabled');
+      });
+      var fb=document.getElementById(qid+'-fb'+i);
+      if(fb){ fb.className='quiz-feedback'; fb.textContent=''; }
+      var nb=document.getElementById(qid+'-next'+i);
+      if(nb) nb.disabled=true;
+      el.classList.remove('active'); el.style.display='none';
+    }
+    var first=document.getElementById(qid+'-q0');
+    if(first){ first.style.display='block'; setTimeout(function(){ first.classList.add('active'); },20); }
+  };
+})();
+</script>
+
 </body>
 </html>
