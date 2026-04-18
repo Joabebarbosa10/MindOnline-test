@@ -1016,7 +1016,7 @@ if(!isMob && dot && ring){
   <div class="quiz-feedback" id="quiz-art3-fb0"></div>
   <div class="quiz-nav">
     <span></span>
-    <button class="quiz-btn" id="quiz-art3-next0" disabled onclick="quizNext('quiz-art3',0,5)">Próxima →</button>
+    <button class="quiz-btn" id="quiz-art3-next0" disabled onclick="window['quizNext_'+'quiz-art3'](0)">Próxima →</button>
   </div>
 </div>
 
@@ -1031,7 +1031,7 @@ if(!isMob && dot && ring){
   <div class="quiz-feedback" id="quiz-art3-fb1"></div>
   <div class="quiz-nav">
     <span></span>
-    <button class="quiz-btn" id="quiz-art3-next1" disabled onclick="quizNext('quiz-art3',1,5)">Próxima →</button>
+    <button class="quiz-btn" id="quiz-art3-next1" disabled onclick="window['quizNext_'+'quiz-art3'](1)">Próxima →</button>
   </div>
 </div>
 
@@ -1046,7 +1046,7 @@ if(!isMob && dot && ring){
   <div class="quiz-feedback" id="quiz-art3-fb2"></div>
   <div class="quiz-nav">
     <span></span>
-    <button class="quiz-btn" id="quiz-art3-next2" disabled onclick="quizNext('quiz-art3',2,5)">Próxima →</button>
+    <button class="quiz-btn" id="quiz-art3-next2" disabled onclick="window['quizNext_'+'quiz-art3'](2)">Próxima →</button>
   </div>
 </div>
 
@@ -1061,7 +1061,7 @@ if(!isMob && dot && ring){
   <div class="quiz-feedback" id="quiz-art3-fb3"></div>
   <div class="quiz-nav">
     <span></span>
-    <button class="quiz-btn" id="quiz-art3-next3" disabled onclick="quizNext('quiz-art3',3,5)">Próxima →</button>
+    <button class="quiz-btn" id="quiz-art3-next3" disabled onclick="window['quizNext_'+'quiz-art3'](3)">Próxima →</button>
   </div>
 </div>
 
@@ -1076,7 +1076,7 @@ if(!isMob && dot && ring){
   <div class="quiz-feedback" id="quiz-art3-fb4"></div>
   <div class="quiz-nav">
     <span></span>
-    <button class="quiz-btn" id="quiz-art3-next4" disabled onclick="quizNext('quiz-art3',4,5)">Ver resultado →</button>
+    <button class="quiz-btn" id="quiz-art3-next4" disabled onclick="window['quizNext_'+'quiz-art3'](4)">Ver resultado →</button>
   </div>
 </div>
 
@@ -1086,105 +1086,93 @@ if(!isMob && dot && ring){
     <div class="quiz-score-num" id="quiz-art3-score">0</div>
     <p class="quiz-score-label">de 5 questões</p>
     <p class="quiz-result-msg" id="quiz-art3-msg"></p>
-    <button class="quiz-restart" onclick="quizRestart('quiz-art3',5)">↺ Tentar novamente</button>
+    <button class="quiz-restart" onclick="window['quizRestart_'+'quiz-art3']()">↺ Tentar novamente</button>
   </div>
 </section>
 
 <script>
 (function(){
-  var scores = {};
-  scores['quiz-art3'] = 0;
+  var QID = 'quiz-art3';
+  var TOTAL = 5;
+  var score = 0;
 
-  window.quizAnswer = window.quizAnswer || function(qid, qnum, total) {};
-  window.quizNext = window.quizNext || function(qid, qnum, total) {};
-  window.quizRestart = window.quizRestart || function(qid, total) {};
-
-  window.quizAnswer = function(qid, qnum, total) {
-    // handled inline
-  };
-
-  // Attach click to options
-  var qEl = document.getElementById(qid+'-q'+0);
-  for(var qi=0; qi<total; qi++){
+  // Attach option click handlers
+  for (var qi = 0; qi < TOTAL; qi++) {
     (function(i){
-      var el = document.getElementById(qid+'-q'+i);
-      if(!el) return;
-      var opts = el.querySelectorAll('.quiz-opt');
+      var qEl = document.getElementById(QID + '-q' + i);
+      if (!qEl) return;
+      var correct = parseInt(qEl.getAttribute('data-correct'));
+      var opts = qEl.querySelectorAll('.quiz-opt');
       opts.forEach(function(btn){
         btn.addEventListener('click', function(){
-          if(btn.classList.contains('disabled')) return;
-          var correct = parseInt(el.getAttribute('data-correct'));
+          if (btn.classList.contains('disabled')) return;
           var chosen = parseInt(btn.getAttribute('data-idx'));
           opts.forEach(function(b){ b.classList.add('disabled'); });
-          var fb = document.getElementById(qid+'-fb'+i);
-          if(chosen === correct){
+          var fb = document.getElementById(QID + '-fb' + i);
+          if (chosen === correct) {
             btn.classList.add('correct');
-            scores[qid] = (scores[qid]||0)+1;
-            fb.textContent = '✓ ' + el.getAttribute('data-feedback-right');
+            score++;
+            fb.textContent = '✓ ' + qEl.getAttribute('data-feedback-right');
             fb.className = 'quiz-feedback correct-fb show';
           } else {
             btn.classList.add('wrong');
             opts[correct].classList.add('correct');
-            fb.textContent = '✗ ' + el.getAttribute('data-feedback-wrong');
+            fb.textContent = '✗ ' + qEl.getAttribute('data-feedback-wrong');
             fb.className = 'quiz-feedback wrong-fb show';
           }
-          var nextBtn = document.getElementById(qid+'-next'+i);
-          if(nextBtn) nextBtn.disabled = false;
-          // update progress
-          var prog = document.getElementById(qid+'-prog');
-          if(prog) prog.style.width = (((i+1)/total)*100)+'%';
+          var nextBtn = document.getElementById(QID + '-next' + i);
+          if (nextBtn) nextBtn.disabled = false;
+          var prog = document.getElementById(QID + '-prog');
+          if (prog) prog.style.width = (((i + 1) / TOTAL) * 100) + '%';
         });
       });
     })(qi);
   }
 
-  window.quizNext = function(qid, current, total) {
-    var curr = document.getElementById(qid+'-q'+current);
-    if(curr) { curr.classList.remove('active'); curr.style.display='none'; }
-    var next = current+1;
-    if(next < total) {
-      var nextEl = document.getElementById(qid+'-q'+next);
-      if(nextEl) { nextEl.style.display='block'; setTimeout(function(){ nextEl.classList.add('active'); },20); }
+  window['quizNext_' + QID] = function(current) {
+    var curr = document.getElementById(QID + '-q' + current);
+    if (curr) { curr.classList.remove('active'); curr.style.display = 'none'; }
+    var next = current + 1;
+    if (next < TOTAL) {
+      var nextEl = document.getElementById(QID + '-q' + next);
+      if (nextEl) { nextEl.style.display = 'block'; setTimeout(function(){ nextEl.classList.add('active'); }, 20); }
     } else {
-      // show result
-      var res = document.getElementById(qid+'-result');
-      var scoreEl = document.getElementById(qid+'-score');
-      var msgEl = document.getElementById(qid+'-msg');
-      var s = scores[qid]||0;
-      scoreEl.textContent = s+'/'+total;
-      var msg='';
-      if(s==0)msg='Não desanime — reler o artigo vai ajudar muito!';
-if(s==1)msg='Você captou algumas ideias. Vale revisitar o conteúdo.';
-if(s==2)msg='Bom começo! Você entendeu os pontos principais.';
-if(s==3)msg='Muito bem! Você absorveu bem o conteúdo.';
-if(s==4)msg='Excelente! Domínio quase completo do tema.';
-if(s==5)msg='Perfeito! Você leu com atenção e entendeu tudo.';
-
+      var res = document.getElementById(QID + '-result');
+      var scoreEl = document.getElementById(QID + '-score');
+      var msgEl = document.getElementById(QID + '-msg');
+      scoreEl.textContent = score + '/' + TOTAL;
+      var msg = '';
+      if (score === 0) msg = 'Não desanime — reler o artigo vai ajudar muito!';
+      else if (score === 1) msg = 'Você captou algumas ideias. Vale revisitar o conteúdo.';
+      else if (score === 2) msg = 'Bom começo! Você entendeu os pontos principais.';
+      else if (score === 3) msg = 'Muito bem! Você absorveu bem o conteúdo.';
+      else if (score === 4) msg = 'Excelente! Domínio quase completo do tema.';
+      else if (score === 5) msg = 'Perfeito! Você leu com atenção e entendeu tudo.';
       msgEl.textContent = msg;
-      res.style.display='block'; setTimeout(function(){ res.classList.add('show'); },20);
+      res.style.display = 'block'; setTimeout(function(){ res.classList.add('show'); }, 20);
     }
   };
 
-  window.quizRestart = function(qid, total) {
-    scores[qid]=0;
-    var res=document.getElementById(qid+'-result');
-    res.classList.remove('show'); res.style.display='none';
-    var prog=document.getElementById(qid+'-prog');
-    if(prog) prog.style.width='0%';
-    for(var i=0;i<total;i++){
-      var el=document.getElementById(qid+'-q'+i);
-      if(!el) continue;
+  window['quizRestart_' + QID] = function() {
+    score = 0;
+    var res = document.getElementById(QID + '-result');
+    res.classList.remove('show'); res.style.display = 'none';
+    var prog = document.getElementById(QID + '-prog');
+    if (prog) prog.style.width = '0%';
+    for (var i = 0; i < TOTAL; i++) {
+      var el = document.getElementById(QID + '-q' + i);
+      if (!el) continue;
       el.querySelectorAll('.quiz-opt').forEach(function(b){
-        b.classList.remove('correct','wrong','disabled');
+        b.classList.remove('correct', 'wrong', 'disabled');
       });
-      var fb=document.getElementById(qid+'-fb'+i);
-      if(fb){ fb.className='quiz-feedback'; fb.textContent=''; }
-      var nb=document.getElementById(qid+'-next'+i);
-      if(nb) nb.disabled=true;
-      el.classList.remove('active'); el.style.display='none';
+      var fb = document.getElementById(QID + '-fb' + i);
+      if (fb) { fb.className = 'quiz-feedback'; fb.textContent = ''; }
+      var nb = document.getElementById(QID + '-next' + i);
+      if (nb) nb.disabled = true;
+      el.classList.remove('active'); el.style.display = 'none';
     }
-    var first=document.getElementById(qid+'-q0');
-    if(first){ first.style.display='block'; setTimeout(function(){ first.classList.add('active'); },20); }
+    var first = document.getElementById(QID + '-q0');
+    if (first) { first.style.display = 'block'; setTimeout(function(){ first.classList.add('active'); }, 20); }
   };
 })();
 </script>

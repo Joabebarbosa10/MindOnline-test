@@ -279,6 +279,219 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 </div>
 </div>
 
+
+<style>
+/* ── QUIZ ── */
+.quiz-section{max-width:800px;margin:0 auto;padding:80px 60px 100px;border-top:1px solid rgba(240,237,230,.07);}
+.quiz-header{margin-bottom:36px;}
+.quiz-label{font-family:var(--font-mono,'DM Mono',monospace);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold,#e8c84a);display:block;margin-bottom:10px;}
+.quiz-title{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:clamp(28px,4vw,44px);letter-spacing:2px;text-transform:uppercase;color:var(--fg,#f0ede6);line-height:1;}
+.quiz-title em{font-family:var(--font-serif,'Instrument Serif',serif);font-style:italic;text-transform:none;color:var(--gold,#e8c84a);}
+.quiz-progress-bar-wrap{height:2px;background:rgba(240,237,230,.06);margin-bottom:48px;}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold,#e8c84a),var(--gold2,#f5d76e));transition:width .4s cubic-bezier(.16,1,.3,1);box-shadow:0 0 8px rgba(232,200,74,.4);}
+.quiz-q{display:none;}
+.quiz-q.active{display:block;}
+.quiz-counter{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:2px;color:rgba(240,237,230,.25);margin-bottom:20px;}
+.quiz-q-text{font-family:var(--font-serif,'Instrument Serif',serif);font-size:clamp(17px,2vw,21px);color:var(--fg,#f0ede6);line-height:1.55;margin-bottom:28px;}
+.quiz-options{display:flex;flex-direction:column;gap:1px;background:rgba(240,237,230,.04);border:1px solid rgba(240,237,230,.06);}
+.quiz-opt{display:flex;align-items:flex-start;gap:0;padding:16px 20px;background:var(--bg,#080808);color:var(--dim,rgba(240,237,230,.5));font-family:var(--font-body,'DM Sans',sans-serif);font-size:14px;line-height:1.5;text-align:left;border:none;cursor:pointer;transition:background .2s,color .2s;position:relative;}
+.quiz-opt::before{content:'';position:absolute;inset:0;background:var(--gold,#e8c84a);opacity:0;transition:opacity .2s;}
+.quiz-opt:hover{background:rgba(232,200,74,.04);color:var(--fg,#f0ede6);}
+.quiz-opt:hover::before{opacity:.02;}
+.quiz-opt.correct{border-color:rgba(100,220,120,.5);background:rgba(100,220,120,.06);color:#7de89a;cursor:default;}
+.quiz-opt.wrong{border-color:rgba(220,80,80,.4);background:rgba(220,80,80,.05);color:#e87d7d;cursor:default;}
+.quiz-opt.disabled{cursor:default;pointer-events:none;}
+.quiz-opt-letter{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:1px;color:var(--gold,#e8c84a);margin-right:12px;opacity:.7;flex-shrink:0;}
+.quiz-feedback{margin-top:16px;padding:14px 18px;font-size:13px;line-height:1.55;border-left:2px solid;opacity:0;transition:opacity .35s;font-family:var(--font-body,'DM Sans',sans-serif);}
+.quiz-feedback.show{opacity:1;}
+.quiz-feedback.correct-fb{border-color:#7de89a;background:rgba(100,220,120,.05);color:#9ef0b4;}
+.quiz-feedback.wrong-fb{border-color:#e87d7d;background:rgba(220,80,80,.04);color:#f0a0a0;}
+.quiz-nav{margin-top:28px;display:flex;align-items:center;justify-content:space-between;}
+.quiz-btn{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(232,200,74,.4);background:transparent;color:var(--gold,#e8c84a);padding:12px 24px;cursor:pointer;transition:all .25s;}
+.quiz-btn:hover{background:var(--gold,#e8c84a);color:#000;}
+.quiz-btn:disabled{opacity:.25;cursor:default;pointer-events:none;}
+.quiz-result{display:none;text-align:center;padding:40px 0;}
+.quiz-result.show{display:block;}
+.quiz-score-num{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:80px;letter-spacing:4px;color:var(--gold,#e8c84a);line-height:1;}
+.quiz-score-label{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(240,237,230,.35);margin-bottom:20px;}
+.quiz-result-msg{font-family:var(--font-serif,'Instrument Serif',serif);font-size:clamp(18px,2vw,22px);color:var(--fg,#f0ede6);margin-bottom:32px;line-height:1.4;}
+.quiz-restart{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(232,200,74,.4);background:transparent;color:var(--gold,#e8c84a);padding:12px 28px;cursor:pointer;transition:all .25s;}
+.quiz-restart:hover{background:var(--gold,#e8c84a);color:#000;}
+@media(max-width:900px){.quiz-section{padding:0 20px 60px;}}
+</style>
+
+
+<section class="quiz-section" id="quiz-art5">
+  <div class="quiz-header">
+    <span class="quiz-label">Quiz</span>
+    <h2 class="quiz-title">Teste seus conhecimentos: <em>Tempo de Tela</em></h2>
+  </div>
+  <div class="quiz-progress-bar-wrap"><div class="quiz-progress-fill" id="quiz-art5-prog" style="width:0%"></div></div>
+  <div id="quiz-art5-questions">
+    
+<div class="quiz-q  active" id="quiz-art5-q0" data-correct="1" data-feedback-right="Correto! Doomscrolling é o nome dado à rolagem compulsiva sem propósito — resultado de design propositalmente construído para maximizar o tempo do usuário nas plataformas." data-feedback-wrong="Incorreto. O fenômeno descrito no artigo se chama doomscrolling — e ele não é acidental, mas resultado de design cuidadosamente planejado para manter você conectado.">
+  <p class="quiz-counter">1/5</p>
+  <p class="quiz-q-text">Como o artigo chama o fenômeno de rolar o feed sem propósito definido por horas, resultado de design deliberado das plataformas?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Cyberaddiction</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Doomscrolling</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Feed fatigue</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Engagement loop</button></div>
+  <div class="quiz-feedback" id="quiz-art5-fb0"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art5-next0" disabled onclick="window['quizNext_'+'quiz-art5'](0)">Próxima →</button>
+  </div>
+</div>
+<div class="quiz-q" id="quiz-art5-q1" data-correct="2" data-feedback-right="Correto! O reforço variável intermitente — a mesma técnica dos caça-níqueis — mantém você rolando porque não sabe se o próximo post será interessante ou irrelevante." data-feedback-wrong="Incorreto. O mecanismo central é o reforço variável intermitente — a mesma técnica das máquinas caça-níqueis, onde a incerteza do próximo resultado é o que cria o comportamento compulsivo.">
+  <p class="quiz-counter">2/5</p>
+  <p class="quiz-q-text">O artigo explica que o scroll compulsivo ativa os mesmos circuitos neurais que comportamentos aditivos. Qual é o mecanismo central descrito?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Condicionamento pavloviano</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Reforço positivo contínuo</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Reforço variável intermitente</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Habituação dopaminérgica</button></div>
+  <div class="quiz-feedback" id="quiz-art5-fb1"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art5-next1" disabled onclick="window['quizNext_'+'quiz-art5'](1)">Próxima →</button>
+  </div>
+</div>
+<div class="quiz-q" id="quiz-art5-q2" data-correct="2" data-feedback-right="Correto! A luz azul das telas inibe a produção de melatonina e pode atrasar o início do sono em até 90 minutos, além de prejudicar a qualidade do sono profundo." data-feedback-wrong="Incorreto. O artigo informa que usar o celular antes de dormir pode atrasar o início do sono em até 90 minutos, por inibição da produção de melatonina pela luz azul.">
+  <p class="quiz-counter">3/5</p>
+  <p class="quiz-q-text">Segundo o artigo, usar o celular antes de dormir pode atrasar o início do sono em quanto tempo?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Até 20 minutos</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Até 45 minutos</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Até 90 minutos</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Até 3 horas</button></div>
+  <div class="quiz-feedback" id="quiz-art5-fb2"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art5-next2" disabled onclick="window['quizNext_'+'quiz-art5'](2)">Próxima →</button>
+  </div>
+</div>
+<div class="quiz-q" id="quiz-art5-q3" data-correct="3" data-feedback-right="Correto! Em 2023, 42 estados americanos processaram a Meta por projetar intencionalmente produtos prejudiciais a menores — caso emblemático sobre a responsabilidade das big techs." data-feedback-wrong="Incorreto. O artigo menciona que 42 estados americanos processaram a Meta em 2023 por projetar intencionalmente produtos prejudiciais a menores de idade.">
+  <p class="quiz-counter">4/5</p>
+  <p class="quiz-q-text">Em 2023, quantos estados americanos processaram a Meta por projetar intencionalmente produtos prejudiciais a menores?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>12 estados</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>27 estados</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>35 estados</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>42 estados</button></div>
+  <div class="quiz-feedback" id="quiz-art5-fb3"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art5-next3" disabled onclick="window['quizNext_'+'quiz-art5'](3)">Próxima →</button>
+  </div>
+</div>
+<div class="quiz-q" id="quiz-art5-q4" data-correct="3" data-feedback-right="Correto! Pesquisas da Universidade da Califórnia mostram que são necessários em média 23 minutos para recuperar o foco total após uma interrupção digital — o que torna as notificações constantes especialmente prejudiciais." data-feedback-wrong="Incorreto. Pesquisas da Universidade da Califórnia mostram que, após uma interrupção digital, são necessários em média 23 minutos para recuperar o foco total na tarefa anterior.">
+  <p class="quiz-counter">5/5</p>
+  <p class="quiz-q-text">Segundo pesquisas da Universidade da Califórnia citadas no artigo, quanto tempo é necessário para recuperar o foco total após uma interrupção digital?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Cerca de 5 minutos</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Cerca de 10 minutos</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Cerca de 15 minutos</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Cerca de 23 minutos</button></div>
+  <div class="quiz-feedback" id="quiz-art5-fb4"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art5-next4" disabled onclick="window['quizNext_'+'quiz-art5'](4)">Ver resultado →</button>
+  </div>
+</div>
+  </div>
+  <div class="quiz-result" id="quiz-art5-result">
+    <p class="quiz-score-label">Você acertou</p>
+    <div class="quiz-score-num" id="quiz-art5-score">0</div>
+    <p class="quiz-score-label">de 5 questões</p>
+    <p class="quiz-result-msg" id="quiz-art5-msg"></p>
+    <button class="quiz-restart" onclick="window['quizRestart_'+'quiz-art5']()">↺ Tentar novamente</button>
+  </div>
+</section>
+
+<script>
+(function(){
+  var QID = 'quiz-art5';
+  var TOTAL = 5;
+  var score = 0;
+
+  // Attach option click handlers
+  for (var qi = 0; qi < TOTAL; qi++) {
+    (function(i){
+      var qEl = document.getElementById(QID + '-q' + i);
+      if (!qEl) return;
+      var correct = parseInt(qEl.getAttribute('data-correct'));
+      var opts = qEl.querySelectorAll('.quiz-opt');
+      opts.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if (btn.classList.contains('disabled')) return;
+          var chosen = parseInt(btn.getAttribute('data-idx'));
+          opts.forEach(function(b){ b.classList.add('disabled'); });
+          var fb = document.getElementById(QID + '-fb' + i);
+          if (chosen === correct) {
+            btn.classList.add('correct');
+            score++;
+            fb.textContent = '✓ ' + qEl.getAttribute('data-feedback-right');
+            fb.className = 'quiz-feedback correct-fb show';
+          } else {
+            btn.classList.add('wrong');
+            opts[correct].classList.add('correct');
+            fb.textContent = '✗ ' + qEl.getAttribute('data-feedback-wrong');
+            fb.className = 'quiz-feedback wrong-fb show';
+          }
+          var nextBtn = document.getElementById(QID + '-next' + i);
+          if (nextBtn) nextBtn.disabled = false;
+          var prog = document.getElementById(QID + '-prog');
+          if (prog) prog.style.width = (((i + 1) / TOTAL) * 100) + '%';
+        });
+      });
+    })(qi);
+  }
+
+  window['quizNext_' + QID] = function(current) {
+    var curr = document.getElementById(QID + '-q' + current);
+    if (curr) { curr.classList.remove('active'); curr.style.display = 'none'; }
+    var next = current + 1;
+    if (next < TOTAL) {
+      var nextEl = document.getElementById(QID + '-q' + next);
+      if (nextEl) { nextEl.style.display = 'block'; setTimeout(function(){ nextEl.classList.add('active'); }, 20); }
+    } else {
+      var res = document.getElementById(QID + '-result');
+      var scoreEl = document.getElementById(QID + '-score');
+      var msgEl = document.getElementById(QID + '-msg');
+      scoreEl.textContent = score + '/' + TOTAL;
+      var msg = '';
+      if (score === 0) msg = 'Não desanime — reler o artigo vai ajudar muito!';
+      else if (score === 1) msg = 'Você captou algumas ideias. Vale revisitar o conteúdo.';
+      else if (score === 2) msg = 'Bom começo! Você entendeu os pontos principais.';
+      else if (score === 3) msg = 'Muito bem! Você absorveu bem o conteúdo.';
+      else if (score === 4) msg = 'Excelente! Domínio quase completo do tema.';
+      else if (score === 5) msg = 'Perfeito! Você leu com atenção e entendeu tudo.';
+      msgEl.textContent = msg;
+      res.style.display = 'block'; setTimeout(function(){ res.classList.add('show'); }, 20);
+    }
+  };
+
+  window['quizRestart_' + QID] = function() {
+    score = 0;
+    var res = document.getElementById(QID + '-result');
+    res.classList.remove('show'); res.style.display = 'none';
+    var prog = document.getElementById(QID + '-prog');
+    if (prog) prog.style.width = '0%';
+    for (var i = 0; i < TOTAL; i++) {
+      var el = document.getElementById(QID + '-q' + i);
+      if (!el) continue;
+      el.querySelectorAll('.quiz-opt').forEach(function(b){
+        b.classList.remove('correct', 'wrong', 'disabled');
+      });
+      var fb = document.getElementById(QID + '-fb' + i);
+      if (fb) { fb.className = 'quiz-feedback'; fb.textContent = ''; }
+      var nb = document.getElementById(QID + '-next' + i);
+      if (nb) nb.disabled = true;
+      el.classList.remove('active'); el.style.display = 'none';
+    }
+    var first = document.getElementById(QID + '-q0');
+    if (first) { first.style.display = 'block'; setTimeout(function(){ first.classList.add('active'); }, 20); }
+  };
+})();
+</script>
+
+
 <footer><div class="footer-inner">
   <span class="footer-logo">MindOnline</span>
   <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
