@@ -254,7 +254,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
 @media(max-width:900px){
   #cursor-dot,#cursor-ring,#cursor-text{display:none;}html{cursor:auto;}body *{cursor:auto!important;}
   header{padding:0 20px;}nav{display:none;}
-  nav.open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:40px 24px;align-items:flex-start;justify-content:center;border-top:1px solid var(--border);overflow-y:auto;z-index:800;}
+  nav.open{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:100px 24px 40px;align-items:flex-start;justify-content:center;border-top:1px solid var(--border);overflow-y:auto;z-index:9000;}
   nav.open .nav-link{font-family:var(--font-display);font-size:36px;letter-spacing:3px;text-transform:uppercase;color:var(--fg);padding:14px 0;border-bottom:1px solid var(--border);width:100%;}
   nav.open .nav-link::after{display:none;}nav.open .nav-link:hover{color:var(--gold);}
   .menu-toggle{display:flex;}
@@ -295,6 +295,8 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
   nav.open .nav-link{font-size:28px;}
   .section-wrap{padding:56px 16px;}header{padding:0 16px;}
 }
+
+body.menu-open{overflow:hidden;}
 </style>
 </head>
 <body>
@@ -698,12 +700,13 @@ const toggle=document.getElementById('menuToggle');
 const nav=document.getElementById('navMenu');
 toggle?.addEventListener('click',()=>{
   const open=nav.classList.toggle('open');
+  document.body.classList.toggle('menu-open',open);
   const spans=toggle.querySelectorAll('span');
   if(open){spans[0].style.transform='translateY(6px) rotate(45deg)';spans[1].style.opacity='0';spans[2].style.transform='translateY(-6px) rotate(-45deg)';}
   else{spans.forEach(s=>s.style.transform=s.style.opacity='');}
 });
 nav?.querySelectorAll('a').forEach(a=>{
-  a.addEventListener('click',()=>{nav.classList.remove('open');toggle?.querySelectorAll('span').forEach(s=>s.style.transform=s.style.opacity='');});
+  a.addEventListener('click',()=>{nav.classList.remove('open');document.body.classList.remove('menu-open');toggle?.querySelectorAll('span').forEach(s=>s.style.transform=s.style.opacity='');});
 });
 
 })();

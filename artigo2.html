@@ -43,7 +43,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
 .footer-copy,.footer-origin{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--dim);}
 @media(max-width:900px){
   header{padding:0 20px;}nav{display:none;}
-  nav.open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:40px 24px;align-items:flex-start;justify-content:center;border-top:1px solid var(--border);overflow-y:auto;z-index:800;}
+  nav.open{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:100px 24px 40px;align-items:flex-start;justify-content:center;border-top:1px solid var(--border);overflow-y:auto;z-index:9000;}
   nav.open .nav-link{font-family:var(--font-display);font-size:32px;letter-spacing:3px;text-transform:uppercase;color:var(--fg);padding:14px 0;border-bottom:1px solid var(--border);width:100%;}
   nav.open .nav-link::after{display:none;}
   .menu-toggle{display:flex;}
@@ -339,6 +339,8 @@ body::before{
 }
 .art-content h2.vin::before{height:70%;}
 
+
+body.menu-open{overflow:hidden;}
 </style>
 </head>
 <body>
@@ -1159,9 +1161,10 @@ const mTog=document.getElementById('mTog')||document.getElementById('menuToggle'
 const navMenu=document.getElementById('navMenu');
 mTog?.addEventListener('click',()=>{
   const open=navMenu.classList.toggle('open');
+  document.body.classList.toggle('menu-open',open);
   const s=mTog.querySelectorAll('span');
   if(open){s[0].style.transform='translateY(6px) rotate(45deg)';s[1].style.opacity='0';s[2].style.transform='translateY(-6px) rotate(-45deg)';}
-  else{s.forEach(x=>{x.style.transform='';x.style.opacity='';})}
+  else{s.forEach(x=>{x.style.transform='';x.style.opacity='';})};
 });
 navMenu?.querySelectorAll('a').forEach(a=>{
   a.addEventListener('click',()=>{navMenu.classList.remove('open');mTog?.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});});
