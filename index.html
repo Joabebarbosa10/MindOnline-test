@@ -109,207 +109,83 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 @keyframes fadeLeft{from{opacity:0;transform:translateX(40px);}to{opacity:1;transform:translateX(0);}}
 
 /* ── COMMUNITY CARD ── */
-/* wrapper so expansion pushes hero layout naturally */
-.community-card-wrap{position:relative;}
-
-.community-card{
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(145deg,rgba(18,16,10,.98) 0%,rgba(10,9,5,.99) 100%);
-  border:1px solid rgba(232,200,74,.22);
-  cursor:pointer;
-  /* glow shadow always present, subtle */
-  box-shadow:
-    0 0 0 0 rgba(232,200,74,0),
-    0 8px 40px rgba(0,0,0,.6),
-    inset 0 1px 0 rgba(232,200,74,.08);
-  transition:
-    border-color .6s cubic-bezier(.16,1,.3,1),
-    box-shadow .6s cubic-bezier(.16,1,.3,1),
-    transform .5s cubic-bezier(.16,1,.3,1);
-  transform-origin:top center;
-}
-
-/* rotating conic gradient border glow */
-.community-card::before{
-  content:'';
-  position:absolute;inset:-1px;
-  background:conic-gradient(
-    from var(--angle,0deg),
-    transparent 0deg,
-    rgba(232,200,74,.6) 60deg,
-    rgba(245,215,110,.8) 80deg,
-    rgba(232,200,74,.6) 100deg,
-    transparent 160deg
-  );
-  z-index:0;
-  border-radius:inherit;
-  opacity:0;
-  transition:opacity .5s;
-}
 @property --angle{syntax:'<angle>';initial-value:0deg;inherits:false;}
 @keyframes rotateBorder{to{--angle:360deg;}}
 
-.community-card:hover::before,
-.community-card.open::before{
-  opacity:1;
-  animation:rotateBorder 3s linear infinite;
+.community-card{
+  position:relative;overflow:hidden;
+  background:linear-gradient(145deg,rgba(16,14,8,.98) 0%,rgba(8,7,3,1) 100%);
+  border:1px solid rgba(232,200,74,.2);
+  cursor:pointer;
+  box-shadow:0 8px 40px rgba(0,0,0,.55),inset 0 1px 0 rgba(232,200,74,.07);
+  transition:border-color .55s cubic-bezier(.16,1,.3,1),box-shadow .55s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1);
 }
-
-/* inner mask to keep content visible over ::before */
-.community-card::after{
-  content:'';
-  position:absolute;inset:1px;
-  background:linear-gradient(145deg,rgba(18,16,10,.99) 0%,rgba(10,9,5,1) 100%);
-  z-index:1;
-  pointer-events:none;
+/* rotating conic border */
+.community-card::before{
+  content:'';position:absolute;inset:-1px;z-index:0;border-radius:inherit;
+  background:conic-gradient(from var(--angle,0deg),transparent 0deg,rgba(232,200,74,.55) 60deg,rgba(245,215,110,.75) 80deg,rgba(232,200,74,.55) 100deg,transparent 160deg);
+  opacity:0;transition:opacity .5s;
 }
+.community-card:hover::before,.community-card.open::before{opacity:1;animation:rotateBorder 3s linear infinite;}
+/* inner bg mask above ::before */
+.community-card::after{content:'';position:absolute;inset:1px;z-index:1;background:linear-gradient(145deg,rgba(16,14,8,.99) 0%,rgba(8,7,3,1) 100%);pointer-events:none;}
+/* all children above pseudo layers */
+.community-card>*{position:relative;z-index:2;}
 
-.community-card:hover{
-  border-color:rgba(232,200,74,.5);
-  box-shadow:
-    0 0 80px rgba(232,200,74,.14),
-    0 0 200px rgba(232,200,74,.06),
-    0 24px 80px rgba(0,0,0,.7),
-    inset 0 1px 0 rgba(232,200,74,.2);
-  transform:translateY(-3px);
-}
-.community-card.open{
-  border-color:rgba(232,200,74,.55);
-  box-shadow:
-    0 0 100px rgba(232,200,74,.18),
-    0 0 240px rgba(232,200,74,.08),
-    0 32px 100px rgba(0,0,0,.8),
-    inset 0 1px 0 rgba(232,200,74,.25);
-}
+.community-card:hover{border-color:rgba(232,200,74,.45);box-shadow:0 0 70px rgba(232,200,74,.12),0 24px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(232,200,74,.18);transform:translateY(-3px);}
+.community-card.open{border-color:rgba(232,200,74,.5);box-shadow:0 0 90px rgba(232,200,74,.16),0 32px 100px rgba(0,0,0,.75),inset 0 1px 0 rgba(232,200,74,.22);}
 
-/* all card content above the pseudo layers */
-.community-card > *{position:relative;z-index:2;}
+/* ambient orb */
+.cc-orb{position:absolute;z-index:1;width:260px;height:260px;background:radial-gradient(circle,rgba(232,200,74,.1) 0%,transparent 70%);border-radius:50%;top:-80px;right:-50px;filter:blur(40px);pointer-events:none;opacity:.55;transition:opacity .6s,transform .8s cubic-bezier(.16,1,.3,1);}
+.community-card:hover .cc-orb,.community-card.open .cc-orb{opacity:1;transform:scale(1.35);}
 
-/* ── TOP SECTION (always visible) ── */
-.cc-top{padding:32px 32px 28px;}
-
-/* ambient orb inside card */
-.cc-orb{
-  position:absolute;z-index:1;
-  width:280px;height:280px;
-  background:radial-gradient(circle,rgba(232,200,74,.09) 0%,transparent 70%);
-  border-radius:50%;
-  top:-80px;right:-60px;
-  filter:blur(40px);
-  pointer-events:none;
-  transition:opacity .6s,transform .8s cubic-bezier(.16,1,.3,1);
-  opacity:.6;
-}
-.community-card:hover .cc-orb,
-.community-card.open .cc-orb{opacity:1;transform:scale(1.3);}
-
-.cc-live{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;}
+/* top content */
+.cc-top{padding:32px 32px 24px;}
+.cc-live{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;}
 .cc-dot{width:7px;height:7px;border-radius:50%;background:#00e87a;box-shadow:0 0 10px #00e87a;animation:ccPulse 2s ease-in-out infinite;}
-@keyframes ccPulse{0%,100%{box-shadow:0 0 8px #00e87a;opacity:1;}50%{box-shadow:0 0 20px #00e87a,0 0 40px rgba(0,232,122,.3);opacity:.85;}}
-
-.cc-title{
-  font-family:var(--font-display);
-  font-size:clamp(34px,3.5vw,44px);
-  letter-spacing:3px;
-  line-height:.9;
-  margin-bottom:16px;
-  background:linear-gradient(135deg,#fff 40%,rgba(232,200,74,.9) 100%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  transition:background .4s;
-}
-.community-card.open .cc-title{
-  background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-}
-
+@keyframes ccPulse{0%,100%{box-shadow:0 0 8px #00e87a;opacity:1;}50%{box-shadow:0 0 20px #00e87a,0 0 36px rgba(0,232,122,.3);opacity:.85;}}
+.cc-title{font-family:var(--font-display);font-size:clamp(32px,3.2vw,42px);letter-spacing:3px;line-height:.9;margin-bottom:14px;background:linear-gradient(135deg,#fff 40%,rgba(232,200,74,.85) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transition:all .4s;}
+.community-card.open .cc-title{background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);-webkit-background-clip:text;background-clip:text;}
 .cc-desc{font-size:13px;color:var(--dim);line-height:1.75;margin-bottom:0;}
 
-/* expand hint bar */
-.cc-hint{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 32px;
-  border-top:1px solid rgba(232,200,74,.08);
-  font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;
-  color:rgba(232,200,74,.35);
-  transition:color .3s,border-color .3s,background .3s;
-}
-.community-card:hover .cc-hint{color:rgba(232,200,74,.6);border-color:rgba(232,200,74,.15);background:rgba(232,200,74,.02);}
-.community-card.open .cc-hint{color:var(--gold);border-color:rgba(232,200,74,.25);background:rgba(232,200,74,.04);}
-.cc-hint-icon{
-  width:24px;height:24px;border:1px solid currentColor;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:12px;
-  transition:transform .45s cubic-bezier(.16,1,.3,1),border-color .3s;
-}
+/* hint / toggle bar */
+.cc-hint{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-top:1px solid rgba(232,200,74,.07);font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(232,200,74,.32);transition:color .3s,border-color .3s,background .3s;}
+.community-card:hover .cc-hint{color:rgba(232,200,74,.6);border-color:rgba(232,200,74,.14);background:rgba(232,200,74,.02);}
+.community-card.open .cc-hint{color:var(--gold);border-color:rgba(232,200,74,.22);background:rgba(232,200,74,.04);}
+.cc-hint-icon{width:22px;height:22px;border:1px solid currentColor;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;transition:transform .45s cubic-bezier(.16,1,.3,1);}
 .community-card.open .cc-hint-icon{transform:rotate(180deg);}
 
-/* ── EXPAND PANEL ── */
-.cc-body{
-  display:grid;
-  grid-template-rows:0fr;
-  transition:grid-template-rows .65s cubic-bezier(.16,1,.3,1);
-}
+/* expand panel — grid trick for smooth real expansion */
+.cc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .65s cubic-bezier(.16,1,.3,1);}
 .community-card.open .cc-body{grid-template-rows:1fr;}
 .cc-body-inner{overflow:hidden;}
+.cc-expand{padding:0 32px 32px;border-top:1px solid rgba(232,200,74,.1);}
 
-.cc-expand{
-  padding:0 32px 32px;
-  border-top:1px solid rgba(232,200,74,.1);
-}
-
-/* stats grid */
-.cc-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(232,200,74,.07);margin:24px 0;}
-.cc-stat{
-  background:rgba(10,9,5,.98);
-  padding:20px 20px 16px;
-  transition:background .3s;
-  position:relative;overflow:hidden;
-}
+/* stats */
+.cc-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(232,200,74,.07);margin:24px 0 20px;}
+.cc-stat{background:rgba(8,7,3,.98);padding:18px 18px 14px;transition:background .3s;position:relative;overflow:hidden;}
 .cc-stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1);}
 .cc-stat:hover::after{transform:scaleX(1);}
 .cc-stat:hover{background:rgba(232,200,74,.04);}
-.cc-stat-n{font-family:var(--font-display);font-size:32px;letter-spacing:1px;color:var(--gold);line-height:1;display:block;margin-bottom:4px;}
+.cc-stat-n{font-family:var(--font-display);font-size:28px;letter-spacing:1px;color:var(--gold);line-height:1;display:block;margin-bottom:4px;}
 .cc-stat-l{font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);}
 
-/* features list */
-.cc-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
-.cc-feature{display:flex;align-items:flex-start;gap:12px;font-size:12px;color:var(--dim);line-height:1.5;}
-.cc-feature-icon{width:18px;height:18px;border:1px solid rgba(232,200,74,.25);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--gold);flex-shrink:0;margin-top:1px;}
+/* features */
+.cc-features{display:flex;flex-direction:column;gap:9px;margin-bottom:24px;}
+.cc-feature{display:flex;align-items:flex-start;gap:12px;font-size:12px;color:var(--dim);line-height:1.55;}
+.cc-feature-icon{width:17px;height:17px;border:1px solid rgba(232,200,74,.22);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--gold);flex-shrink:0;margin-top:1px;}
 
-/* CTA button */
-.cc-cta{
-  display:flex;align-items:center;justify-content:space-between;
-  background:var(--gold);
-  color:#000;
-  padding:18px 24px;
-  text-decoration:none;
-  font-family:var(--font-display);
-  font-size:18px;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  position:relative;overflow:hidden;
-  transition:box-shadow .4s,letter-spacing .3s;
-}
-.cc-cta::before{
-  content:'';position:absolute;inset:0;
-  background:rgba(255,255,255,.22);
-  transform:translateX(-110%) skewX(-15deg);
-  transition:transform .5s cubic-bezier(.16,1,.3,1);
-}
+/* CTA */
+.cc-cta{display:flex;align-items:center;justify-content:space-between;background:var(--gold);color:#000;padding:17px 22px;text-decoration:none;font-family:var(--font-display);font-size:17px;letter-spacing:3px;text-transform:uppercase;position:relative;overflow:hidden;transition:box-shadow .4s,letter-spacing .3s;}
+.cc-cta::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.22);transform:translateX(-110%) skewX(-15deg);transition:transform .5s cubic-bezier(.16,1,.3,1);}
 .cc-cta:hover::before{transform:translateX(110%) skewX(-15deg);}
-.cc-cta:hover{box-shadow:0 0 60px rgba(232,200,74,.5),0 20px 60px rgba(232,200,74,.2);letter-spacing:4px;}
+.cc-cta:hover{box-shadow:0 0 50px rgba(232,200,74,.45),0 16px 50px rgba(232,200,74,.18);letter-spacing:4px;}
 .cc-cta svg{transition:transform .35s cubic-bezier(.16,1,.3,1);}
 .cc-cta:hover svg{transform:translate(5px,-5px);}
 
-/* ── MOBILE ── */
 @media(max-width:900px){
-  .cc-top{padding:24px 24px 20px;}
-  .cc-hint{padding:14px 24px;}
-  .cc-expand{padding:0 24px 24px;}
-  .cc-title{font-size:30px;}
+  .cc-top{padding:22px 22px 18px;}.cc-hint{padding:13px 22px;}
+  .cc-expand{padding:0 22px 22px;}.cc-title{font-size:28px;}
 }
 
 /* hero scroll indicator */
@@ -393,6 +269,43 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 .dica-item:hover .dica-arrow{color:var(--gold);transform:translate(6px,-6px);}
 .dica-item.destaque{background:rgba(232,200,74,.03);border-top:1px solid rgba(232,200,74,.1);}
 .dica-item.destaque .dica-n{color:rgba(232,200,74,.28);}
+
+/* ── DICA ACCORDION ── */
+.dica-item{cursor:pointer;}
+/* arrow rotates on open */
+.dica-item .dica-arrow{transition:color .3s,transform .4s cubic-bezier(.16,1,.3,1);}
+.dica-item.open .dica-arrow{color:var(--gold);transform:rotate(45deg);}
+.dica-item.open{background:rgba(232,200,74,.03);padding-left:52px;}
+.dica-item.open::before{transform:scaleY(1);}
+.dica-item.open .dica-title{color:var(--gold);}
+.dica-item.open .dica-n{color:rgba(232,200,74,.28);}
+
+/* expand panel — hidden via grid trick */
+.dica-expand{
+  grid-column:2/3;
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows .55s cubic-bezier(.16,1,.3,1);
+}
+.dica-item.open .dica-expand{grid-template-rows:1fr;}
+.dica-expand-inner{
+  overflow:hidden;
+}
+.dica-expand-body{
+  padding:18px 0 4px;
+  border-top:1px solid rgba(232,200,74,.1);
+  margin-top:12px;
+}
+.dica-expand-text{font-size:14px;color:var(--dim);line-height:1.85;margin-bottom:14px;}
+.dica-expand-text strong{color:var(--fg);font-weight:500;}
+.dica-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.dica-tag{font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(232,200,74,.2);padding:3px 10px;}
+.dica-stat{font-family:var(--font-mono);font-size:10px;letter-spacing:.5px;color:rgba(240,237,230,.3);font-style:italic;padding-top:4px;border-top:1px solid var(--border);}
+
+@media(max-width:900px){
+  .dica-expand{grid-column:2/3;}
+  .dica-item.open{padding-left:20px;}
+}
 
 /* ── CONTATO ── */
 .contato-section{border-top:1px solid var(--border);}
@@ -535,43 +448,37 @@ body.menu-open{overflow:hidden;}
       </div>
     </div>
     <div class="hero-right">
-      <div class="community-card-wrap">
-        <div class="community-card" id="communityCard">
-          <div class="cc-orb"></div>
-
-          <div class="cc-top">
-            <div class="cc-live"><span class="cc-dot"></span>Comunidade ativa agora</div>
-            <h2 class="cc-title">Mind<br>Online<br>Community</h2>
-            <p class="cc-desc">O espaço onde alunos debatem comunicação ética, compartilham aprendizados e constroem juntos a internet que querem ver.</p>
-          </div>
-
-          <div class="cc-hint" id="ccHint">
-            <span>Conheça a comunidade</span>
-            <span class="cc-hint-icon">&#8964;</span>
-          </div>
-
-          <div class="cc-body">
-            <div class="cc-body-inner">
-              <div class="cc-expand">
-                <div class="cc-stats">
-                  <div class="cc-stat"><span class="cc-stat-n">24/7</span><span class="cc-stat-l">Sempre ativa</span></div>
-                  <div class="cc-stat"><span class="cc-stat-n">100%</span><span class="cc-stat-l">Gratuita</span></div>
-                  <div class="cc-stat"><span class="cc-stat-n">real</span><span class="cc-stat-l">Conteúdo</span></div>
-                  <div class="cc-stat"><span class="cc-stat-n">ético</span><span class="cc-stat-l">Ambiente</span></div>
-                </div>
-                <div class="cc-features">
-                  <div class="cc-feature"><span class="cc-feature-icon">✦</span><span>Debates sobre fake news, privacidade e comportamento digital</span></div>
-                  <div class="cc-feature"><span class="cc-feature-icon">✦</span><span>Espaço seguro moderado por alunos e professores</span></div>
-                  <div class="cc-feature"><span class="cc-feature-icon">✦</span><span>Publicações, artigos e reflexões da comunidade escolar</span></div>
-                </div>
-                <a href="https://mind-online-community.vercel.app" target="_blank" class="cc-cta" id="ccCta">
-                  Entrar na comunidade
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                </a>
+      <div class="community-card" id="communityCard">
+        <div class="cc-orb"></div>
+        <div class="cc-top">
+          <div class="cc-live"><span class="cc-dot"></span>Comunidade ativa agora</div>
+          <h2 class="cc-title">Mind<br>Online<br>Community</h2>
+          <p class="cc-desc">O espaço onde alunos debatem comunicação ética, compartilham aprendizados e constroem juntos a internet que querem ver.</p>
+        </div>
+        <div class="cc-hint">
+          <span>Conheça a comunidade</span>
+          <span class="cc-hint-icon">&#8964;</span>
+        </div>
+        <div class="cc-body">
+          <div class="cc-body-inner">
+            <div class="cc-expand">
+              <div class="cc-stats">
+                <div class="cc-stat"><span class="cc-stat-n">24/7</span><span class="cc-stat-l">Sempre ativa</span></div>
+                <div class="cc-stat"><span class="cc-stat-n">100%</span><span class="cc-stat-l">Gratuita</span></div>
+                <div class="cc-stat"><span class="cc-stat-n">real</span><span class="cc-stat-l">Conteúdo</span></div>
+                <div class="cc-stat"><span class="cc-stat-n">ético</span><span class="cc-stat-l">Ambiente</span></div>
               </div>
+              <div class="cc-features">
+                <div class="cc-feature"><span class="cc-feature-icon">✦</span><span>Debates sobre fake news, privacidade e comportamento digital</span></div>
+                <div class="cc-feature"><span class="cc-feature-icon">✦</span><span>Espaço seguro moderado por alunos e professores</span></div>
+                <div class="cc-feature"><span class="cc-feature-icon">✦</span><span>Publicações, artigos e reflexões da comunidade escolar</span></div>
+              </div>
+              <a href="https://mind-online-community.vercel.app" target="_blank" class="cc-cta" id="ccCta">
+                Entrar na comunidade
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+              </a>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -640,16 +547,176 @@ body.menu-open{overflow:hidden;}
       <p class="dicas-intro rv rv-d2">Usar as redes sociais de forma consciente não significa usá-las menos. Significa usá-las <strong>melhor</strong>. Cada escolha que você faz online molda o ambiente digital que todos compartilhamos.</p>
     </div>
     <div class="dicas-list">
-      <div class="dica-item rv rv-d1"><span class="dica-n">01</span><div class="dica-content"><h3 class="dica-title">Pense antes de postar</h3><p class="dica-text">Antes de publicar, pergunte: isso é verdadeiro? É necessário? Pode machucar alguém? Uma publicação dura segundos para sair e pode durar anos na memória de quem vê.</p></div><span class="dica-arrow">↗</span></div>
-      <div class="dica-item rv rv-d2"><span class="dica-n">02</span><div class="dica-content"><h3 class="dica-title">Verifique antes de compartilhar</h3><p class="dica-text">Notícias falsas se espalham muito mais rápido do que as verdadeiras. Antes de compartilhar qualquer informação, confirme a fonte.</p></div><span class="dica-arrow">↗</span></div>
-      <div class="dica-item rv rv-d3"><span class="dica-n">03</span><div class="dica-content"><h3 class="dica-title">Respeite as diferenças</h3><p class="dica-text">A internet reúne pessoas de culturas e opiniões completamente diferentes. Discordar é normal. Desrespeitar não é. Critique ideias, nunca pessoas.</p></div><span class="dica-arrow">↗</span></div>
-      <div class="dica-item rv rv-d1"><span class="dica-n">04</span><div class="dica-content"><h3 class="dica-title">Proteja sua privacidade</h3><p class="dica-text">Não compartilhe endereço, rotina, dados pessoais ou informações de familiares publicamente. O que parece inofensivo pode ser usado de forma errada.</p></div><span class="dica-arrow">↗</span></div>
-      <div class="dica-item rv rv-d2"><span class="dica-n">05</span><div class="dica-content"><h3 class="dica-title">Cuidado com o tempo de tela</h3><p class="dica-text">As redes sociais são projetadas para prender sua atenção. Defina horários, faça pausas e observe como você se sente depois de usar cada plataforma.</p></div><span class="dica-arrow">↗</span></div>
-      <div class="dica-item rv rv-d3"><span class="dica-n">06</span><div class="dica-content"><h3 class="dica-title">Não alimente conflitos</h3><p class="dica-text">Comentários agressivos existem para provocar reação. Ignorar é mais poderoso do que responder. Você não precisa vencer todas as discussões online.</p></div><span class="dica-arrow">↗</span></div>
-      <div class="dica-item rv rv-d1"><span class="dica-n">07</span><div class="dica-content"><h3 class="dica-title">Use as configurações de privacidade</h3><p class="dica-text">Revise quem pode ver suas publicações, quem pode te marcar e quais dados você compartilha com os aplicativos.</p></div><span class="dica-arrow">↗</span></div>
-      <div class="dica-item rv rv-d2"><span class="dica-n">08</span><div class="dica-content"><h3 class="dica-title">Denuncie conteúdos prejudiciais</h3><p class="dica-text">Hate speech, assédio, desinformação e conteúdo impróprio podem e devem ser denunciados. Denunciar é um ato de responsabilidade coletiva.</p></div><span class="dica-arrow">↗</span></div>
-      <div class="dica-item rv rv-d3"><span class="dica-n">09</span><div class="dica-content"><h3 class="dica-title">Existe uma pessoa do outro lado</h3><p class="dica-text">Por trás de cada perfil há um ser humano com sentimentos. Uma mensagem que parece engraçada pra quem envia pode ser devastadora pra quem recebe.</p></div><span class="dica-arrow">↗</span></div>
-      <div class="dica-item destaque rv rv-d1"><span class="dica-n">10</span><div class="dica-content"><h3 class="dica-title">Seja o usuário que você quer encontrar</h3><p class="dica-text">A internet que queremos começa com o comportamento de cada um. Poste com intenção, interaja com empatia e contribua para um ambiente mais saudável para todos.</p></div><span class="dica-arrow">↗</span></div>
+      <div class="dica-item rv rv-d1">
+        <span class="dica-n">01</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Pense antes de postar</h3>
+          <p class="dica-text">Antes de publicar, pergunte: isso é verdadeiro? É necessário? Pode machucar alguém? Uma publicação dura segundos para sair e pode durar anos na memória de quem vê.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text">Antes de publicar qualquer coisa, faça três perguntas simples: isso é <strong>verdadeiro</strong>? É <strong>necessário</strong>? Pode <strong>machucar alguém</strong>? Uma publicação leva segundos para sair e pode ficar na memória de quem viu por anos. O anonimato digital não apaga a responsabilidade — suas palavras têm peso, mesmo atrás de uma tela.</p>
+                <div class="dica-tags"><span class="dica-tag">Responsabilidade</span><span class="dica-tag">Reflexão</span><span class="dica-tag">Impacto</span></div>
+                <p class="dica-stat">"Pesquisas mostram que 60% das pessoas se arrependem de pelo menos uma publicação online."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
+      <div class="dica-item rv rv-d2">
+        <span class="dica-n">02</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Verifique antes de compartilhar</h3>
+          <p class="dica-text">Notícias falsas se espalham muito mais rápido do que as verdadeiras. Antes de compartilhar qualquer informação, confirme a fonte.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text">Notícias falsas se espalham muito mais rápido do que as verdadeiras. Antes de compartilhar qualquer informação, <strong>confirme a fonte</strong> em pelo menos dois veículos confiáveis. Desconfie de manchetes exageradas, emojis em excesso e links suspeitos. Checagem de fatos não é burocracia — é respeito com quem vai ler.</p>
+                <div class="dica-tags"><span class="dica-tag">Fake News</span><span class="dica-tag">Verificação</span><span class="dica-tag">Fontes</span></div>
+                <p class="dica-stat">"Um estudo do MIT verificou que fake news chegam a 1.500 pessoas 6× mais rápido que notícias verdadeiras."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
+      <div class="dica-item rv rv-d3">
+        <span class="dica-n">03</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Respeite as diferenças</h3>
+          <p class="dica-text">A internet reúne pessoas de culturas e opiniões completamente diferentes. Discordar é normal. Desrespeitar não é. Critique ideias, nunca pessoas.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text">A internet reúne pessoas de <strong>culturas, crenças e opiniões completamente diferentes</strong>. Discordar é saudável e necessário. O problema está em confundir discordância com ataque pessoal. Critique ideias com argumentos — nunca a pessoa por trás delas. A empatia digital constrói espaços onde todos podem se expressar com segurança.</p>
+                <div class="dica-tags"><span class="dica-tag">Empatia</span><span class="dica-tag">Diversidade</span><span class="dica-tag">Debate</span></div>
+                <p class="dica-stat">"Ambientes digitais respeitosos aumentam em 3× a qualidade das trocas e discussões online."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
+      <div class="dica-item rv rv-d1">
+        <span class="dica-n">04</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Proteja sua privacidade</h3>
+          <p class="dica-text">Não compartilhe endereço, rotina, dados pessoais ou informações de familiares publicamente. O que parece inofensivo pode ser usado de forma errada.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text">Não compartilhe <strong>endereço, rotina diária, dados de familiares ou documentos</strong> publicamente. O que parece inofensivo isoladamente pode ser combinado para criar um perfil seu sem permissão. Revise as configurações de privacidade de todas as suas redes e pense duas vezes antes de aceitar termos de serviço sem lê-los.</p>
+                <div class="dica-tags"><span class="dica-tag">Privacidade</span><span class="dica-tag">Segurança</span><span class="dica-tag">Dados</span></div>
+                <p class="dica-stat">"73% dos casos de assédio online começam com informações que a própria vítima tornou públicas."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
+      <div class="dica-item rv rv-d2">
+        <span class="dica-n">05</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Cuidado com o tempo de tela</h3>
+          <p class="dica-text">As redes sociais são projetadas para prender sua atenção. Defina horários, faça pausas e observe como você se sente depois de usar cada plataforma.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text">Redes sociais usam algoritmos de <strong>dopamina e recompensa variável</strong> — os mesmos mecanismos das máquinas caça-níqueis — para manter você rolando a tela. Defina horários de uso, use os recursos de bem-estar digital do seu celular e observe como você se sente após cada sessão. Pausas conscientes recarregam a mente.</p>
+                <div class="dica-tags"><span class="dica-tag">Saúde Mental</span><span class="dica-tag">Vício Digital</span><span class="dica-tag">Bem-estar</span></div>
+                <p class="dica-stat">"Usuários que controlam o tempo de tela relatam 40% menos ansiedade e melhor qualidade de sono."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
+      <div class="dica-item rv rv-d3">
+        <span class="dica-n">06</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Não alimente conflitos</h3>
+          <p class="dica-text">Comentários agressivos existem para provocar reação. Ignorar é mais poderoso do que responder. Você não precisa vencer todas as discussões online.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text">Comentários agressivos e provocações existem para gerar <strong>reação emocional</strong>. Ao responder no calor do momento, você alimenta o conflito e dá visibilidade a quem só quer causar. Respire, afaste-se da tela por alguns minutos e decida se essa discussão realmente merece sua energia. Silêncio estratégico é força, não fraqueza.</p>
+                <div class="dica-tags"><span class="dica-tag">Conflito</span><span class="dica-tag">Trolling</span><span class="dica-tag">Autocontrole</span></div>
+                <p class="dica-stat">"Responder a provocações online aumenta em 80% a probabilidade de escalonamento do conflito."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
+      <div class="dica-item rv rv-d1">
+        <span class="dica-n">07</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Use as configurações de privacidade</h3>
+          <p class="dica-text">Revise quem pode ver suas publicações, quem pode te marcar e quais dados você compartilha com os aplicativos.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text">A maioria das plataformas configura a privacidade no modo <strong>mais aberto por padrão</strong>. Revise regularmente quem pode ver suas publicações, quem pode te marcar em fotos, quais apps têm acesso ao seu perfil e quais dados você compartilha. Fazer isso uma vez por trimestre é um hábito de segurança digital essencial.</p>
+                <div class="dica-tags"><span class="dica-tag">Configurações</span><span class="dica-tag">Redes Sociais</span><span class="dica-tag">Controle</span></div>
+                <p class="dica-stat">"Apenas 22% dos usuários já revisaram as configurações completas de privacidade de suas redes."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
+      <div class="dica-item rv rv-d2">
+        <span class="dica-n">08</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Denuncie conteúdos prejudiciais</h3>
+          <p class="dica-text">Hate speech, assédio, desinformação e conteúdo impróprio podem e devem ser denunciados. Denunciar é um ato de responsabilidade coletiva.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text"><strong>Discurso de ódio, assédio, desinformação e conteúdo impróprio</strong> podem e devem ser denunciados nas plataformas. Não se trata de censura — trata-se de responsabilidade coletiva pelo ambiente que todos compartilhamos. Ao denunciar, você protege não só a si mesmo, mas outras pessoas que podem ser afetadas pelo mesmo conteúdo.</p>
+                <div class="dica-tags"><span class="dica-tag">Denúncia</span><span class="dica-tag">Segurança</span><span class="dica-tag">Coletivo</span></div>
+                <p class="dica-stat">"Plataformas removem 4× mais conteúdo prejudicial quando usuários denunciam ativamente."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
+      <div class="dica-item rv rv-d3">
+        <span class="dica-n">09</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Existe uma pessoa do outro lado</h3>
+          <p class="dica-text">Por trás de cada perfil há um ser humano com sentimentos. Uma mensagem que parece engraçada pra quem envia pode ser devastadora pra quem recebe.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text">A frieza das telas cria uma ilusão de distância que pode anestesiar nossa empatia. Por trás de cada arroba há um <strong>ser humano com sentimentos, histórias e vulnerabilidades</strong>. Uma mensagem que parece engraçada para quem envia pode ser devastadora para quem recebe. Humanize antes de digitar.</p>
+                <div class="dica-tags"><span class="dica-tag">Empatia</span><span class="dica-tag">Humanização</span><span class="dica-tag">Cyberbullying</span></div>
+                <p class="dica-stat">"1 em cada 3 jovens já sofreu alguma forma de assédio ou bullying online."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
+      <div class="dica-item destaque rv rv-d1">
+        <span class="dica-n">10</span>
+        <div class="dica-content">
+          <h3 class="dica-title">Seja o usuário que você quer encontrar</h3>
+          <p class="dica-text">A internet que queremos começa com o comportamento de cada um. Poste com intenção, interaja com empatia e contribua para um ambiente mais saudável para todos.</p>
+          <div class="dica-expand">
+            <div class="dica-expand-inner">
+              <div class="dica-expand-body">
+                <p class="dica-expand-text">Pense no tipo de ambiente digital que você gostaria de encontrar: respeitoso, informativo, acolhedor, criativo. <strong>Esse ambiente começa com você.</strong> Cada postagem com intenção, cada comentário com empatia, cada compartilhamento verificado é um tijolo na construção da internet que queremos. Você tem esse poder agora.</p>
+                <div class="dica-tags"><span class="dica-tag">Impacto Coletivo</span><span class="dica-tag">Responsabilidade</span><span class="dica-tag">Transformação</span></div>
+                <p class="dica-stat">"Comportamentos positivos online se propagam — um usuário consciente influencia em média 8 outros."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="dica-arrow">↗</span>
+      </div>
     </div>
   </div>
 </section>
@@ -819,28 +886,39 @@ window.addEventListener('scroll',()=>{
   prog.style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
 },{passive:true});
 
+/* ── DICA ACCORDION ── */
+document.querySelectorAll('.dica-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.dica-item.open').forEach(el=>el.classList.remove('open'));
+    if(!isOpen){
+      item.classList.add('open');
+      setTimeout(()=>{
+        const r = item.getBoundingClientRect();
+        if(r.bottom > window.innerHeight - 40)
+          item.scrollIntoView({behavior:'smooth',block:'nearest'});
+      },100);
+    }
+  });
+});
+
 /* ── COMMUNITY CARD ── */
 (function(){
   const card = document.getElementById('communityCard');
   if(!card) return;
-
-  // Toggle open on click anywhere except the CTA link
   card.addEventListener('click', e=>{
     if(e.target.closest('#ccCta')) return;
     card.classList.toggle('open');
   });
-
-  // Subtle idle "breathing" glow animation when not open
-  let glowDir = 1, glowVal = 0;
+  // breathing glow
+  let t=0;
   (function breathe(){
-    glowVal += 0.008 * glowDir;
-    if(glowVal >= 1) glowDir = -1;
-    if(glowVal <= 0) glowDir = 1;
+    t+=0.012;
     if(!card.classList.contains('open') && !card.matches(':hover')){
-      card.style.boxShadow = `0 0 ${30 + glowVal*30}px rgba(232,200,74,${0.04 + glowVal*0.04}), 0 8px 40px rgba(0,0,0,.6), inset 0 1px 0 rgba(232,200,74,.08)`;
-    } else {
-      card.style.boxShadow = '';
-    }
+      const g = 0.04 + Math.sin(t)*0.03;
+      const s = 28 + Math.sin(t)*14;
+      card.style.boxShadow=`0 0 ${s}px rgba(232,200,74,${g}),0 8px 40px rgba(0,0,0,.55),inset 0 1px 0 rgba(232,200,74,.07)`;
+    } else { card.style.boxShadow=''; }
     requestAnimationFrame(breathe);
   })();
 })();
