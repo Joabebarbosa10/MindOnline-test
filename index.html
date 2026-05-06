@@ -404,6 +404,223 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40
 }
 
 body.menu-open{overflow:hidden;position:fixed;width:100%;}
+
+/* ── AI CHAT ── */
+@property --ai-angle{syntax:'<angle>';initial-value:0deg;inherits:false;}
+@keyframes aiRotateBorder{to{--ai-angle:360deg;}}
+@keyframes aiOrb{0%,100%{transform:translate(0,0) scale(1);opacity:.7;}50%{transform:translate(-20px,20px) scale(1.15);opacity:1;}}
+@keyframes aiGlow{0%,100%{box-shadow:0 0 40px rgba(232,200,74,.15),0 0 0 1px rgba(232,200,74,.25);}50%{box-shadow:0 0 80px rgba(232,200,74,.28),0 0 0 1px rgba(232,200,74,.45);}}
+
+.ai-chat-outer{
+  position:relative;
+  padding:2px; /* border gap */
+  background:conic-gradient(from var(--ai-angle,0deg),
+    transparent 0deg,
+    rgba(232,200,74,.6) 60deg,
+    rgba(245,215,110,.9) 80deg,
+    rgba(232,200,74,.6) 100deg,
+    transparent 160deg);
+  animation:aiRotateBorder 4s linear infinite, aiGlow 3s ease-in-out infinite;
+}
+.ai-chat-outer::before{
+  content:'';position:absolute;inset:2px;z-index:0;
+  background:var(--bg);
+  pointer-events:none;
+}
+
+.ai-chat-wrap{
+  display:flex;flex-direction:column;
+  background:linear-gradient(160deg,rgba(18,15,6,.99) 0%,rgba(8,7,3,1) 100%);
+  height:560px;
+  position:relative;
+  overflow:hidden;
+  z-index:1;
+}
+
+/* big ambient orb */
+.ai-chat-wrap::before{
+  content:'';position:absolute;
+  width:400px;height:400px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(232,200,74,.13) 0%,transparent 70%);
+  top:-120px;right:-80px;
+  filter:blur(60px);
+  pointer-events:none;
+  animation:aiOrb 8s ease-in-out infinite;
+}
+/* bottom orb */
+.ai-chat-wrap::after{
+  content:'';position:absolute;
+  width:260px;height:260px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(232,200,74,.07) 0%,transparent 70%);
+  bottom:-80px;left:-40px;
+  filter:blur(40px);
+  pointer-events:none;
+}
+
+/* hero header */
+.ai-chat-header{
+  display:flex;flex-direction:column;
+  padding:28px 28px 24px;
+  border-bottom:1px solid rgba(232,200,74,.12);
+  flex-shrink:0;
+  position:relative;
+  background:linear-gradient(180deg,rgba(232,200,74,.04) 0%,transparent 100%);
+}
+.ai-chat-header-top{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+}
+.ai-chat-status{display:flex;align-items:center;gap:10px;}
+.ai-status-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:#00e87a;box-shadow:0 0 14px #00e87a;
+  animation:ccPulse 2s ease-in-out infinite;
+  flex-shrink:0;
+}
+.ai-chat-badge{
+  font-family:var(--font-mono);font-size:8px;letter-spacing:3px;
+  text-transform:uppercase;color:rgba(232,200,74,.55);
+  border:1px solid rgba(232,200,74,.2);
+  padding:3px 10px;
+}
+.ai-chat-title{
+  font-family:var(--font-display);
+  font-size:clamp(28px,3.5vw,40px);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  line-height:.95;
+  background:linear-gradient(135deg,#fff 30%,rgba(232,200,74,.9) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.ai-chat-subtitle{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(240,237,230,.28);
+  margin-top:6px;
+}
+
+.ai-chat-messages{
+  flex:1;overflow-y:auto;padding:24px 24px 16px;
+  display:flex;flex-direction:column;gap:16px;
+  scroll-behavior:smooth;
+}
+.ai-chat-messages::-webkit-scrollbar{width:2px;}
+.ai-chat-messages::-webkit-scrollbar-thumb{background:rgba(232,200,74,.3);}
+
+.ai-msg{display:flex;align-items:flex-start;gap:12px;}
+.ai-msg-bot{flex-direction:row;}
+.ai-msg-user{flex-direction:row-reverse;}
+
+.ai-msg-icon{
+  width:28px;height:28px;
+  border:1px solid rgba(232,200,74,.3);
+  background:rgba(232,200,74,.06);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--gold);flex-shrink:0;margin-top:2px;
+  transition:background .3s,border-color .3s;
+}
+.ai-msg-bot:hover .ai-msg-icon{background:rgba(232,200,74,.12);border-color:rgba(232,200,74,.5);}
+
+.ai-msg-bubble{
+  font-size:13.5px;line-height:1.8;
+  padding:14px 18px;
+  max-width:88%;
+  position:relative;
+}
+.ai-msg-bot .ai-msg-bubble{
+  background:rgba(240,237,230,.03);
+  border:1px solid rgba(240,237,230,.08);
+  color:rgba(240,237,230,.75);
+  border-left:2px solid rgba(232,200,74,.3);
+}
+.ai-msg-user .ai-msg-bubble{
+  background:linear-gradient(135deg,rgba(232,200,74,.1) 0%,rgba(232,200,74,.05) 100%);
+  border:1px solid rgba(232,200,74,.25);
+  color:var(--fg);
+  border-right:2px solid var(--gold);
+}
+
+/* typing indicator */
+.ai-typing{display:flex;align-items:center;gap:6px;padding:14px 18px;}
+.ai-typing span{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);opacity:.4;
+  animation:aiTyping 1.2s ease-in-out infinite;
+}
+.ai-typing span:nth-child(2){animation-delay:.2s;}
+.ai-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes aiTyping{0%,100%{opacity:.25;transform:translateY(0);}50%{opacity:1;transform:translateY(-5px);}}
+
+/* input area */
+.ai-chat-input-wrap{
+  display:flex;align-items:flex-end;gap:0;
+  border-top:1px solid rgba(232,200,74,.12);
+  flex-shrink:0;
+  background:rgba(232,200,74,.015);
+}
+.ai-chat-input{
+  flex:1;
+  background:transparent;
+  border:none;
+  color:var(--fg);
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:300;
+  padding:18px 22px;
+  outline:none;
+  resize:none;
+  line-height:1.6;
+  max-height:120px;
+  overflow-y:auto;
+}
+.ai-chat-input::placeholder{color:rgba(240,237,230,.18);}
+
+.ai-chat-send{
+  width:58px;height:58px;min-width:58px;
+  background:var(--gold);
+  border:none;
+  color:#000;
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;
+  transition:background .25s,box-shadow .3s;
+  flex-shrink:0;align-self:flex-end;
+  position:relative;overflow:hidden;
+}
+.ai-chat-send::before{
+  content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,.22);
+  transform:translateX(-110%) skewX(-15deg);
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.ai-chat-send:hover::before{transform:translateX(110%) skewX(-15deg);}
+.ai-chat-send:hover{background:var(--gold2);box-shadow:0 0 40px rgba(232,200,74,.5);}
+.ai-chat-send:disabled{background:rgba(232,200,74,.2);cursor:not-allowed;}
+.ai-chat-send:disabled::before{display:none;}
+.ai-chat-send svg{transition:transform .25s;position:relative;z-index:1;}
+.ai-chat-send:not(:disabled):hover svg{transform:translate(2px,-2px);}
+
+/* hint pills */
+.ai-chat-hints{
+  display:flex;flex-wrap:wrap;gap:6px;
+  padding:12px 24px 0;
+  flex-shrink:0;
+}
+.ai-hint-pill{
+  font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:rgba(232,200,74,.5);
+  border:1px solid rgba(232,200,74,.15);
+  padding:5px 12px;
+  cursor:none;
+  transition:color .25s,border-color .25s,background .25s;
+  background:transparent;
+}
+.ai-hint-pill:hover{
+  color:var(--gold);
+  border-color:rgba(232,200,74,.4);
+  background:rgba(232,200,74,.05);
+}
 </style>
 </head>
 <body>
@@ -745,21 +962,38 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
         </div>
       </div>
       <div class="rv rv-d2">
-        <div class="form-wrap">
-          <div class="form-row">
-            <div class="fg"><label for="nome">Seu Nome *</label><input type="text" id="nome" name="nome" placeholder="Nome completo" required></div>
-            <div class="fg"><label for="telefone">Telefone</label><input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000"></div>
-          </div>
-          <div class="fg" style="margin-top:2px"><label for="email">E-mail *</label><input type="email" id="email" name="email" placeholder="seu@email.com" required></div>
-          <div class="radio-wrap">
-            <span class="radio-label-top">Deseja receber nossas novidades?</span>
-            <div class="radio-opts">
-              <label><input type="radio" name="novidades" value="sim" checked> Sim</label>
-              <label><input type="radio" name="novidades" value="nao"> Não</label>
+        <!-- AI CHAT -->
+        <div class="ai-chat-outer">
+          <div class="ai-chat-wrap">
+            <div class="ai-chat-header">
+              <div class="ai-chat-header-top">
+                <div class="ai-chat-status">
+                  <span class="ai-status-dot"></span>
+                  <span class="ai-chat-badge">Online agora</span>
+                </div>
+                <span class="ai-chat-badge">IA · Claude</span>
+              </div>
+              <div class="ai-chat-title">Assistente<br>MindOnline</div>
+              <div class="ai-chat-subtitle">Tire suas dúvidas sobre ética digital · powered by Claude AI</div>
+            </div>
+            <div class="ai-chat-hints" id="aiHints">
+              <button class="ai-hint-pill">O que é fake news?</button>
+              <button class="ai-hint-pill">Como proteger minha privacidade?</button>
+              <button class="ai-hint-pill">O que é cyberbullying?</button>
+            </div>
+            <div class="ai-chat-messages" id="aiMessages">
+              <div class="ai-msg ai-msg-bot">
+                <span class="ai-msg-icon">✦</span>
+                <div class="ai-msg-bubble">Olá! Sou o assistente do MindOnline. Posso tirar dúvidas sobre comunicação ética digital, fake news, privacidade online e comportamento na internet. Como posso te ajudar?</div>
+              </div>
+            </div>
+            <div class="ai-chat-input-wrap">
+              <textarea id="aiInput" class="ai-chat-input" placeholder="Escreva sua dúvida aqui..." rows="1"></textarea>
+              <button class="ai-chat-send" id="aiSend" aria-label="Enviar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
+              </button>
             </div>
           </div>
-          <div class="fg"><label for="mensagem">Mensagem *</label><textarea id="mensagem" name="mensagem" rows="5" placeholder="Escreva sua mensagem..." required></textarea></div>
-          <button type="button" class="btn-send">Enviar mensagem<span class="btn-send-arrow">↗</span></button>
         </div>
       </div>
     </div>
@@ -985,39 +1219,108 @@ function showToast(msg,ok=true){
   toastTimer=setTimeout(()=>toast.classList.remove('show'),4000);
 }
 
-/* ── FORM SUBMIT ── */
-document.querySelector('.btn-send')?.addEventListener('click',()=>{
-  const nome=document.getElementById('nome');
-  const email=document.getElementById('email');
-  const mensagem=document.getElementById('mensagem');
-  [nome,email,mensagem].forEach(f=>f.style.borderColor='');
-  let erros=[];
-  if(!nome.value.trim()){nome.style.borderColor='#ff4444';erros.push('nome');}
-  if(!email.value.trim()||!email.value.includes('@')){email.style.borderColor='#ff4444';erros.push('e-mail');}
-  if(!mensagem.value.trim()){mensagem.style.borderColor='#ff4444';erros.push('mensagem');}
-  if(erros.length){showToast('Preencha: '+erros.join(', '),false);return;}
-  const btn=document.querySelector('.btn-send');
-  const originalHTML=btn.innerHTML;
-  btn.innerHTML='Enviando...<span class="btn-send-arrow" style="display:inline-block;animation:spin .8s linear infinite">↻</span>';
-  btn.disabled=true;
-  const novidades=document.querySelector('input[name="novidades"]:checked')?.value||'nao';
-  const telefone=document.getElementById('telefone').value.trim();
-  fetch('/.netlify/functions/mensagens',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({nome:nome.value.trim(),telefone:telefone||null,email:email.value.trim(),novidades,mensagem:mensagem.value.trim()})
-  })
-  .then(res=>{
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    btn.innerHTML='Enviado! ✓<span class="btn-send-arrow">↗</span>';
-    btn.style.background='#00e87a';
-    showToast('Mensagem enviada com sucesso!',true);
-    [nome,email,mensagem].forEach(f=>{f.value='';f.style.borderColor='';});
-    document.getElementById('telefone').value='';
-    setTimeout(()=>{btn.innerHTML=originalHTML;btn.style.background='';btn.disabled=false;},3000);
-  })
-  .catch(err=>{console.error(err);btn.innerHTML=originalHTML;btn.disabled=false;showToast('Erro ao enviar. Tente novamente.',false);});
-});
+/* ── AI CHAT ── */
+(function(){
+  const messagesEl = document.getElementById('aiMessages');
+  const inputEl    = document.getElementById('aiInput');
+  const sendBtn    = document.getElementById('aiSend');
+  if(!messagesEl || !inputEl || !sendBtn) return;
+
+  const history = []; // {role, content}[]
+
+  function scrollBottom(){ messagesEl.scrollTop = messagesEl.scrollHeight; }
+
+  function appendMsg(role, text){
+    const wrap = document.createElement('div');
+    wrap.className = 'ai-msg ' + (role==='user' ? 'ai-msg-user' : 'ai-msg-bot');
+    if(role !== 'user'){
+      const icon = document.createElement('span');
+      icon.className = 'ai-msg-icon'; icon.textContent = '✦';
+      wrap.appendChild(icon);
+    }
+    const bubble = document.createElement('div');
+    bubble.className = 'ai-msg-bubble';
+    bubble.textContent = text;
+    wrap.appendChild(bubble);
+    messagesEl.appendChild(wrap);
+    scrollBottom();
+    return bubble;
+  }
+
+  function showTyping(){
+    const wrap = document.createElement('div');
+    wrap.className = 'ai-msg ai-msg-bot'; wrap.id = 'aiTypingIndicator';
+    const icon = document.createElement('span');
+    icon.className = 'ai-msg-icon'; icon.textContent = '✦';
+    wrap.appendChild(icon);
+    const dots = document.createElement('div');
+    dots.className = 'ai-typing';
+    dots.innerHTML = '<span></span><span></span><span></span>';
+    wrap.appendChild(dots);
+    messagesEl.appendChild(wrap);
+    scrollBottom();
+  }
+
+  function removeTyping(){
+    document.getElementById('aiTypingIndicator')?.remove();
+  }
+
+  async function sendMessage(){
+    const text = inputEl.value.trim();
+    if(!text) return;
+    inputEl.value = ''; inputEl.style.height = 'auto';
+    sendBtn.disabled = true;
+    appendMsg('user', text);
+    history.push({role:'user', content: text});
+    showTyping();
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: 'Você é o assistente virtual do projeto MindOnline — um projeto escolar de conscientização sobre comunicação ética digital, desenvolvido em Petrolina, PE. Responda sempre em português, de forma amigável, clara e educativa. Seu foco é ajudar jovens e educadores com dúvidas sobre: fake news, privacidade online, cyberbullying, comportamento ético na internet, redes sociais saudáveis e pensamento crítico digital. Seja conciso (máximo 3 parágrafos), empático e educativo. Nunca saia desse tema.',
+          messages: history
+        })
+      });
+      removeTyping();
+      if(!res.ok) throw new Error('API error ' + res.status);
+      const data = await res.json();
+      const reply = data.content?.find(b => b.type==='text')?.text || 'Desculpe, não consegui responder agora.';
+      history.push({role:'assistant', content: reply});
+      appendMsg('assistant', reply);
+    } catch(e){
+      removeTyping();
+      appendMsg('assistant', 'Houve um erro ao conectar com a IA. Tente novamente em instantes.');
+      console.error(e);
+    } finally {
+      sendBtn.disabled = false;
+      inputEl.focus();
+    }
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  inputEl.addEventListener('keydown', e=>{
+    if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
+  });
+  // auto-resize textarea
+  inputEl.addEventListener('input', ()=>{
+    inputEl.style.height='auto';
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
+  });
+  // hint pills
+  document.querySelectorAll('.ai-hint-pill').forEach(pill=>{
+    pill.addEventListener('click', ()=>{
+      inputEl.value = pill.textContent;
+      document.getElementById('aiHints').style.display = 'none';
+      sendMessage();
+    });
+  });
+})();
+
+/* ── FORM SUBMIT (mantido para compatibilidade, mas seção removida) ── */
 
 /* ── HEADER SCROLL ── */
 window.addEventListener('scroll',()=>{
