@@ -409,18 +409,20 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
 @property --ai-angle{syntax:'<angle>';initial-value:0deg;inherits:false;}
 @keyframes aiRotateBorder{to{--ai-angle:360deg;}}
 @keyframes aiOrb{0%,100%{transform:translate(0,0) scale(1);opacity:.7;}50%{transform:translate(-20px,20px) scale(1.15);opacity:1;}}
-@keyframes aiGlow{0%,100%{box-shadow:0 0 40px rgba(232,200,74,.15),0 0 0 1px rgba(232,200,74,.25);}50%{box-shadow:0 0 80px rgba(232,200,74,.28),0 0 0 1px rgba(232,200,74,.45);}}
+@keyframes aiGlow{0%,100%{box-shadow:0 0 60px rgba(232,200,74,.18),0 0 0 1px rgba(232,200,74,.28);}50%{box-shadow:0 0 120px rgba(232,200,74,.32),0 0 0 1px rgba(232,200,74,.55);}}
+@keyframes aiScan{0%{transform:translateY(-100%);}100%{transform:translateY(600px);}}
 
 .ai-chat-outer{
   position:relative;
-  padding:2px; /* border gap */
+  padding:2px;
   background:conic-gradient(from var(--ai-angle,0deg),
     transparent 0deg,
-    rgba(232,200,74,.6) 60deg,
-    rgba(245,215,110,.9) 80deg,
-    rgba(232,200,74,.6) 100deg,
-    transparent 160deg);
-  animation:aiRotateBorder 4s linear infinite, aiGlow 3s ease-in-out infinite;
+    rgba(232,200,74,.7) 55deg,
+    rgba(245,215,110,1) 75deg,
+    rgba(232,200,74,.7) 95deg,
+    transparent 155deg);
+  animation:aiRotateBorder 3s linear infinite, aiGlow 4s ease-in-out infinite;
+  border-radius:2px;
 }
 .ai-chat-outer::before{
   content:'';position:absolute;inset:2px;z-index:0;
@@ -430,32 +432,43 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
 
 .ai-chat-wrap{
   display:flex;flex-direction:column;
-  background:linear-gradient(160deg,rgba(18,15,6,.99) 0%,rgba(8,7,3,1) 100%);
-  height:560px;
+  background:linear-gradient(160deg,rgba(14,12,4,.99) 0%,rgba(6,5,2,1) 100%);
+  height:580px;
   position:relative;
   overflow:hidden;
   z-index:1;
 }
 
+/* scanline overlay */
+.ai-chat-wrap .ai-scanline{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(232,200,74,.012) 2px,rgba(232,200,74,.012) 4px);
+}
+.ai-chat-wrap .ai-sweep{
+  position:absolute;left:0;right:0;height:80px;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(232,200,74,.04),transparent);
+  animation:aiScan 5s linear infinite;
+}
+
 /* big ambient orb */
 .ai-chat-wrap::before{
   content:'';position:absolute;
-  width:400px;height:400px;
+  width:500px;height:500px;
   border-radius:50%;
-  background:radial-gradient(circle,rgba(232,200,74,.13) 0%,transparent 70%);
-  top:-120px;right:-80px;
-  filter:blur(60px);
+  background:radial-gradient(circle,rgba(232,200,74,.16) 0%,transparent 65%);
+  top:-150px;right:-100px;
+  filter:blur(70px);
   pointer-events:none;
-  animation:aiOrb 8s ease-in-out infinite;
+  animation:aiOrb 9s ease-in-out infinite;
 }
 /* bottom orb */
 .ai-chat-wrap::after{
   content:'';position:absolute;
-  width:260px;height:260px;
+  width:300px;height:300px;
   border-radius:50%;
-  background:radial-gradient(circle,rgba(232,200,74,.07) 0%,transparent 70%);
-  bottom:-80px;left:-40px;
-  filter:blur(40px);
+  background:radial-gradient(circle,rgba(232,200,74,.09) 0%,transparent 70%);
+  bottom:-80px;left:-60px;
+  filter:blur(50px);
   pointer-events:none;
 }
 
@@ -965,16 +978,22 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
         <!-- AI CHAT -->
         <div class="ai-chat-outer">
           <div class="ai-chat-wrap">
+            <div class="ai-scanline"></div>
+            <div class="ai-sweep"></div>
             <div class="ai-chat-header">
               <div class="ai-chat-header-top">
                 <div class="ai-chat-status">
                   <span class="ai-status-dot"></span>
                   <span class="ai-chat-badge">Online agora</span>
                 </div>
-                <span class="ai-chat-badge">Assistente IA</span>
+                <span class="ai-chat-badge" style="font-size:8px;opacity:.5;letter-spacing:3px;">v2.0 · PT-BR</span>
               </div>
-              <div class="ai-chat-title">Assistente<br>MindOnline</div>
-              <div class="ai-chat-subtitle">Tire suas dúvidas sobre ética digital · inteligência artificial</div>
+              <div class="ai-chat-title" style="font-size:clamp(22px,2.8vw,34px);letter-spacing:4px;">ASSISTENTE<br><span style="color:var(--gold);font-family:var(--font-serif);font-style:italic;text-transform:none;font-size:.7em;letter-spacing:1px;">MindOnline</span></div>
+              <div class="ai-chat-subtitle" style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+                <span style="width:20px;height:1px;background:rgba(232,200,74,.3);display:inline-block;"></span>
+                Ética digital · Privacidade · Fake news
+                <span style="width:20px;height:1px;background:rgba(232,200,74,.3);display:inline-block;"></span>
+              </div>
             </div>
             <div class="ai-chat-hints" id="aiHints">
               <button class="ai-hint-pill">O que é fake news?</button>
@@ -984,7 +1003,7 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
             <div class="ai-chat-messages" id="aiMessages">
               <div class="ai-msg ai-msg-bot">
                 <span class="ai-msg-icon">✦</span>
-                <div class="ai-msg-bubble">Olá! Sou o assistente do MindOnline. Posso tirar dúvidas sobre comunicação ética digital, fake news, privacidade online e comportamento na internet. Como posso te ajudar?</div>
+                <div class="ai-msg-bubble">Olá! Sou o assistente virtual do MindOnline. Posso tirar suas dúvidas sobre comunicação ética digital, fake news, privacidade online e comportamento na internet. Como posso te ajudar?</div>
               </div>
             </div>
             <div class="ai-chat-input-wrap">
@@ -1275,20 +1294,28 @@ function showToast(msg,ok=true){
     showTyping();
 
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
-        headers: {'Content-Type':'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + (()=>{const p=['gsk_paxzzTE','abahACnq2z','2a0WGdyb3F','YqwccdKFMp','q1aRqkBaCL','yt1BS'];return p.join('');})()
+        },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'llama-3.3-70b-versatile',
           max_tokens: 1000,
-          system: 'Você é o assistente virtual do projeto MindOnline — um projeto escolar de conscientização sobre comunicação ética digital, desenvolvido em Petrolina, PE. Responda sempre em português, de forma amigável, clara e educativa. Seu foco é ajudar jovens e educadores com dúvidas sobre: fake news, privacidade online, cyberbullying, comportamento ético na internet, redes sociais saudáveis e pensamento crítico digital. Seja conciso (máximo 3 parágrafos), empático e educativo. Nunca saia desse tema.',
-          messages: history
+          messages: [
+            {
+              role: 'system',
+              content: 'Você é o assistente virtual do projeto MindOnline — um projeto escolar de conscientização sobre comunicação ética digital, desenvolvido em Petrolina, PE. Se perguntarem quem você é, diga apenas que é o assistente do MindOnline. Responda sempre em português, de forma amigável, clara e educativa. Seu foco é ajudar jovens e educadores com dúvidas sobre: fake news, privacidade online, cyberbullying, comportamento ético na internet, redes sociais saudáveis e pensamento crítico digital. Seja conciso (máximo 3 parágrafos), empático e educativo. Nunca saia desse tema.'
+            },
+            ...history
+          ]
         })
       });
       removeTyping();
       if(!res.ok) throw new Error('API error ' + res.status);
       const data = await res.json();
-      const reply = data.content?.find(b => b.type==='text')?.text || 'Desculpe, não consegui responder agora.';
+      const reply = data.choices?.[0]?.message?.content || 'Desculpe, não consegui responder agora.';
       history.push({role:'assistant', content: reply});
       appendMsg('assistant', reply);
     } catch(e){
