@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacidade Digital: O Que Você Entrega Sem Perceber — MindOnline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+<style>
+
+
+
+:root{--bg:#080808;--fg:#f0ede6;--gold:#e8c84a;--gold2:#f5d76e;--dim:rgba(240,237,230,.5);--border:rgba(240,237,230,.08);--font-display:'Bebas Neue',sans-serif;--font-serif:'Instrument Serif',serif;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;cursor:none;}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::selection{background:var(--gold);color:#000;}
+::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-thumb{background:var(--gold);}
+#cur-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;will-change:transform;}
+#cur-ring{position:fixed;top:0;left:0;width:40px;height:40px;border:1px solid rgba(232,200,74,.35);border-radius:50%;pointer-events:none;z-index:99998;will-change:transform;transition:width .3s cubic-bezier(.16,1,.3,1),height .3s cubic-bezier(.16,1,.3,1),border-color .3s;}
+body.ch #cur-ring{width:56px;height:56px;border-color:rgba(232,200,74,.15);}
+#progress{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;z-index:9998;box-shadow:0 0 8px rgba(232,200,74,.6);}
+/* #pt transition handled by expand-circle system below */
+header{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;}
+header.scrolled{background:rgba(8,8,8,.92);backdrop-filter:blur(24px);border-bottom-color:var(--border);}
+.logo{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:8px;}
+.logo-mark{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulseDot 2.5s ease-in-out infinite;}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,200,74,.4);}50%{opacity:.6;transform:scale(1.3);box-shadow:0 0 0 6px rgba(232,200,74,0);}}
+nav{display:flex;align-items:center;gap:2px;}
+.nav-link{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:8px 14px;position:relative;transition:color .25s;}
+.nav-link::after{content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.nav-link:hover{color:var(--fg);}.nav-link:hover::after,.nav-link.ativo::after{transform:scaleX(1);}.nav-link.ativo{color:var(--gold);}
+.menu-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:4px;}
+.menu-toggle span{width:24px;height:1px;background:var(--fg);transition:transform .3s,opacity .3s;display:block;}
+.rv{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+.rv.in{opacity:1;transform:translateY(0);}
+.rv-d1{transition-delay:.1s;}.rv-d2{transition-delay:.2s;}.rv-d3{transition-delay:.3s;}.rv-d4{transition-delay:.4s;}
+footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40px;margin-top:0;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.footer-logo{font-family:var(--font-display);font-size:20px;letter-spacing:4px;}
+.footer-copy,.footer-origin{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--dim);}
+.hero-close{display:none;}
+
+@media(max-width:900px){
+  header{padding:0 20px;}nav{display:none;}
+  nav.open{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:80px 24px 40px;align-items:flex-start;justify-content:center;border-top:none;overflow:hidden;z-index:9999;}
+  nav.open .nav-link{font-family:var(--font-display);font-size:32px;letter-spacing:3px;text-transform:uppercase;color:var(--fg);padding:14px 0;border-bottom:1px solid var(--border);width:100%;}
+  nav.open .nav-link::after{display:none;}
+  .menu-toggle{display:flex;}
+  #cur-dot,#cur-ring{display:none;}html{cursor:auto;}body *{cursor:auto!important;}
+  footer{padding:28px 20px;}.footer-inner{flex-direction:column;align-items:flex-start;gap:10px;}
+}
+
+
+.art-progress{position:fixed;top:64px;left:0;right:0;height:2px;background:rgba(240,237,230,.05);z-index:100;}
+.art-progress-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;transition:width .1s linear;box-shadow:0 0 8px rgba(232,200,74,.5);}
+.art-cover{position:relative;width:100%;height:560px;overflow:hidden;min-height:200px;}
+.art-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.5) saturate(.7);}
+.art-cover-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.5) 45%,transparent 100%);pointer-events:none;}
+.art-cover-content{position:absolute;bottom:0;left:0;right:0;padding:0 60px 60px;max-width:1100px;}
+.art-cover-back{display:inline-flex;align-items:center;gap:10px;color:var(--dim);font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .25s;margin-bottom:28px;}
+.art-cover-back:hover{color:var(--gold);}
+.art-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;background:var(--gold);color:#000;padding:4px 10px;display:inline-block;margin-bottom:20px;}
+.art-cover-title{font-family:var(--font-display);font-size:clamp(36px,5vw,68px);line-height:.92;letter-spacing:2px;text-transform:uppercase;color:var(--fg);max-width:900px;}
+.art-cover-title em{font-family:var(--font-serif);font-style:italic;text-transform:none;color:var(--gold);letter-spacing:0;}
+.art-meta-bar{max-width:1000px;margin:0 auto;padding:28px 60px;display:flex;align-items:center;gap:24px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.art-meta-author{display:flex;align-items:center;gap:12px;}
+.art-meta-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:500;color:#000;background:var(--gold);flex-shrink:0;overflow:hidden;}
+.art-meta-av img{width:100%;height:100%;object-fit:cover;}
+.art-meta-name{font-size:14px;font-weight:500;color:var(--fg);}
+.art-meta-school{font-family:var(--font-mono);font-size:10px;color:var(--dim);letter-spacing:.5px;}
+.art-meta-divider{width:1px;height:32px;background:var(--border);flex-shrink:0;}
+.art-meta-item{display:flex;flex-direction:column;gap:3px;}
+.art-meta-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,237,230,.25);}
+.art-meta-val{font-family:var(--font-mono);font-size:11px;color:var(--dim);letter-spacing:.5px;}
+.art-meta-actions{margin-left:auto;display:flex;gap:8px;flex-shrink:0;}
+.art-btn-outline{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--border);background:transparent;color:var(--dim);font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .25s;}
+.art-btn-outline:hover{border-color:rgba(232,200,74,.4);color:var(--gold);}
+.art-body{max-width:1200px;margin:0 auto;padding:80px 60px 100px;display:grid;grid-template-columns:1fr 260px;gap:80px;align-items:start;}
+.art-content h2{font-family:var(--font-display);font-size:28px;letter-spacing:1px;text-transform:uppercase;color:var(--fg);margin:60px 0 20px;padding-top:60px;border-top:1px solid var(--border);}
+.art-content h2:first-child{margin-top:0;padding-top:0;border-top:none;}
+.art-content p{font-size:17px;color:var(--dim);line-height:1.9;margin-bottom:20px;}
+.art-content strong{color:var(--fg);font-weight:500;}
+.art-content blockquote{margin:40px 0;padding:0 0 0 32px;border-left:2px solid var(--gold);}
+.art-content blockquote p{font-family:var(--font-serif);font-size:22px;font-style:italic;color:rgba(240,237,230,.8);line-height:1.6;margin:0;}
+.art-content ul{list-style:none;display:flex;flex-direction:column;gap:1px;margin:24px 0 32px;border:1px solid var(--border);background:var(--border);}
+.art-content ul li{display:flex;align-items:flex-start;gap:16px;padding:18px 24px;background:var(--bg);font-size:15px;color:var(--dim);line-height:1.65;transition:background .25s;}
+.art-content ul li:hover{background:rgba(232,200,74,.03);}
+.art-content ul li::before{content:'→';color:var(--gold);font-family:var(--font-mono);font-size:13px;flex-shrink:0;margin-top:2px;}
+.art-sidebar{position:sticky;top:90px;}
+.art-sidebar-box{border:1px solid var(--border);padding:24px;margin-bottom:1px;background:rgba(240,237,230,.02);}
+.art-sidebar-title{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:16px;display:block;}
+.art-toc-list{list-style:none;display:flex;flex-direction:column;}
+.art-toc-list a{display:block;padding:8px 12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;color:rgba(240,237,230,.3);text-decoration:none;transition:all .2s;border-left:2px solid transparent;}
+.art-toc-list a:hover{color:var(--fg);background:rgba(240,237,230,.03);}
+.art-toc-list a.active{color:var(--gold);border-left-color:var(--gold);background:rgba(232,200,74,.04);}
+.art-tag-list{display:flex;flex-wrap:wrap;gap:6px;}
+.art-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border);color:var(--dim);}
+.art-footer-nav{max-width:1000px;margin:0 auto;padding:48px 60px 80px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);gap:20px;flex-wrap:wrap;}
+.art-footer-nav a{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .25s;}
+.art-footer-nav a:hover{color:var(--gold);}
+.art-continue{max-width:1200px;margin:0 auto;padding:0 60px 100px;border-top:1px solid var(--border);}
+.art-continue-label{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);padding-top:48px;margin-bottom:28px;display:block;}
+.art-continue-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.art-continue-card{background:var(--bg);padding:28px;text-decoration:none;display:flex;flex-direction:column;gap:12px;transition:background .3s;position:relative;overflow:hidden;}
+.art-continue-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.16,1,.3,1);}
+.art-continue-card:hover{background:rgba(232,200,74,.03);}
+.art-continue-card:hover::before{transform:scaleY(1);}
+.art-continue-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.art-continue-title{font-family:var(--font-display);font-size:20px;letter-spacing:1px;text-transform:uppercase;color:var(--fg);line-height:1;flex:1;transition:color .3s;}
+.art-continue-card:hover .art-continue-title{color:var(--gold);}
+.art-continue-arrow{font-size:18px;color:var(--dim);transition:color .3s,transform .3s;}
+.art-continue-card:hover .art-continue-arrow{color:var(--gold);transform:translate(4px,-4px);}
+.art-sidebar-gold{background:rgba(232,200,74,.04)!important;border-color:rgba(232,200,74,.15)!important;}
+.art-sidebar-gold .art-sidebar-title{color:var(--gold)!important;}
+@media(max-width:1000px){
+  .art-cover{height:auto;min-height:380px;}.art-cover-content{position:relative;padding:80px 24px 40px;}
+  .art-meta-bar{padding:20px 24px;}
+  .art-body{grid-template-columns:1fr;padding:40px 24px 80px;gap:0;}
+  .art-sidebar{display:none;}
+  .art-continue{padding:0 24px 80px;}.art-continue-grid{grid-template-columns:1fr;}
+  .art-footer-nav{padding:40px 24px 60px;}
+  .art-content p,.art-content li,.art-content blockquote p{word-break:break-word;overflow-wrap:break-word;}
+  .art-content ul li{display:block;padding:16px 20px;word-break:break-word;overflow-wrap:break-word;}
+  .art-content ul li::before{display:inline;margin-right:10px;}
+  .art-content ul{overflow:hidden;}
+  .art-meta-actions{margin-left:0;width:100%;}
+}
+@media(max-width:600px){
+  .art-cover{min-height:300px;height:auto;}.art-cover-title{font-size:clamp(24px,8vw,44px);}
+  .art-body{padding:32px 16px 60px;}
+  .art-continue{padding:0 16px 60px;}
+  .art-footer-nav{padding:32px 16px 48px;}
+  .art-cover-content{padding:0 16px 32px;}
+  .art-meta-bar{padding:16px;}
+  .art-content p{font-size:16px;}
+}
+
+
+
+
+/* ══════════════════════════════════════════
+   NEW ANIMATIONS & TOC — injected
+══════════════════════════════════════════ */
+
+/* ── EXPAND PAGE TRANSITION ── */
+#pt{position:fixed;inset:0;z-index:99997;pointer-events:none;display:flex;align-items:center;justify-content:center;}
+#pt-circle{
+  position:absolute;width:0;height:0;
+  background:var(--gold);border-radius:50%;
+  transform:translate(-50%,-50%);
+  transition:width 0s,height 0s;
+  left:50%;top:50%;
+}
+#pt.expand #pt-circle{
+  width:300vmax;height:300vmax;
+  transition:width .7s cubic-bezier(.86,0,.07,1),height .7s cubic-bezier(.86,0,.07,1);
+}
+#pt.shrink #pt-circle{
+  width:0;height:0;
+  transition:width .6s cubic-bezier(.86,0,.07,1) .05s,height .6s cubic-bezier(.86,0,.07,1) .05s;
+}
+
+/* ── MAGNETIC LINES (decorative) ── */
+.mag-line{
+  position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  transform:scaleX(0);transform-origin:center;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.art-content h2:hover .mag-line{transform:scaleX(1);}
+
+/* ── HEADING REVEAL ── */
+.h2-wrap{overflow:hidden;position:relative;}
+.art-content h2{
+  transform:translateY(60px);opacity:0;
+  transition:transform .9s cubic-bezier(.16,1,.3,1),opacity .9s cubic-bezier(.16,1,.3,1);
+}
+.art-content h2.vin{transform:translateY(0);opacity:1;}
+
+/* ── PARAGRAPH STAGGER ── */
+.art-content p, .art-content blockquote, .art-content ul{
+  opacity:0;transform:translateY(32px);
+  transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);
+}
+.art-content p.vin,.art-content blockquote.vin,.art-content ul.vin{
+  opacity:1;transform:translateY(0);
+}
+
+/* ── BLOCKQUOTE EXPAND ── */
+.art-content blockquote{
+  position:relative;overflow:hidden;
+  max-height:0;padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;
+  border-left-width:0;
+  transition:
+    max-height 1s cubic-bezier(.16,1,.3,1),
+    padding .6s ease,
+    margin .6s ease,
+    border-left-width .4s ease,
+    opacity .8s ease,
+    transform .8s cubic-bezier(.16,1,.3,1);
+}
+.art-content blockquote.vin{
+  max-height:300px;
+  padding-top:0;padding-bottom:0;
+  margin-top:44px;margin-bottom:44px;
+  border-left-width:2px;
+}
+
+/* ── LIST ITEM STAGGER ── */
+.art-content ul li{
+  opacity:0;transform:translateX(-16px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.art-content ul.vin li{opacity:1;transform:translateX(0);}
+.art-content ul.vin li:nth-child(1){transition-delay:.04s;}
+.art-content ul.vin li:nth-child(2){transition-delay:.09s;}
+.art-content ul.vin li:nth-child(3){transition-delay:.14s;}
+.art-content ul.vin li:nth-child(4){transition-delay:.19s;}
+.art-content ul.vin li:nth-child(5){transition-delay:.24s;}
+.art-content ul.vin li:nth-child(6){transition-delay:.29s;}
+.art-content ul.vin li:nth-child(7){transition-delay:.34s;}
+.art-content ul.vin li:nth-child(8){transition-delay:.39s;}
+
+/* ── COVER TITLE LETTER SPLIT ── */
+.cover-title .char{
+  display:inline-block;
+  animation:charDrop .6s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes charDrop{
+  from{opacity:0;transform:translateY(80%) skewY(6deg);}
+  to{opacity:1;transform:translateY(0) skewY(0);}
+}
+
+/* ── COUNTER ANIMATION ── */
+.stat-num{
+  display:inline-block;
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
+}
+
+/* ── COVER SCAN LINE ── */
+.cover::after{
+  content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+  animation:scanMove 12s linear infinite;
+}
+@keyframes scanMove{from{background-position:0 0;}to{background-position:0 100px;}}
+
+/* ── GOLD GLOW PULSE on h2 ── */
+@keyframes glowPulse{
+  0%,100%{text-shadow:none;}
+  50%{text-shadow:0 0 20px rgba(232,200,74,.3);}
+}
+.art-content h2.vin{animation:glowPulse 3s ease-in-out 1s 1;}
+
+/* ── NEW TOC STYLES ── */
+.toc-list,.art-toc-list{list-style:none;padding:0;}
+.toc-list li,.art-toc-list li{position:relative;margin:0;}
+.toc-list a,.art-toc-list a{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 0;text-decoration:none;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid transparent;
+  transition:border-color .3s;
+}
+.toc-list a::after,.art-toc-list a::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.16,1,.3,1);
+}
+.toc-list a:hover::after,.art-toc-list a:hover::after,
+.toc-list a.active::after,.art-toc-list a.active::after{transform:scaleX(1);}
+
+/* number */
+.tn{
+  font-family:var(--font-mono,monospace);font-size:8px;
+  color:rgba(240,237,230,.2);letter-spacing:1px;
+  flex-shrink:0;transition:color .25s;min-width:18px;
+}
+/* label */
+.tl{
+  font-size:11px;color:rgba(240,237,230,.28);
+  letter-spacing:.3px;flex:1;line-height:1.35;
+  transition:color .25s;
+}
+/* arrow */
+.ta{
+  font-size:10px;color:transparent;
+  transform:translateX(-6px);
+  transition:color .25s,transform .25s cubic-bezier(.16,1,.3,1);
+}
+
+.toc-list a:hover .tn,.art-toc-list a:hover .tn,
+.toc-list a.active .tn,.art-toc-list a.active .tn{color:var(--gold);}
+.toc-list a:hover .tl,.art-toc-list a:hover .tl,
+.toc-list a.active .tl,.art-toc-list a.active .tl{color:var(--fg);font-weight:500;}
+.toc-list a:hover .ta,.art-toc-list a:hover .ta,
+.toc-list a.active .ta,.art-toc-list a.active .ta{color:var(--gold);transform:translateX(0);}
+
+/* active indicator bar */
+.toc-list a.active::before,.art-toc-list a.active::before{
+  content:'';position:absolute;left:-28px;top:50%;
+  width:3px;height:0;background:var(--gold);
+  transform:translateY(-50%);
+  transition:height .4s cubic-bezier(.16,1,.3,1);
+  border-radius:2px;
+}
+.toc-list a.active::before,.art-toc-list a.active::before{height:60%;}
+
+/* old class compat */
+.art-sidebar-title{font-family:var(--font-mono,monospace);font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(240,237,230,.2);margin-bottom:14px;display:block;}
+.art-toc-list a{border-left:none!important;}
+
+/* ── META BAR ENTRANCE ── */
+.meta-bar,.art-meta-bar{
+  opacity:0;transform:translateY(-10px);
+  animation:metaIn .7s cubic-bezier(.16,1,.3,1) .9s forwards;
+}
+@keyframes metaIn{to{opacity:1;transform:translateY(0);}}
+
+/* ── CONTINUE CARDS SLIDE ── */
+.cnt-card,.art-continue-card{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .6s ease,transform .6s ease,background .3s;
+}
+.cnt-card.vin,.art-continue-card.vin{opacity:1;transform:translateY(0);}
+.cnt-card:nth-child(1),.art-continue-card:nth-child(1){transition-delay:.05s;}
+.cnt-card:nth-child(2),.art-continue-card:nth-child(2){transition-delay:.13s;}
+.cnt-card:nth-child(3),.art-continue-card:nth-child(3){transition-delay:.21s;}
+
+/* ── SCROLLBAR TRAIL ── */
+#scroll-trail{
+  position:fixed;right:0;top:0;width:2px;height:0%;
+  background:linear-gradient(to bottom,var(--gold),var(--gold2));
+  z-index:9990;pointer-events:none;box-shadow:0 0 8px rgba(232,200,74,.5);
+  transition:height .05s linear;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── H2 GOLD BAR ── */
+.art-content h2{position:relative;padding-left:18px;}
+.art-content h2::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:0;background:var(--gold);border-radius:2px;
+  transition:height .5s cubic-bezier(.16,1,.3,1) .2s;
+}
+.art-content h2.vin::before{height:70%;}
+
+
+body.menu-open{overflow:hidden;position:fixed;width:100%;}
+</style>
+</head>
+<body>
+<div id="cur-dot"></div><div id="cur-ring"></div>
+<div id="progress"></div>
+<div id="pt"><div id="pt-circle"></div></div>
+<div class="art-progress"><div class="art-progress-bar" id="progressBar"></div></div>
+<header id="header">
+  <a href="index.html" class="logo"><span class="logo-mark"></span>MindOnline</a>
+  <nav id="navMenu">
+    <a href="index.html" class="nav-link">Início</a>
+    <a href="index.html#sobre" class="nav-link">Sobre</a>
+    <a href="index.html#dicas" class="nav-link">Dicas</a>
+    <a href="index.html#contato" class="nav-link">Contato</a>
+    <a href="trabalhos.html" class="nav-link ativo">Trabalhos</a>
+    <a href="privacidade.html" class="nav-link">Privacidade</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<div class="art-cover">
+  <img src="Artigo_3.jpg" alt="Privacidade Digital: O Que Você Entrega Sem Perceber">
+  <div class="art-cover-overlay"></div>
+  <div class="art-cover-content">
+    <a href="trabalhos.html" class="art-cover-back">← Nossos Trabalhos</a>
+    <div class="art-badge">Privacidade</div>
+    <h1 class="art-cover-title" id="coverTitle">Privacidade Digital: O Que Você Entrega <em>Sem Perceber</em></h1>
+  </div>
+</div>
+
+<div class="art-meta-bar">
+  <div class="art-meta-author">
+    <div class="art-meta-av">IS</div>
+    <div>
+      <div class="art-meta-name">Isaac Siqueira de Oliveira</div>
+      <div class="art-meta-school">Aluno — EREMCC Petrolina</div>
+    </div>
+  </div>
+  <div class="art-meta-divider"></div>
+  <div class="art-meta-item"><span class="art-meta-label">Publicado em</span><span class="art-meta-val">Abril de 2026</span></div>
+  <div class="art-meta-item"><span class="art-meta-label">Leitura</span><span class="art-meta-val">~ 6 min</span></div>
+  <div class="art-meta-item"><span class="art-meta-label">Categoria</span><span class="art-meta-val">Privacidade</span></div>
+  <div class="art-meta-actions">
+    <button onclick="baixarPDF()" class="art-btn-outline">⬇ PDF</button>
+    <a href="https://mind-online-community.vercel.app" target="_blank" rel="noopener" class="art-btn-outline">Comentar →</a>
+  </div>
+</div>
+
+<div class="art-body">
+  <article class="art-content" id="artContent">
+    
+<h2 id="intro">Introdução</h2>
+<p>Toda vez que você abre um aplicativo, realiza uma pesquisa ou curte uma publicação, você está gerando dados. Esses dados descrevem quem você é, o que você pensa, onde você esteve, com quem você se relaciona e o que deseja — muitas vezes com mais precisão do que você conseguiria descrever sobre si mesmo. E, na maioria das vezes, você entrega tudo isso voluntariamente, em troca de serviços gratuitos, sem compreender completamente o que está cedendo.</p>
+<p>A privacidade digital deixou de ser uma questão técnica reservada a especialistas em segurança da informação. Ela é hoje um <strong>direito fundamental</strong> — reconhecido pela Constituição Federal brasileira após a Emenda Constitucional 115/2022 — que precisa ser compreendido e exercido por qualquer pessoa que utilize a internet. Em 2026, isso significa praticamente toda a população brasileira: segundo o IBGE, mais de 90% dos domicílios brasileiros têm acesso à internet.</p>
+<p>Este artigo explora em profundidade o que acontece com seus dados, quem os coleta, como são processados e comercializados, quais são seus direitos legais e — mais importante — o que você pode fazer para proteger sua privacidade no mundo digital sem abrir mão das conveniências que a tecnologia oferece.</p>
+
+<h2 id="coleta">Que Dados São Coletados — E Como</h2>
+<p>As plataformas digitais coletam muito mais do que o óbvio. A maioria das pessoas sabe que fornece nome, e-mail e data de nascimento ao criar uma conta. Mas a coleta de dados vai muito além das informações que você preenche conscientemente em um formulário.</p>
+<p>Categorias de dados coletados incluem:</p>
+<ul>
+  <li><strong>Dados de comportamento passivo</strong>: quanto tempo você fica olhando para cada publicação (mesmo sem curtir ou comentar), quais partes de um texto você lê, quando você para de rolar o feed, quais vídeos você assiste até o fim ou abandona nos primeiros segundos</li>
+  <li><strong>Dados de intenção de compra</strong>: quais produtos você pesquisa, quais você adiciona ao carrinho sem comprar, quais você visualiza repetidamente</li>
+  <li><strong>Dados de localização</strong>: sua posição geográfica em tempo real, frequentemente com precisão de metros, incluindo histórico de lugares que você frequentou, quanto tempo ficou em cada local e com que frequência retorna</li>
+  <li><strong>Dados de dispositivo e comportamento técnico</strong>: o modelo do seu celular, versão do sistema operacional, endereço IP, operadora, nível de bateria, redes Wi-Fi próximas, padrões de digitação, velocidade de rolagem, ângulo do dispositivo</li>
+  <li><strong>Dados de rede social</strong>: com quem você se comunica, com que frequência, sobre quais assuntos, em que horários, quem você menciona ou marca, quem te menciona</li>
+  <li><strong>Dados de voz e áudio</strong>: aplicativos com acesso ao microfone podem, em alguns casos, registrar sons ambientes. Há debate científico sobre o alcance real dessa prática, mas as permissões solicitadas frequentemente excedem o necessário</li>
+  <li><strong>Dados biométricos</strong>: reconhecimento facial, impressão digital, padrão de voz — coletados explicitamente por alguns serviços e implicitamente por outros (como apps de câmera que identificam rostos para marcar fotos)</li>
+</ul>
+<p>Esses dados são combinados, cruzados com informações de outros serviços (via parceiros de dados e data brokers) e analisados por algoritmos de aprendizado de máquina, formando o que especialistas chamam de <strong>perfil psicométrico</strong> — um retrato detalhado da personalidade, dos valores, dos medos, dos desejos e das vulnerabilidades de cada usuário. Estudos da Universidade de Cambridge demonstraram que, com base apenas nas curtidas do Facebook, um algoritmo consegue prever a personalidade de uma pessoa com mais precisão do que seu cônjuge.</p>
+
+<h2 id="economia">A Economia dos Dados Pessoais</h2>
+<p>Existe uma frase que captura bem o modelo de negócio das grandes plataformas digitais: <em>"Se o produto é gratuito, o produto é você."</em> Serviços como redes sociais, mecanismos de busca, aplicativos de mensagens e mapas são oferecidos sem custo financeiro direto porque o verdadeiro produto comercializado são os dados — e a atenção — dos usuários.</p>
+<blockquote><p>"Você não paga com dinheiro. Você paga com atenção, com tempo e com a sua vida privada."</p></blockquote>
+<p>Em 2023, as receitas de publicidade do Google, Meta (Facebook/Instagram) e Amazon juntas ultrapassaram 400 bilhões de dólares — todas baseadas, fundamentalmente, na análise de dados dos usuários para servir publicidade altamente segmentada. Para ter uma noção de escala: isso é mais do que o PIB de países como Portugal, Noruega ou Nova Zelândia.</p>
+<p>O mercado de <strong>data brokers</strong> (corretores de dados) é menos visível mas igualmente importante. Empresas como Acxiom, Experian e Oracle possuem perfis detalhados de praticamente todos os adultos nos países desenvolvidos — compilados a partir de registros públicos, transações de cartão de crédito, histórico de compras, registros de votação, redes sociais e centenas de outras fontes. Esses perfis são vendidos para empresas de marketing, seguradoras, empregadores e outros atores que tomam decisões que afetam diretamente a sua vida — muitas vezes sem que você saiba.</p>
+<p>O valor econômico de dados pessoais varia enormemente com sua sensibilidade. Dados de saúde valem mais do que dados demográficos; dados financeiros mais do que dados de comportamento geral; dados sobre comportamento reprodutivo (menstruação, gravidez) mais do que dados sobre hobbies. Em 2021, uma pesquisadora de segurança demonstrou que é possível inferir a gravidez de uma usuária — com alta precisão — apenas a partir de mudanças em seu padrão de pesquisa e compras online, meses antes de qualquer anúncio público.</p>
+
+<h2 id="riscos">Os Riscos Concretos da Falta de Privacidade</h2>
+<p>Privacidade não é apenas uma questão abstrata ou filosófica. A falta dela tem consequências concretas e mensuráveis na vida das pessoas:</p>
+<p><strong>Discriminação algorítmica</strong>: algoritmos treinados em dados históricos podem reproduzir e amplificar discriminações existentes. Estudos documentaram casos em que ferramentas de contratação baseadas em IA desfavoreciam mulheres; sistemas de crédito cobravam taxas mais altas de minorias raciais; e algoritmos de saúde subestimavam a gravidade de condições em pacientes negros. Esses vieses são frequentemente invisíveis porque os algoritmos são caixas-pretas — suas decisões não podem ser facilmente contestadas ou auditadas.</p>
+<p><strong>Manipulação comportamental</strong>: perfis detalhados permitem a entidades — governos, empresas, partidos políticos — influenciar comportamentos com precisão cirúrgica. O escândalo da Cambridge Analytica, revelado em 2018, mostrou como dados de 87 milhões de usuários do Facebook foram usados para criar mensagens políticas micro-segmentadas durante a eleição presidencial americana de 2016 e o referendo do Brexit.</p>
+<p><strong>Violações de segurança</strong>: dados armazenados são dados em risco de vazamento. Segundo o IBM Cost of Data Breach Report 2023, o custo médio de uma violação de dados globalmente é de 4,45 milhões de dólares — mas o custo para os indivíduos afetados, em termos de roubo de identidade, fraude financeira e dano à reputação, pode ser devastador. O Brasil foi o país com o maior número de vazamentos de dados em 2021, incluindo o mega-vazamento do Serasa Experian que expôs dados de 223 milhões de brasileiros.</p>
+<p><strong>Violência baseada em dados</strong>: em contextos de perseguição, stalking ou violência doméstica, dados de localização em tempo real podem colocar vidas em risco. Aplicativos de rastreamento disfarçados de ferramentas de controle parental são frequentemente usados por abusadores para monitorar vítimas.</p>
+
+<h2 id="lgpd">A LGPD e Seus Direitos</h2>
+<p>A <strong>Lei Geral de Proteção de Dados</strong> (Lei n.º 13.709/2018), em vigor desde setembro de 2020, representa um marco fundamental na proteção da privacidade dos brasileiros. Inspirada no GDPR europeu (Regulamento Geral de Proteção de Dados), ela estabelece princípios, obrigações e direitos relacionados ao tratamento de dados pessoais por organizações públicas e privadas.</p>
+<p>A LGPD se aplica a qualquer operação realizada com dados pessoais de pessoas físicas localizadas no Brasil — independente de onde a organização que processa os dados está sediada. Isso significa que empresas como Google, Meta e Amazon, embora sejam americanas, precisam respeitar a lei brasileira quando lidam com dados de usuários no Brasil.</p>
+<p>Entre os principais direitos garantidos pela LGPD estão:</p>
+<ul>
+  <li><strong>Acesso</strong>: você pode solicitar a qualquer empresa uma cópia de todos os dados pessoais que ela possui sobre você</li>
+  <li><strong>Correção</strong>: dados incorretos, desatualizados ou incompletos devem ser corrigidos mediante solicitação</li>
+  <li><strong>Eliminação</strong>: dados tratados com base no seu consentimento podem ser eliminados a seu pedido — com exceções previstas em lei</li>
+  <li><strong>Portabilidade</strong>: você pode solicitar seus dados em formato legível por máquina para migrar para outro serviço</li>
+  <li><strong>Revogação de consentimento</strong>: quando o tratamento de dados se baseia em seu consentimento, você pode revogá-lo a qualquer momento</li>
+  <li><strong>Informação sobre compartilhamento</strong>: você tem direito de saber com quais terceiros seus dados são compartilhados</li>
+  <li><strong>Oposição</strong>: você pode se opor a tratamentos realizados em bases legais diferentes do consentimento, quando em desconformidade com a lei</li>
+  <li><strong>Notificação de incidentes</strong>: em caso de vazamento que possa causar dano, você deve ser notificado em prazo razoável</li>
+</ul>
+<p>A <strong>ANPD</strong> (Autoridade Nacional de Proteção de Dados) é o órgão responsável por fiscalizar o cumprimento da lei e aplicar sanções, que podem chegar a 2% do faturamento da empresa, limitado a R$ 50 milhões por infração. Para exercer seus direitos, você pode entrar diretamente em contato com o Encarregado de Dados da organização (toda empresa que processa dados em escala deve ter um, conhecido pela sigla DPO em inglês).</p>
+
+<h2 id="praticas">Práticas Concretas de Proteção</h2>
+<p>Proteger sua privacidade digital não exige conhecimento técnico avançado. Pequenas mudanças de comportamento já fazem uma grande diferença — e muitas delas levam apenas alguns minutos para implementar.</p>
+<p><strong>Gestão de permissões:</strong> revise periodicamente as permissões concedidas a aplicativos no seu celular. No Android e iOS, você pode ver quais apps têm acesso à câmera, microfone, localização, contatos e outras informações sensíveis — e revogar qualquer permissão que não seja estritamente necessária para a função do app. Um jogo, por exemplo, não precisa de acesso à sua localização ou seus contatos.</p>
+<p><strong>Senhas e autenticação:</strong> use senhas longas, únicas para cada conta e geradas aleatoriamente. Gerenciadores de senha como Bitwarden (gratuito e de código aberto) ou 1Password eliminam a necessidade de memorizar dezenas de senhas complexas. Ative autenticação em dois fatores (2FA) em todas as contas importantes — e prefira apps autenticadores (como Google Authenticator ou Authy) a SMS, que pode ser interceptado por SIM swap.</p>
+<p><strong>Comunicação privada:</strong> prefira aplicativos com criptografia de ponta a ponta para comunicações sensíveis. O Signal é o padrão ouro — código aberto, sem fins lucrativos, recomendado por especialistas em segurança como Edward Snowden e a Electronic Frontier Foundation. O WhatsApp também tem criptografia ponta a ponta para mensagens, mas coleta muito mais metadados (quem você fala, quando, com que frequência) do que o Signal.</p>
+<p><strong>Navegação e busca:</strong> navegadores como Firefox (com extensões uBlock Origin e Privacy Badger) ou Brave bloqueiam rastreadores de terceiros por padrão. Para buscas, alternativas como DuckDuckGo ou Startpage não rastreiam seu histórico de pesquisa. O modo anônimo do Chrome não te protege do seu provedor de internet ou de sites — ele apenas não salva seu histórico localmente.</p>
+<p><strong>Redes sociais:</strong> revise regularmente as configurações de privacidade das suas contas. Limite quem pode ver suas publicações, desative o rastreamento de localização, opte por não receber publicidade baseada em dados de terceiros (geralmente disponível nas configurações de anúncios). Considere deletar apps que você não usa ativamente.</p>
+
+<h2 id="menores">Privacidade de Crianças e Adolescentes</h2>
+<p>Crianças e adolescentes merecem atenção especial no contexto de privacidade digital. A LGPD estabelece proteção especial para dados de crianças (menores de 12 anos) e adolescentes (12 a 17 anos), exigindo consentimento específico dos pais ou responsáveis para coleta de seus dados.</p>
+<p>Na prática, porém, a proteção é frequentemente inadequada. A maioria das redes sociais proíbe formalmente o cadastro de menores de 13 anos — mas estudos mostram que dezenas de milhões de crianças abaixo dessa idade usam Instagram, TikTok e outras plataformas com conhecimento ou conivência dos pais. Uma vez dentro da plataforma, a criança é submetida aos mesmos mecanismos de coleta de dados e design persuasivo que os adultos — com ainda menos recursos cognitivos para resistir a eles.</p>
+<p>O Reino Unido publicou em 2021 o "Age Appropriate Design Code" (Código de Design Apropriado para a Idade), que obriga plataformas acessadas por crianças a ativar configurações de privacidade máxima por padrão, proibir publicidade comportamental para menores e usar linguagem clara e compreensível ao explicar como dados são usados. O código inspirou legislações similares em outros países e é considerado modelo internacional.</p>
+
+<h2 id="conclusao">Conclusão</h2>
+<p>A privacidade não é sobre ter algo a esconder. É sobre ter o direito de escolher o que compartilhar, com quem e quando — e a capacidade de exercer esse direito com consciência. Em um mundo onde os dados pessoais valem mais do que o petróleo e onde perfis digitais informam decisões que afetam crédito, emprego, seguro e até liberdade, proteger informações pessoais é um ato fundamental de autonomia e cidadania.</p>
+<p>Nenhuma medida individual é perfeita, e nenhuma combinação de ferramentas técnicas substitui mudanças estruturais nas práticas das plataformas e no marco regulatório. Mas cada pessoa que entende seus direitos, questiona os aplicativos que usa e adota práticas básicas de proteção está contribuindo para um ecossistema digital mais saudável — para si e para todos.</p>
+<p>A internet pode ser um espaço de liberdade, conexão e oportunidade. Para que ela continue sendo isso, precisamos garantir que essa liberdade inclua o direito de controlar nossa própria história digital.</p>
+
+  </article>
+  <aside class="art-sidebar">
+    <div class="art-sidebar-box">
+      <span class="art-sidebar-title">Neste artigo</span>
+      <ul class="art-toc-list" id="tocList"><li><a href="#intro" class="active"><span class="tn">01</span><span class="tl">Introdução</span><span class="ta">→</span></a></li><li><a href="#coleta"><span class="tn">02</span><span class="tl">Dados Coletados</span><span class="ta">→</span></a></li><li><a href="#economia"><span class="tn">03</span><span class="tl">Economia dos Dados</span><span class="ta">→</span></a></li><li><a href="#riscos"><span class="tn">04</span><span class="tl">Riscos Concretos</span><span class="ta">→</span></a></li><li><a href="#lgpd"><span class="tn">05</span><span class="tl">LGPD e Seus Direitos</span><span class="ta">→</span></a></li><li><a href="#praticas"><span class="tn">06</span><span class="tl">Como Se Proteger</span><span class="ta">→</span></a></li><li><a href="#menores"><span class="tn">07</span><span class="tl">Crianças e Adolescentes</span><span class="ta">→</span></a></li><li><a href="#conclusao"><span class="tn">08</span><span class="tl">Conclusão</span><span class="ta">→</span></a></li></ul>
+    </div>
+    <div class="art-sidebar-box">
+      <span class="art-sidebar-title">Tags</span>
+      <div class="art-tag-list"><span class="art-tag">Privacidade</span> <span class="art-tag">Dados Pessoais</span> <span class="art-tag">LGPD</span> <span class="art-tag">Segurança Digital</span></div>
+    </div>
+    <div class="art-sidebar-box art-sidebar-gold">
+      <span class="art-sidebar-title">Sobre o projeto</span>
+      <p style="font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:14px;">Produzido por alunos da EREMCC Petrolina com mentoria do IF Sertão PE.</p>
+      <a href="index.html#sobre" style="font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);text-decoration:none;">Saiba mais →</a>
+    </div>
+  </aside>
+</div>
+
+<div class="art-footer-nav">
+  <a href="trabalhos.html">← Ver todos os artigos</a>
+  <a href="https://mind-online-community.vercel.app" target="_blank" rel="noopener">Comentar na comunidade →</a>
+</div>
+
+<div class="art-continue">
+  <span class="art-continue-label">Continue lendo</span>
+  <div class="art-continue-grid"><a href="artigo1.html" class="art-continue-card"><span class="art-continue-tag">Comunicação Digital</span><span class="art-continue-title">Como Nossas Palavras Constroem ou Destroem Comunidades</span><span class="art-continue-arrow">↗</span></a>
+<a href="artigo2.html" class="art-continue-card"><span class="art-continue-tag">Fake News</span><span class="art-continue-title">Por Que Acreditamos no Que Queremos Acreditar?</span><span class="art-continue-arrow">↗</span></a>
+<a href="artigo5.html" class="art-continue-card"><span class="art-continue-tag">Saúde Digital</span><span class="art-continue-title">Quando o Scroll Vira Vício</span><span class="art-continue-arrow">↗</span></a></div>
+</div>
+
+
+
+<style>
+/* ── QUIZ ── */
+.quiz-section{max-width:800px;margin:60px auto 0;padding:60px 60px 80px;}
+.quiz-header{margin-bottom:40px;}
+.quiz-label{font-family:var(--font-mono, 'DM Mono', monospace);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold,#e8c84a);display:inline-block;margin-bottom:14px;border:1px solid rgba(232,200,74,.3);padding:4px 10px;}
+.quiz-title{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:clamp(28px,4vw,48px);letter-spacing:2px;text-transform:uppercase;color:var(--fg,#f0ede6);line-height:1;}
+.quiz-title em{font-family:var(--font-serif,'Instrument Serif',serif);font-style:italic;text-transform:none;color:var(--gold,#e8c84a);}
+.quiz-progress-bar-wrap{width:100%;height:2px;background:rgba(240,237,230,.07);margin:28px 0;position:relative;}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold,#e8c84a),var(--gold2,#f5d76e));transition:width .4s cubic-bezier(.16,1,.3,1);box-shadow:0 0 8px rgba(232,200,74,.5);}
+.quiz-counter{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:1.5px;color:rgba(240,237,230,.3);margin-bottom:32px;}
+.quiz-q{opacity:0;transform:translateY(20px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);pointer-events:none;display:none;}
+.quiz-q.active{opacity:1;transform:translateY(0);pointer-events:all;display:block;}
+.quiz-q-text{font-family:var(--font-serif,'Instrument Serif',serif);font-size:clamp(18px,2.2vw,24px);color:var(--fg,#f0ede6);margin-bottom:24px;line-height:1.45;}
+.quiz-options{display:flex;flex-direction:column;gap:10px;}
+.quiz-opt{background:rgba(240,237,230,.03);border:1px solid rgba(240,237,230,.08);padding:16px 20px;cursor:pointer;font-family:var(--font-body,'DM Sans',sans-serif);font-size:14px;font-weight:300;color:rgba(240,237,230,.75);text-align:left;transition:all .25s;position:relative;overflow:hidden;}
+.quiz-opt::before{content:'';position:absolute;inset:0;background:var(--gold,#e8c84a);opacity:0;transition:opacity .25s;}
+.quiz-opt:hover{border-color:rgba(232,200,74,.35);color:var(--fg,#f0ede6);}
+.quiz-opt:hover::before{opacity:.04;}
+.quiz-opt.correct{border-color:rgba(100,220,120,.5);background:rgba(100,220,120,.06);color:#7de89a;cursor:default;}
+.quiz-opt.wrong{border-color:rgba(220,80,80,.4);background:rgba(220,80,80,.05);color:#e87d7d;cursor:default;}
+.quiz-opt.disabled{cursor:default;pointer-events:none;}
+.quiz-opt-letter{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:1px;color:var(--gold,#e8c84a);margin-right:12px;opacity:.7;}
+.quiz-feedback{margin-top:16px;padding:14px 18px;font-size:13px;line-height:1.55;border-left:2px solid;opacity:0;transition:opacity .35s;font-family:var(--font-body,'DM Sans',sans-serif);}
+.quiz-feedback.show{opacity:1;}
+.quiz-feedback.correct-fb{border-color:#7de89a;background:rgba(100,220,120,.05);color:#9ef0b4;}
+.quiz-feedback.wrong-fb{border-color:#e87d7d;background:rgba(220,80,80,.04);color:#f0a0a0;}
+.quiz-nav{margin-top:28px;display:flex;align-items:center;justify-content:space-between;}
+.quiz-btn{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(232,200,74,.4);background:transparent;color:var(--gold,#e8c84a);padding:12px 24px;cursor:pointer;transition:all .25s;}
+.quiz-btn:hover{background:var(--gold,#e8c84a);color:#000;}
+.quiz-btn:disabled{opacity:.25;cursor:default;pointer-events:none;}
+.quiz-result{display:none;text-align:center;padding:40px 0;}
+.quiz-result.show{display:block;}
+.quiz-score-num{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:80px;letter-spacing:4px;color:var(--gold,#e8c84a);line-height:1;}
+.quiz-score-label{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(240,237,230,.35);margin-bottom:20px;}
+.quiz-result-msg{font-family:var(--font-serif,'Instrument Serif',serif);font-size:clamp(18px,2vw,22px);color:var(--fg,#f0ede6);margin-bottom:32px;line-height:1.4;}
+.quiz-restart{font-family:var(--font-mono,'DM Mono',monospace);font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(232,200,74,.4);background:transparent;color:var(--gold,#e8c84a);padding:12px 28px;cursor:pointer;transition:all .25s;}
+.quiz-restart:hover{background:var(--gold,#e8c84a);color:#000;}
+.quiz-divider{border:none;margin:60px 0 0;}
+@media(max-width:900px){
+  .quiz-section{max-width:800px;margin:0 auto;padding:80px 60px 40px;}
+}
+</style>
+
+<section class="quiz-section" id="quiz-art3">
+  <div class="quiz-header">
+    <span class="quiz-label">Quiz</span>
+    <h2 class="quiz-title">Teste seus conhecimentos: <em>Privacidade Digital</em></h2>
+  </div>
+  <div class="quiz-progress-bar-wrap"><div class="quiz-progress-fill" id="quiz-art3-prog" style="width:0%"></div></div>
+  <div id="quiz-art3-questions">
+    
+<div class="quiz-q  active" id="quiz-art3-q0" data-correct="2" data-feedback-right="Correto! Estudos da Universidade de Cambridge mostraram que com base apenas nas curtidas, algoritmos formam perfis psicométricos mais precisos do que os de pessoas próximas." data-feedback-wrong="Incorreto. Estudos da Universidade de Cambridge demonstraram que algoritmos conseguem prever a personalidade de uma pessoa com mais precisão do que seu cônjuge — apenas com as curtidas.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">1</span>/5</p>
+  <p class="quiz-q-text">Segundo estudos citados no artigo, o que um algoritmo consegue prever a partir apenas das curtidas do Facebook de uma pessoa?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Apenas preferências de consumo e publicidade relevante.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>O histórico de navegação completo do usuário.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>A personalidade da pessoa com mais precisão do que seu próprio cônjuge.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>A renda familiar aproximada do usuário.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb0"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next0" disabled onclick="window['quizNext_'+'quiz-art3'](0)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art3-q1" data-correct="1" data-feedback-right="Exato! O escândalo mostrou como dados de 87 milhões de usuários foram usados para influenciar a eleição americana de 2016 e o referendo do Brexit com mensagens micro-segmentadas." data-feedback-wrong="Incorreto. O escândalo revelou que dados de 87 milhões de usuários do Facebook foram usados para criar mensagens políticas personalizadas durante a eleição de 2016 e o Brexit.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">2</span>/5</p>
+  <p class="quiz-q-text">O que revelou o escândalo da Cambridge Analytica em 2018?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Que o Facebook vendia dados diretamente para governos autoritários.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Que dados de 87 milhões de usuários foram usados para criar mensagens políticas micro-segmentadas.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Que o Cambridge Analytica invadiu servidores do Facebook ilegalmente.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Que algoritmos de IA podiam prever resultados eleitorais com precisão.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb1"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next1" disabled onclick="window['quizNext_'+'quiz-art3'](1)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art3-q2" data-correct="2" data-feedback-right="Correto! A LGPD garante, entre outros direitos, acesso aos dados coletados, correção de dados incorretos, portabilidade e eliminação — e aplica-se a qualquer organização que trate dados de brasileiros." data-feedback-wrong="Incorreto. A LGPD garante direitos como acesso aos seus dados, correção, portabilidade e eliminação, além de exigir consentimento claro para coleta de dados sensíveis.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">3</span>/5</p>
+  <p class="quiz-q-text">O que a LGPD (Lei Geral de Proteção de Dados) brasileira garante aos cidadãos?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Acesso gratuito à internet como direito fundamental.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Proibição total de coleta de dados por empresas estrangeiras.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Direitos como acesso, correção, portabilidade e eliminação de dados pessoais.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Responsabilização criminal imediata de qualquer empresa que colete dados.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb2"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next2" disabled onclick="window['quizNext_'+'quiz-art3'](2)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art3-q3" data-correct="2" data-feedback-right="Correto! O modo anônimo apenas não salva seu histórico no dispositivo — mas seu provedor de internet, empregador e os sites que você visita ainda podem ver sua atividade." data-feedback-wrong="Incorreto. O artigo esclarece que o modo anônimo do Chrome apenas não salva o histórico localmente — seu provedor de internet e os sites visitados ainda podem rastrear sua navegação.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">4</span>/5</p>
+  <p class="quiz-q-text">Por que o 'modo anônimo' do Chrome não oferece proteção completa de privacidade?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>Porque exige login com conta Google para funcionar.</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Porque não funciona em conexões HTTPS.</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Porque apenas evita salvar histórico localmente, mas seu provedor de internet e sites ainda podem rastrear você.</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>Porque o Google ainda coleta dados do modo anônimo para seus servidores.</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb3"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next3" disabled onclick="window['quizNext_'+'quiz-art3'](3)">Próxima →</button>
+  </div>
+</div>
+
+<div class="quiz-q" id="quiz-art3-q4" data-correct="2" data-feedback-right="Correto! O Signal é código aberto, sem fins lucrativos, coleta pouquíssimos metadados e é recomendado por especialistas como Edward Snowden e a Electronic Frontier Foundation." data-feedback-wrong="Incorreto. O artigo indica o Signal como padrão ouro: código aberto, sem fins lucrativos, recomendado por especialistas em segurança como Edward Snowden — diferente do WhatsApp, que coleta muito mais metadados.">
+  <p class="quiz-counter"><span id="quiz-art3-cnum">5</span>/5</p>
+  <p class="quiz-q-text">Qual aplicativo de mensagens é descrito como 'padrão ouro' de privacidade no artigo?</p>
+  <div class="quiz-options"><button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span>WhatsApp</button>
+<button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span>Telegram</button>
+<button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span>Signal</button>
+<button class="quiz-opt" data-idx="3"><span class="quiz-opt-letter">D</span>iMessage</button>
+</div>
+  <div class="quiz-feedback" id="quiz-art3-fb4"></div>
+  <div class="quiz-nav">
+    <span></span>
+    <button class="quiz-btn" id="quiz-art3-next4" disabled onclick="window['quizNext_'+'quiz-art3'](4)">Ver resultado →</button>
+  </div>
+</div>
+
+  </div>
+  <div class="quiz-result" id="quiz-art3-result">
+    <p class="quiz-score-label">Você acertou</p>
+    <div class="quiz-score-num" id="quiz-art3-score">0</div>
+    <p class="quiz-score-label">de 5 questões</p>
+    <p class="quiz-result-msg" id="quiz-art3-msg"></p>
+    <button class="quiz-restart" onclick="window['quizRestart_'+'quiz-art3']()">↺ Tentar novamente</button>
+  </div>
+</section>
+
+<script>
+(function(){
+  var QID = 'quiz-art3';
+  var TOTAL = 5;
+  var score = 0;
+
+  // Attach option click handlers
+  for (var qi = 0; qi < TOTAL; qi++) {
+    (function(i){
+      var qEl = document.getElementById(QID + '-q' + i);
+      if (!qEl) return;
+      var correct = parseInt(qEl.getAttribute('data-correct'));
+      var opts = qEl.querySelectorAll('.quiz-opt');
+      opts.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if (btn.classList.contains('disabled')) return;
+          var chosen = parseInt(btn.getAttribute('data-idx'));
+          opts.forEach(function(b){ b.classList.add('disabled'); });
+          var fb = document.getElementById(QID + '-fb' + i);
+          if (chosen === correct) {
+            btn.classList.add('correct');
+            score++;
+            fb.textContent = '✓ ' + qEl.getAttribute('data-feedback-right');
+            fb.className = 'quiz-feedback correct-fb show';
+          } else {
+            btn.classList.add('wrong');
+            opts[correct].classList.add('correct');
+            fb.textContent = '✗ ' + qEl.getAttribute('data-feedback-wrong');
+            fb.className = 'quiz-feedback wrong-fb show';
+          }
+          var nextBtn = document.getElementById(QID + '-next' + i);
+          if (nextBtn) nextBtn.disabled = false;
+          var prog = document.getElementById(QID + '-prog');
+          if (prog) prog.style.width = (((i + 1) / TOTAL) * 100) + '%';
+        });
+      });
+    })(qi);
+  }
+
+  window['quizNext_' + QID] = function(current) {
+    var curr = document.getElementById(QID + '-q' + current);
+    if (curr) { curr.classList.remove('active'); curr.style.display = 'none'; }
+    var next = current + 1;
+    if (next < TOTAL) {
+      var nextEl = document.getElementById(QID + '-q' + next);
+      if (nextEl) { nextEl.style.display = 'block'; setTimeout(function(){ nextEl.classList.add('active'); }, 20); }
+    } else {
+      var res = document.getElementById(QID + '-result');
+      var scoreEl = document.getElementById(QID + '-score');
+      var msgEl = document.getElementById(QID + '-msg');
+      scoreEl.textContent = score + '/' + TOTAL;
+      var msg = '';
+      if (score === 0) msg = 'Não desanime — reler o artigo vai ajudar muito!';
+      else if (score === 1) msg = 'Você captou algumas ideias. Vale revisitar o conteúdo.';
+      else if (score === 2) msg = 'Bom começo! Você entendeu os pontos principais.';
+      else if (score === 3) msg = 'Muito bem! Você absorveu bem o conteúdo.';
+      else if (score === 4) msg = 'Excelente! Domínio quase completo do tema.';
+      else if (score === 5) msg = 'Perfeito! Você leu com atenção e entendeu tudo.';
+      msgEl.textContent = msg;
+      res.style.display = 'block'; setTimeout(function(){ res.classList.add('show'); }, 20);
+    }
+  };
+
+  window['quizRestart_' + QID] = function() {
+    score = 0;
+    var res = document.getElementById(QID + '-result');
+    res.classList.remove('show'); res.style.display = 'none';
+    var prog = document.getElementById(QID + '-prog');
+    if (prog) prog.style.width = '0%';
+    for (var i = 0; i < TOTAL; i++) {
+      var el = document.getElementById(QID + '-q' + i);
+      if (!el) continue;
+      el.querySelectorAll('.quiz-opt').forEach(function(b){
+        b.classList.remove('correct', 'wrong', 'disabled');
+      });
+      var fb = document.getElementById(QID + '-fb' + i);
+      if (fb) { fb.className = 'quiz-feedback'; fb.textContent = ''; }
+      var nb = document.getElementById(QID + '-next' + i);
+      if (nb) nb.disabled = true;
+      el.classList.remove('active'); el.style.display = 'none';
+    }
+    var first = document.getElementById(QID + '-q0');
+    if (first) { first.style.display = 'block'; setTimeout(function(){ first.classList.add('active'); }, 20); }
+  };
+})();
+
+/* ── HERO CLOSE (MOBILE) ── */
+const heroClose = document.getElementById('heroClose');
+if(heroClose){
+  heroClose.addEventListener('click', ()=>{
+    const hero = document.getElementById('topo') || document.querySelector('.hero');
+    const next = hero?.nextElementSibling;
+    if(next) next.scrollIntoView({behavior:'smooth'});
+  });
+}
+
+</script>
+
+<footer><div class="footer-inner">
+  <span class="footer-logo">MindOnline</span>
+  <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
+  <span class="footer-origin">Petrolina, PE — Brasil</span>
+</div></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+
+function baixarPDF(){
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  const pw=210, ph=297, ml=22, mr=22, w=pw-ml-mr;
+
+  // ── DADOS DO ARTIGO ──────────────────────────────
+  const TITULO = `Privacidade Digital: O Que Você Entrega Sem Perceber`;
+  const CATEGORIA = `Privacidade`;
+  const AUTOR = `Isaac Siqueira de Oliveira`;
+  const ESCOLA = `Aluno — EREMCC Petrolina`;
+  const DATA_PUB = `Abril de 2026`;
+  const LEITURA = `~ 6 min`;
+  const FILENAME = `artigo3-mindonline.pdf`;
+
+const SECOES = [
+  [`Introdução`, [
+  ["p", `Toda vez que você abre um aplicativo, realiza uma pesquisa ou curte uma publicação, você está gerando dados. Esses dados descrevem quem você é, o que você pensa, onde você esteve, com quem você se relaciona e o que deseja — muitas vezes com mais precisão do que você conseguiria descrever sobre si mesmo. E, na maioria das vezes, você entrega tudo isso voluntariamente, em troca de serviços gratuitos, sem compreender completamente o que está cedendo.`],
+  ["p", `A privacidade digital deixou de ser uma questão técnica reservada a especialistas em segurança da informação. Ela é hoje um direito fundamental — reconhecido pela Constituição Federal brasileira após a Emenda Constitucional 115/2022 — que precisa ser compreendido e exercido por qualquer pessoa que utilize a internet. Em 2026, isso significa praticamente toda a população brasileira: segundo o IBGE, mais de 90% dos domicílios brasileiros têm acesso à internet.`],
+  ["p", `Este artigo explora em profundidade o que acontece com seus dados, quem os coleta, como são processados e comercializados, quais são seus direitos legais e — mais importante — o que você pode fazer para proteger sua privacidade no mundo digital sem abrir mão das conveniências que a tecnologia oferece.`]
+  ]],
+  [`Que Dados São Coletados — E Como`, [
+  ["p", `As plataformas digitais coletam muito mais do que o óbvio. A maioria das pessoas sabe que fornece nome, e-mail e data de nascimento ao criar uma conta. Mas a coleta de dados vai muito além das informações que você preenche conscientemente em um formulário.`],
+  ["p", `Categorias de dados coletados incluem:`],
+  ["ul", [`Dados de comportamento passivo: quanto tempo você fica olhando para cada publicação (mesmo sem curtir ou comentar), quais partes de um texto você lê, quando você para de rolar o feed, quais vídeos você assiste até o fim ou abandona nos primeiros segundos`, `Dados de intenção de compra: quais produtos você pesquisa, quais você adiciona ao carrinho sem comprar, quais você visualiza repetidamente`, `Dados de localização: sua posição geográfica em tempo real, frequentemente com precisão de metros, incluindo histórico de lugares que você frequentou, quanto tempo ficou em cada local e com que frequência retorna`, `Dados de dispositivo e comportamento técnico: o modelo do seu celular, versão do sistema operacional, endereço IP, operadora, nível de bateria, redes Wi-Fi próximas, padrões de digitação, velocidade de rolagem, ângulo do dispositivo`, `Dados de rede social: com quem você se comunica, com que frequência, sobre quais assuntos, em que horários, quem você menciona ou marca, quem te menciona`, `Dados de voz e áudio: aplicativos com acesso ao microfone podem, em alguns casos, registrar sons ambientes. Há debate científico sobre o alcance real dessa prática, mas as permissões solicitadas frequentemente excedem o necessário`, `Dados biométricos: reconhecimento facial, impressão digital, padrão de voz — coletados explicitamente por alguns serviços e implicitamente por outros (como apps de câmera que identificam rostos para marcar fotos)`]],
+  ["p", `Esses dados são combinados, cruzados com informações de outros serviços (via parceiros de dados e data brokers) e analisados por algoritmos de aprendizado de máquina, formando o que especialistas chamam de perfil psicométrico — um retrato detalhado da personalidade, dos valores, dos medos, dos desejos e das vulnerabilidades de cada usuário. Estudos da Universidade de Cambridge demonstraram que, com base apenas nas curtidas do Facebook, um algoritmo consegue prever a personalidade de uma pessoa com mais precisão do que seu cônjuge.`]
+  ]],
+  [`A Economia dos Dados Pessoais`, [
+  ["p", `Existe uma frase que captura bem o modelo de negócio das grandes plataformas digitais: "Se o produto é gratuito, o produto é você." Serviços como redes sociais, mecanismos de busca, aplicativos de mensagens e mapas são oferecidos sem custo financeiro direto porque o verdadeiro produto comercializado são os dados — e a atenção — dos usuários.`],
+  ["p", `Em 2023, as receitas de publicidade do Google, Meta (Facebook/Instagram) e Amazon juntas ultrapassaram 400 bilhões de dólares — todas baseadas, fundamentalmente, na análise de dados dos usuários para servir publicidade altamente segmentada. Para ter uma noção de escala: isso é mais do que o PIB de países como Portugal, Noruega ou Nova Zelândia.`],
+  ["p", `O mercado de data brokers (corretores de dados) é menos visível mas igualmente importante. Empresas como Acxiom, Experian e Oracle possuem perfis detalhados de praticamente todos os adultos nos países desenvolvidos — compilados a partir de registros públicos, transações de cartão de crédito, histórico de compras, registros de votação, redes sociais e centenas de outras fontes. Esses perfis são vendidos para empresas de marketing, seguradoras, empregadores e outros atores que tomam decisões que afetam diretamente a sua vida — muitas vezes sem que você saiba.`],
+  ["p", `O valor econômico de dados pessoais varia enormemente com sua sensibilidade. Dados de saúde valem mais do que dados demográficos; dados financeiros mais do que dados de comportamento geral; dados sobre comportamento reprodutivo (menstruação, gravidez) mais do que dados sobre hobbies. Em 2021, uma pesquisadora de segurança demonstrou que é possível inferir a gravidez de uma usuária — com alta precisão — apenas a partir de mudanças em seu padrão de pesquisa e compras online, meses antes de qualquer anúncio público.`]
+  ]],
+  [`Os Riscos Concretos da Falta de Privacidade`, [
+  ["p", `Privacidade não é apenas uma questão abstrata ou filosófica. A falta dela tem consequências concretas e mensuráveis na vida das pessoas:`],
+  ["p", `Discriminação algorítmica: algoritmos treinados em dados históricos podem reproduzir e amplificar discriminações existentes. Estudos documentaram casos em que ferramentas de contratação baseadas em IA desfavoreciam mulheres; sistemas de crédito cobravam taxas mais altas de minorias raciais; e algoritmos de saúde subestimavam a gravidade de condições em pacientes negros. Esses vieses são frequentemente invisíveis porque os algoritmos são caixas-pretas — suas decisões não podem ser facilmente contestadas ou auditadas.`],
+  ["p", `Manipulação comportamental: perfis detalhados permitem a entidades — governos, empresas, partidos políticos — influenciar comportamentos com precisão cirúrgica. O escândalo da Cambridge Analytica, revelado em 2018, mostrou como dados de 87 milhões de usuários do Facebook foram usados para criar mensagens políticas micro-segmentadas durante a eleição presidencial americana de 2016 e o referendo do Brexit.`],
+  ["p", `Violações de segurança: dados armazenados são dados em risco de vazamento. Segundo o IBM Cost of Data Breach Report 2023, o custo médio de uma violação de dados globalmente é de 4,45 milhões de dólares — mas o custo para os indivíduos afetados, em termos de roubo de identidade, fraude financeira e dano à reputação, pode ser devastador. O Brasil foi o país com o maior número de vazamentos de dados em 2021, incluindo o mega-vazamento do Serasa Experian que expôs dados de 223 milhões de brasileiros.`],
+  ["p", `Violência baseada em dados: em contextos de perseguição, stalking ou violência doméstica, dados de localização em tempo real podem colocar vidas em risco. Aplicativos de rastreamento disfarçados de ferramentas de controle parental são frequentemente usados por abusadores para monitorar vítimas.`]
+  ]],
+  [`A LGPD e Seus Direitos`, [
+  ["p", `A Lei Geral de Proteção de Dados (Lei n.º 13.709/2018), em vigor desde setembro de 2020, representa um marco fundamental na proteção da privacidade dos brasileiros. Inspirada no GDPR europeu (Regulamento Geral de Proteção de Dados), ela estabelece princípios, obrigações e direitos relacionados ao tratamento de dados pessoais por organizações públicas e privadas.`],
+  ["p", `A LGPD se aplica a qualquer operação realizada com dados pessoais de pessoas físicas localizadas no Brasil — independente de onde a organização que processa os dados está sediada. Isso significa que empresas como Google, Meta e Amazon, embora sejam americanas, precisam respeitar a lei brasileira quando lidam com dados de usuários no Brasil.`],
+  ["p", `Entre os principais direitos garantidos pela LGPD estão:`],
+  ["ul", [`Acesso: você pode solicitar a qualquer empresa uma cópia de todos os dados pessoais que ela possui sobre você`, `Correção: dados incorretos, desatualizados ou incompletos devem ser corrigidos mediante solicitação`, `Eliminação: dados tratados com base no seu consentimento podem ser eliminados a seu pedido — com exceções previstas em lei`, `Portabilidade: você pode solicitar seus dados em formato legível por máquina para migrar para outro serviço`, `Revogação de consentimento: quando o tratamento de dados se baseia em seu consentimento, você pode revogá-lo a qualquer momento`, `Informação sobre compartilhamento: você tem direito de saber com quais terceiros seus dados são compartilhados`, `Oposição: você pode se opor a tratamentos realizados em bases legais diferentes do consentimento, quando em desconformidade com a lei`, `Notificação de incidentes: em caso de vazamento que possa causar dano, você deve ser notificado em prazo razoável`]],
+  ["p", `A ANPD (Autoridade Nacional de Proteção de Dados) é o órgão responsável por fiscalizar o cumprimento da lei e aplicar sanções, que podem chegar a 2% do faturamento da empresa, limitado a R$ 50 milhões por infração. Para exercer seus direitos, você pode entrar diretamente em contato com o Encarregado de Dados da organização (toda empresa que processa dados em escala deve ter um, conhecido pela sigla DPO em inglês).`]
+  ]],
+  [`Práticas Concretas de Proteção`, [
+  ["p", `Proteger sua privacidade digital não exige conhecimento técnico avançado. Pequenas mudanças de comportamento já fazem uma grande diferença — e muitas delas levam apenas alguns minutos para implementar.`],
+  ["p", `Gestão de permissões: revise periodicamente as permissões concedidas a aplicativos no seu celular. No Android e iOS, você pode ver quais apps têm acesso à câmera, microfone, localização, contatos e outras informações sensíveis — e revogar qualquer permissão que não seja estritamente necessária para a função do app. Um jogo, por exemplo, não precisa de acesso à sua localização ou seus contatos.`],
+  ["p", `Senhas e autenticação: use senhas longas, únicas para cada conta e geradas aleatoriamente. Gerenciadores de senha como Bitwarden (gratuito e de código aberto) ou 1Password eliminam a necessidade de memorizar dezenas de senhas complexas. Ative autenticação em dois fatores (2FA) em todas as contas importantes — e prefira apps autenticadores (como Google Authenticator ou Authy) a SMS, que pode ser interceptado por SIM swap.`],
+  ["p", `Comunicação privada: prefira aplicativos com criptografia de ponta a ponta para comunicações sensíveis. O Signal é o padrão ouro — código aberto, sem fins lucrativos, recomendado por especialistas em segurança como Edward Snowden e a Electronic Frontier Foundation. O WhatsApp também tem criptografia ponta a ponta para mensagens, mas coleta muito mais metadados (quem você fala, quando, com que frequência) do que o Signal.`],
+  ["p", `Navegação e busca: navegadores como Firefox (com extensões uBlock Origin e Privacy Badger) ou Brave bloqueiam rastreadores de terceiros por padrão. Para buscas, alternativas como DuckDuckGo ou Startpage não rastreiam seu histórico de pesquisa. O modo anônimo do Chrome não te protege do seu provedor de internet ou de sites — ele apenas não salva seu histórico localmente.`],
+  ["p", `Redes sociais: revise regularmente as configurações de privacidade das suas contas. Limite quem pode ver suas publicações, desative o rastreamento de localização, opte por não receber publicidade baseada em dados de terceiros (geralmente disponível nas configurações de anúncios). Considere deletar apps que você não usa ativamente.`]
+  ]],
+  [`Privacidade de Crianças e Adolescentes`, [
+  ["p", `Crianças e adolescentes merecem atenção especial no contexto de privacidade digital. A LGPD estabelece proteção especial para dados de crianças (menores de 12 anos) e adolescentes (12 a 17 anos), exigindo consentimento específico dos pais ou responsáveis para coleta de seus dados.`],
+  ["p", `Na prática, porém, a proteção é frequentemente inadequada. A maioria das redes sociais proíbe formalmente o cadastro de menores de 13 anos — mas estudos mostram que dezenas de milhões de crianças abaixo dessa idade usam Instagram, TikTok e outras plataformas com conhecimento ou conivência dos pais. Uma vez dentro da plataforma, a criança é submetida aos mesmos mecanismos de coleta de dados e design persuasivo que os adultos — com ainda menos recursos cognitivos para resistir a eles.`],
+  ["p", `O Reino Unido publicou em 2021 o "Age Appropriate Design Code" (Código de Design Apropriado para a Idade), que obriga plataformas acessadas por crianças a ativar configurações de privacidade máxima por padrão, proibir publicidade comportamental para menores e usar linguagem clara e compreensível ao explicar como dados são usados. O código inspirou legislações similares em outros países e é considerado modelo internacional.`]
+  ]],
+  [`Conclusão`, [
+  ["p", `A privacidade não é sobre ter algo a esconder. É sobre ter o direito de escolher o que compartilhar, com quem e quando — e a capacidade de exercer esse direito com consciência. Em um mundo onde os dados pessoais valem mais do que o petróleo e onde perfis digitais informam decisões que afetam crédito, emprego, seguro e até liberdade, proteger informações pessoais é um ato fundamental de autonomia e cidadania.`],
+  ["p", `Nenhuma medida individual é perfeita, e nenhuma combinação de ferramentas técnicas substitui mudanças estruturais nas práticas das plataformas e no marco regulatório. Mas cada pessoa que entende seus direitos, questiona os aplicativos que usa e adota práticas básicas de proteção está contribuindo para um ecossistema digital mais saudável — para si e para todos.`],
+  ["p", `A internet pode ser um espaço de liberdade, conexão e oportunidade. Para que ela continue sendo isso, precisamos garantir que essa liberdade inclua o direito de controlar nossa própria história digital.`]
+  ]]
+];
+
+
+  // ── HELPERS ──────────────────────────────────────
+  function bgPage(){
+    doc.setFillColor(8,8,8); doc.rect(0,0,pw,ph,'F');
+    doc.setFillColor(232,200,74); doc.rect(0,0,8,ph,'F');
+    doc.setFillColor(30,30,30); doc.rect(8,0,1,ph,'F');
+  }
+  function pageFooter(label){
+    doc.setFillColor(12,12,12); doc.rect(9,ph-16,pw-9,16,'F');
+    doc.setDrawColor(30,30,30); doc.setLineWidth(0.2); doc.line(9,ph-16,pw,ph-16);
+    doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(70,70,70);
+    doc.text('MindOnline — Comunicação Ética Digital', ml+4, ph-8);
+    doc.text(label||FILENAME, pw-mr, ph-8, {align:'right'});
+  }
+  function pageHeader(left, right){
+    doc.setFillColor(12,12,12); doc.rect(9,0,pw-9,18,'F');
+    doc.setDrawColor(30,30,30); doc.setLineWidth(0.2); doc.line(9,18,pw,18);
+    doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(232,200,74);
+    doc.text(left||'MINDONLINE', ml+4, 11);
+    doc.setFont('helvetica','normal'); doc.setTextColor(70,70,70);
+    if(right) doc.text(right, pw-mr, 11, {align:'right'});
+  }
+
+  // ── CAPA ──────────────────────────────────────────
+  bgPage();
+
+  // Logo
+  doc.setFontSize(30); doc.setFont('helvetica','bold');
+  doc.setTextColor(232,200,74);
+  doc.text('MindOnline', ml+4, 36);
+  doc.setFontSize(8.5); doc.setFont('helvetica','normal');
+  doc.setTextColor(100,100,100);
+  doc.text('COMUNICAÇÃO ÉTICA DIGITAL — EREMCC PETROLINA', ml+4, 44);
+  doc.setDrawColor(35,35,35); doc.setLineWidth(0.3); doc.line(ml+4,50,pw-mr,50);
+
+  // Badge categoria
+  const badgeText = CATEGORIA.toUpperCase();
+  const badgeW = doc.getTextWidth(badgeText) + 16;
+  doc.setFillColor(232,200,74);
+  doc.roundedRect(ml+4, 60, badgeW, 8, 1, 1, 'F');
+  doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(0,0,0);
+  doc.text(badgeText, ml+12, 65.5);
+
+  // Título — tamanho calculado primeiro, depois quebra com esse tamanho
+  doc.setTextColor(240,237,230);
+  // Testar qual tamanho cabe sem cortar
+  let baseSz = 26;
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(baseSz);
+  let titleLines = doc.splitTextToSize(TITULO, w-4);
+  if(titleLines.length > 3){ baseSz = 18; doc.setFontSize(baseSz); titleLines = doc.splitTextToSize(TITULO, w-4); }
+  else if(titleLines.length > 2){ baseSz = 22; doc.setFontSize(baseSz); titleLines = doc.splitTextToSize(TITULO, w-4); }
+  let ty = 80;
+  titleLines.forEach(line => { doc.text(line, ml+4, ty); ty += baseSz * 0.50; });
+
+  // Linha dourada sob título
+  doc.setDrawColor(232,200,74); doc.setLineWidth(0.5);
+  doc.line(ml+4, ty+4, ml+4+55, ty+4);
+  ty += 18;
+
+  // Autor
+  doc.setFontSize(11); doc.setFont('helvetica','bold');
+  doc.setTextColor(232,200,74);
+  doc.text(AUTOR, ml+4, ty); ty += 6;
+  doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.setTextColor(90,90,90);
+  doc.text(ESCOLA, ml+4, ty); ty += 6;
+  doc.text(DATA_PUB + '  ·  Leitura: ' + LEITURA, ml+4, ty);
+
+  // Decoração geométrica
+  doc.setDrawColor(25,25,25); doc.setLineWidth(0.25);
+  for(let i=0;i<10;i++) doc.line(pw-70+i*8,ph-70,pw-8,ph-70+i*8);
+
+  // Rodapé capa
+  doc.setFillColor(12,12,12); doc.rect(9,ph-20,pw-9,20,'F');
+  doc.setDrawColor(30,30,30); doc.setLineWidth(0.2); doc.line(9,ph-20,pw,ph-20);
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(65,65,65);
+  doc.text('mindonline.com.br', ml+4, ph-10);
+  doc.text('© 2026 MindOnline', pw-mr, ph-10, {align:'right'});
+
+  // ── PÁGINAS DE CONTEÚDO ──────────────────────────
+  SECOES.forEach(([titulo, elementos], idx) => {
+    doc.addPage();
+    bgPage();
+    pageHeader('MINDONLINE', (idx+1)+' / '+SECOES.length);
+
+    let py = 30;
+
+    // Número e título da seção
+    doc.setFontSize(9); doc.setFont('helvetica','bold');
+    doc.setTextColor(232,200,74);
+    doc.text('0'+(idx+1), ml+4, py); py += 3;
+    doc.setDrawColor(232,200,74); doc.setLineWidth(0.5);
+    doc.line(ml+4, py+1, ml+4+18, py+1); py += 9;
+
+    doc.setFontSize(16); doc.setFont('helvetica','bold');
+    doc.setTextColor(240,237,230);
+    const tLines = doc.splitTextToSize(titulo.toUpperCase(), w-4);
+    tLines.forEach(l => { doc.text(l, ml+4, py); py += 7.5; });
+    py += 2;
+
+    doc.setDrawColor(30,30,30); doc.setLineWidth(0.2);
+    doc.line(ml+4, py, pw-mr, py); py += 9;
+
+    // Conteúdo
+    elementos.forEach(([tipo, conteudo]) => {
+      if(tipo === 'p') {
+        doc.setFontSize(10.5); doc.setFont('helvetica','normal');
+        doc.setTextColor(155,150,143); doc.setLineHeightFactor(1.55);
+        const lines = doc.splitTextToSize(conteudo, w-4);
+        lines.forEach(l => {
+          if(py > ph-24) {
+            pageFooter(); doc.addPage(); bgPage();
+            pageHeader('MINDONLINE'); py = 26;
+            doc.setFontSize(10.5); doc.setFont('helvetica','normal');
+            doc.setTextColor(155,150,143); doc.setLineHeightFactor(1.55);
+          }
+          doc.text(l, ml+4, py); py += 5.8;
+        });
+        py += 3;
+
+      } else if(tipo === 'blockquote') {
+        if(py > ph-50) {
+          pageFooter(); doc.addPage(); bgPage();
+          pageHeader('MINDONLINE'); py = 26;
+        }
+        // Barra dourada lateral
+        doc.setFillColor(232,200,74); doc.rect(ml+4, py-3, 2.5, 0.1, 'F');
+        const bqLines = doc.splitTextToSize(conteudo, w-14);
+        const bqH = bqLines.length * 6.8 + 10;
+        doc.setFillColor(232,200,74);
+        doc.rect(ml+4, py-4, 2.5, bqH, 'F');
+        doc.setFontSize(11.5); doc.setFont('helvetica','bolditalic');
+        doc.setTextColor(210,190,100); doc.setLineHeightFactor(1.6);
+        bqLines.forEach(l => {
+          doc.text(l, ml+12, py); py += 6.8;
+        });
+        py += 8;
+
+      } else if(tipo === 'ul') {
+        conteudo.forEach((item, ii) => {
+          if(py > ph-24) {
+            pageFooter(); doc.addPage(); bgPage();
+            pageHeader('MINDONLINE'); py = 26;
+          }
+          // bullet dourado
+          doc.setFillColor(232,200,74); doc.circle(ml+7, py-1.5, 1, 'F');
+          doc.setFontSize(10.5); doc.setFont('helvetica','normal');
+          doc.setTextColor(155,150,143); doc.setLineHeightFactor(1.5);
+          const iLines = doc.splitTextToSize(item, w-14);
+          iLines.forEach((l,li) => {
+            doc.text(l, ml+12, py); py += 5.5;
+          });
+          py += 1.5;
+        });
+        py += 4;
+      }
+    });
+
+    pageFooter(FILENAME);
+  });
+
+  doc.save(FILENAME);
+}
+
+
+/* ═══════════ NEW ANIMATIONS JS ═══════════ */
+(function(){
+
+// ── EXPAND CIRCLE PAGE TRANSITION ──
+const PT = document.getElementById('pt');
+let ptCircle = document.getElementById('pt-circle');
+if(!ptCircle){
+  // rebuild if needed
+  PT.innerHTML='<div id="pt-circle"></div>';
+  ptCircle = document.getElementById('pt-circle');
+}
+PT.style.display='flex';
+
+function ptEnter(){
+  PT.style.display='flex';
+  ptCircle.style.left='50%';
+  ptCircle.style.top='50%';
+  PT.classList.remove('shrink');
+  PT.classList.add('expand');
+  setTimeout(()=>{
+    PT.classList.remove('expand');
+    PT.classList.add('shrink');
+    setTimeout(()=>{
+      PT.style.display='none';
+      PT.classList.remove('shrink');
+    },700);
+  },650);
+}
+
+function ptLeave(cb, originX, originY){
+  PT.style.display='flex';
+  ptCircle.style.left=(originX||window.innerWidth/2)+'px';
+  ptCircle.style.top=(originY||window.innerHeight/2)+'px';
+  PT.classList.remove('shrink');
+  PT.classList.add('expand');
+  setTimeout(()=>{ cb(); },680);
+}
+
+window.addEventListener('load', ptEnter);
+
+document.querySelectorAll('a[href]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const h = a.getAttribute('href');
+    if(!h||h.startsWith('#')||h.startsWith('http')||h.startsWith('mailto')||h.startsWith('//')) return;
+    e.preventDefault();
+    const r = a.getBoundingClientRect();
+    ptLeave(()=>window.location.href=h, r.left+r.width/2, r.top+r.height/2);
+  });
+});
+
+// ── SCROLL TRAIL ──
+let trail = document.getElementById('scroll-trail');
+if(!trail){ trail=document.createElement('div'); trail.id='scroll-trail'; document.body.appendChild(trail); }
+window.addEventListener('scroll',()=>{
+  const d=document.documentElement;
+  const pct=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100);
+  trail.style.height=pct+'%';
+  const rp=document.getElementById('rp-bar');
+  if(rp)rp.style.width=pct+'%';
+  const pb=document.getElementById('progressBar');
+  if(pb)pb.style.width=pct+'%';
+},{passive:true});
+
+// ── COVER TITLE CHARACTER SPLIT ──
+(function(){
+  const title=document.getElementById('coverTitle');
+  if(!title)return;
+  const processText = (node, baseDelay)=>{
+    if(node.nodeType===3){
+      const chars=[...node.textContent];
+      const frag=document.createDocumentFragment();
+      chars.forEach((ch,i)=>{
+        if(ch===' '){frag.appendChild(document.createTextNode(' '));return;}
+        const s=document.createElement('span');
+        s.className='char';
+        s.textContent=ch;
+        s.style.animationDelay=(baseDelay[0]+i*0.03)+'s';
+        baseDelay[0]+=0.005;
+        frag.appendChild(s);
+      });
+      node.parentNode.replaceChild(frag,node);
+    } else if(node.nodeType===1){
+      [...node.childNodes].forEach(n=>processText(n,baseDelay));
+    }
+  };
+  const d=[0.6];
+  [...title.childNodes].forEach(n=>processText(n,d));
+})();
+
+// ── INTERSECTION OBSERVER: scroll reveals ──
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.classList.add('vin');
+    obs.unobserve(e.target);
+  });
+},{threshold:0.06, rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('#artContent h2, #artContent p, #artContent blockquote, #artContent ul').forEach(el=>obs.observe(el));
+document.querySelectorAll('.cnt-card, .art-continue-card').forEach(el=>obs.observe(el));
+
+// ── REVEAL .rv ELEMENTS (adiciona classe 'in') ──
+const rvObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.classList.add('in');
+    rvObs.unobserve(e.target);
+  });
+},{threshold:0.05, rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
+// Revela imediatamente elementos já visíveis no carregamento
+window.addEventListener('load', ()=>{
+  document.querySelectorAll('.rv').forEach(el=>{
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight) el.classList.add('in');
+  });
+  // Revela imediatamente elementos de conteúdo já visíveis
+  document.querySelectorAll('#artContent h2, #artContent p, #artContent blockquote, #artContent ul, .cnt-card, .art-continue-card').forEach(el=>{
+    const r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight) el.classList.add('vin');
+  });
+});
+
+// ── TOC ACTIVE via IntersectionObserver ──
+const tocLinks = document.querySelectorAll('.toc-list a, .art-toc-list a');
+const headings = document.querySelectorAll('#artContent h2, .art-content h2');
+if(headings.length && tocLinks.length){
+  const tocObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        tocLinks.forEach(l=>l.classList.remove('active'));
+        const id=e.target.getAttribute('id');
+        const a=document.querySelector(`.toc-list a[href="#${id}"], .art-toc-list a[href="#${id}"]`);
+        if(a)a.classList.add('active');
+      }
+    });
+  },{rootMargin:'-12% 0px -80% 0px'});
+  headings.forEach(h=>tocObs.observe(h));
+}
+
+// ── MAGNETIC CURSOR on headings ──
+const isMob=('ontouchstart' in window)||window.innerWidth<=900;
+if(!isMob){
+  document.querySelectorAll('.art-content h2, .art-wrap h2').forEach(h=>{
+    h.addEventListener('mousemove',e=>{
+      const r=h.getBoundingClientRect();
+      const mx=e.clientX-r.left-r.width/2;
+      const my=e.clientY-r.top-r.height/2;
+      h.style.transform=`translate(${mx*.04}px,${my*.08}px)`;
+    });
+    h.addEventListener('mouseleave',()=>h.style.transform='');
+  });
+}
+
+// ── TEXT SCRAMBLE on cover badge ──
+const badge=document.querySelector('.badge,.art-badge');
+if(badge){
+  const original=badge.textContent;
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#';
+  let frame=0,total=18;
+  const scramble=()=>{
+    badge.textContent=original.split('').map((c,i)=>{
+      if(i<Math.floor(frame/total*original.length))return c;
+      return c===' '?' ':chars[Math.floor(Math.random()*chars.length)];
+    }).join('');
+    frame++;
+    if(frame<=total)requestAnimationFrame(scramble);
+    else badge.textContent=original;
+  };
+  setTimeout(scramble,700);
+}
+
+// ── PARALLAX COVER on scroll ──
+const coverBg=document.querySelector('.cover-bg');
+if(coverBg){
+  window.addEventListener('scroll',()=>{
+    const s=scrollY;
+    if(s<window.innerHeight*1.5){
+      coverBg.style.transform=`scale(1.04) translateY(${s*0.22}px)`;
+    }
+  },{passive:true});
+  window.addEventListener('load',()=>coverBg.classList.add('loaded'));
+}
+
+// ── HEADER scroll ──
+const hdr=document.getElementById('hdr')||document.getElementById('header');
+if(hdr){
+  const cover=document.querySelector('.art-cover');
+  const getThreshold=()=>cover ? cover.offsetHeight - 80 : 60;
+  window.addEventListener('scroll',()=>{
+    const past=scrollY>getThreshold();
+    hdr.classList.toggle('scrolled',past);
+    hdr.classList.toggle('sc',past);
+  },{passive:true});
+}
+
+// ── MOBILE MENU ──
+const mTog=document.getElementById('mTog')||document.getElementById('menuToggle');
+const navMenu=document.getElementById('navMenu');
+mTog?.addEventListener('click',()=>{
+  const open=navMenu.classList.toggle('open');
+  document.body.classList.toggle('menu-open',open);
+  const s=mTog.querySelectorAll('span');
+  if(open){s[0].style.transform='translateY(6px) rotate(45deg)';s[1].style.opacity='0';s[2].style.transform='translateY(-6px) rotate(-45deg)';}
+  else{s.forEach(x=>{x.style.transform='';x.style.opacity='';})};
+});
+navMenu?.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click',()=>{navMenu.classList.remove('open');mTog?.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});});
+});
+
+// ── CURSOR ──
+const dot=document.getElementById('cur-dot');
+const ring=document.getElementById('cur-ring');
+let mx2=window.innerWidth/2,my2=window.innerHeight/2,rx=mx2,ry=my2;
+if(!isMob && dot && ring){
+  document.addEventListener('mousemove',e=>{
+    mx2=e.clientX;my2=e.clientY;
+    dot.style.transform=`translate(${mx2}px,${my2}px) translate(-50%,-50%)`;
+  });
+  (function loop(){
+    rx+=(mx2-rx)*.11;ry+=(my2-ry)*.11;
+    ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('ch'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('ch'));
+  });
+}
+
+})();
+
+</script>
+
+</body>
+</html>
