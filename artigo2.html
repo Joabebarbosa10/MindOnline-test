@@ -27,7 +27,7 @@ header.scrolled{background:rgba(8,8,8,.92);backdrop-filter:blur(24px);border-bot
 .logo{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:8px;}
 .logo-mark{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulseDot 2.5s ease-in-out infinite;}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,200,74,.4);}50%{opacity:.6;transform:scale(1.3);box-shadow:0 0 0 6px rgba(232,200,74,0);}}
-nav{display:flex;align-items:center;gap:2px;}
+nav{display:flex;align-items:center;gap:24px;}
 .nav-link{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:8px 14px;position:relative;transition:color .25s;}
 .nav-link::after{content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.16,1,.3,1);}
 .nav-link:hover{color:var(--fg);}.nav-link:hover::after,.nav-link.ativo::after{transform:scaleX(1);}.nav-link.ativo{color:var(--gold);}
@@ -342,6 +342,134 @@ body::before{
 
 
 body.menu-open{overflow:hidden;position:fixed;width:100%;}
+
+/* ── MEGA MENU NAV ── */
+.nav-item{position:relative;}
+.nav-item>.nav-link{display:flex;align-items:center;gap:5px;}
+.nav-chevron{font-size:8px;opacity:.5;transition:transform .3s,opacity .3s;display:inline-block;line-height:1;}
+.nav-item:hover .nav-chevron,.nav-item.open .nav-chevron{transform:rotate(180deg);opacity:1;}
+
+.mega-drop{
+  position:absolute;top:100%;left:50%;
+  transform:translateX(-50%);
+  padding-top:12px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .18s;
+  z-index:9000;
+}
+/* ponte invisível restrita à largura do .nav-item (não do painel) */
+.mega-drop::before{
+  content:'';
+  position:absolute;
+  top:-12px;
+  left:0;right:0;
+  height:12px;
+  background:transparent;
+  pointer-events:auto;
+}
+.mega-drop-inner{
+  background:rgba(8,8,8,.97);
+  border:1px solid rgba(232,200,74,.15);
+  backdrop-filter:blur(24px);
+  padding:12px;
+  min-width:200px;
+  box-shadow:0 24px 60px rgba(0,0,0,.7);
+  position:relative;
+}
+.mega-drop-inner::before{
+  content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);
+  width:10px;height:5px;
+  background:rgba(232,200,74,.25);
+  clip-path:polygon(50% 0%,0% 100%,100% 100%);
+}
+.nav-item:hover .mega-drop,.nav-item.open .mega-drop{
+  opacity:1;pointer-events:auto;
+}
+.mega-drop-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 12px;text-decoration:none;
+  border:1px solid transparent;
+  transition:border-color .2s,background .2s,transform .2s cubic-bezier(.16,1,.3,1);
+  position:relative;
+}
+.mega-drop-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--gold);transform:scaleY(0);
+  transition:transform .2s cubic-bezier(.16,1,.3,1);
+}
+.mega-drop-item:hover{background:rgba(232,200,74,.05);border-color:rgba(232,200,74,.12);transform:translateX(4px);}
+.mega-drop-item:hover::before{transform:scaleY(1);}
+.mega-drop-num{font-family:var(--font-mono,'DM Mono',monospace);font-size:8px;letter-spacing:2px;color:rgba(232,200,74,.4);min-width:18px;padding-top:2px;flex-shrink:0;}
+.mega-drop-text{display:flex;flex-direction:column;gap:2px;}
+.mega-drop-name{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(240,237,230,.85);line-height:1;}
+.mega-drop-desc{font-family:var(--font-body,'DM Sans',sans-serif);font-size:10px;color:rgba(240,237,230,.32);line-height:1.4;font-weight:300;}
+
+/* mobile */
+@media(max-width:900px){
+  .mega-drop{display:none;}
+  .nav-chevron{display:none;}
+
+  /* nav-item com dropdown: link + seta independentes */
+  .nav-item>.nav-link{
+    display:flex;align-items:center;
+    flex:1;
+  }
+  .nav-item-row{
+    display:flex;align-items:center;
+    gap:0;
+    width:100%;
+  }
+  .mob-arrow{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:36px;height:36px;flex-shrink:0;
+    background:none;border:1px solid rgba(232,200,74,.2);border-radius:2px;
+    font-size:11px;color:rgba(232,200,74,.6);
+    cursor:pointer;
+    transition:transform .35s cubic-bezier(.16,1,.3,1),
+               color .25s,border-color .25s,background .25s;
+  }
+  .nav-item.mob-open>.nav-item-row>.mob-arrow{
+    transform:rotate(180deg);
+    color:var(--gold);
+    border-color:rgba(232,200,74,.5);
+    background:rgba(232,200,74,.07);
+  }
+
+  /* colapso com grid-trick (igual ao resto do site) */
+  .mobile-mega{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .4s cubic-bezier(.16,1,.3,1);
+    overflow:hidden;
+    margin-left:4px;
+  }
+  .nav-item.mob-open>.mobile-mega{
+    grid-template-rows:1fr;
+  }
+  .mobile-mega-inner{
+    overflow:hidden;
+    display:flex;flex-direction:column;gap:2px;
+    padding:0 0 0 16px;
+    border-left:1px solid transparent;
+    transition:border-color .3s,padding-top .4s,padding-bottom .4s;
+  }
+  .nav-item.mob-open>.mobile-mega .mobile-mega-inner{
+    padding-top:6px;
+    padding-bottom:14px;
+    border-left-color:rgba(232,200,74,.15);
+  }
+  .mobile-mega a{
+    font-family:var(--font-mono,'DM Mono',monospace);
+    font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+    color:rgba(240,237,230,.45);text-decoration:none;
+    padding:5px 0;display:block;
+    transition:color .2s,padding-left .2s;
+  }
+  .mobile-mega a:hover{color:var(--gold);padding-left:6px;}
+}
+@media(min-width:901px){.mobile-mega{display:none;}.mob-arrow{display:none;}}
+
 </style>
 </head>
 <body>
@@ -352,13 +480,156 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
 <header id="header">
   <a href="index.html" class="logo"><span class="logo-mark"></span>MindOnline</a>
   <nav id="navMenu">
-    <a href="index.html" class="nav-link">Início</a>
-    <a href="index.html#sobre" class="nav-link">Sobre</a>
-    <a href="index.html#dicas" class="nav-link">Dicas</a>
-    <a href="index.html#contato" class="nav-link">Contato</a>
-    <a href="trabalhos.html" class="nav-link ativo">Trabalhos</a>
-    <a href="privacidade.html" class="nav-link">Privacidade</a>
-  </nav>
+  <div class="nav-item">
+    <a href="index.html" class="nav-link">Início<span class="nav-chevron">▾</span></a>
+    <div class="mega-drop"><div class="mega-drop-inner">
+      <a href="index.html" class="mega-drop-item">
+        <span class="mega-drop-num">01</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Início</span>
+          <span class="mega-drop-desc">Apresentação do projeto</span>
+        </span>
+      </a>
+      <a href="index.html#sobre" class="mega-drop-item">
+        <span class="mega-drop-num">02</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Sobre</span>
+          <span class="mega-drop-desc">O que é o MindOnline</span>
+        </span>
+      </a>
+      <a href="index.html#dicas" class="mega-drop-item">
+        <span class="mega-drop-num">03</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Dicas</span>
+          <span class="mega-drop-desc">10 boas práticas digitais</span>
+        </span>
+      </a>
+      <a href="index.html#contato" class="mega-drop-item">
+        <span class="mega-drop-num">04</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Contato</span>
+          <span class="mega-drop-desc">Fale com a gente</span>
+        </span>
+      </a>
+    </div></div>
+    <div class="mobile-mega">
+      <a href="index.html">Início</a>
+      <a href="index.html#sobre">Sobre</a>
+      <a href="index.html#dicas">Dicas</a>
+      <a href="index.html#contato">Contato</a>
+    </div>
+  </div>
+  <div class="nav-item">
+    <a href="trabalhos.html" class="nav-link">Trabalhos<span class="nav-chevron">▾</span></a>
+    <div class="mega-drop"><div class="mega-drop-inner">
+      <a href="artigo1.html" class="mega-drop-item">
+        <span class="mega-drop-num">01</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Comunicação Digital</span>
+          <span class="mega-drop-desc">Palavras que constroem ou destroem</span>
+        </span>
+      </a>
+      <a href="artigo2.html" class="mega-drop-item">
+        <span class="mega-drop-num">02</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Fake News</span>
+          <span class="mega-drop-desc">Por que acreditamos no que queremos</span>
+        </span>
+      </a>
+      <a href="artigo3.html" class="mega-drop-item">
+        <span class="mega-drop-num">03</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Privacidade Digital</span>
+          <span class="mega-drop-desc">O que você entrega sem perceber</span>
+        </span>
+      </a>
+      <a href="artigo4.html" class="mega-drop-item">
+        <span class="mega-drop-num">04</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Cyberbullying</span>
+          <span class="mega-drop-desc">Violência que não aparece no espelho</span>
+        </span>
+      </a>
+      <a href="artigo5.html" class="mega-drop-item">
+        <span class="mega-drop-num">05</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Vício Digital</span>
+          <span class="mega-drop-desc">Quando a tela vira armadilha</span>
+        </span>
+      </a>
+      <a href="artigo6.html" class="mega-drop-item">
+        <span class="mega-drop-num">06</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Empatia Digital</span>
+          <span class="mega-drop-desc">Ser humano atrás de uma tela</span>
+        </span>
+      </a>
+    </div></div>
+    <div class="mobile-mega">
+      <a href="artigo1.html">Comunicação Digital</a>
+      <a href="artigo2.html">Fake News</a>
+      <a href="artigo3.html">Privacidade Digital</a>
+      <a href="artigo4.html">Cyberbullying</a>
+      <a href="artigo5.html">Vício Digital</a>
+      <a href="artigo6.html">Empatia Digital</a>
+    </div>
+  </div>
+  <div class="nav-item">
+    <a href="privacidade.html" class="nav-link">Privacidade<span class="nav-chevron">▾</span></a>
+    <div class="mega-drop"><div class="mega-drop-inner">
+      <a href="privacidade.html#quem-somos" class="mega-drop-item">
+        <span class="mega-drop-num">01</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Quem Somos</span>
+          <span class="mega-drop-desc">Sobre o projeto MindOnline</span>
+        </span>
+      </a>
+      <a href="privacidade.html#dados" class="mega-drop-item">
+        <span class="mega-drop-num">02</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Dados Coletados</span>
+          <span class="mega-drop-desc">O que coletamos e como</span>
+        </span>
+      </a>
+      <a href="privacidade.html#uso" class="mega-drop-item">
+        <span class="mega-drop-num">03</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Uso dos Dados</span>
+          <span class="mega-drop-desc">Para que usamos as informações</span>
+        </span>
+      </a>
+      <a href="privacidade.html#armazenamento" class="mega-drop-item">
+        <span class="mega-drop-num">04</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Armazenamento</span>
+          <span class="mega-drop-desc">Segurança e proteção</span>
+        </span>
+      </a>
+      <a href="privacidade.html#direitos" class="mega-drop-item">
+        <span class="mega-drop-num">05</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Seus Direitos</span>
+          <span class="mega-drop-desc">Controle sobre seus dados</span>
+        </span>
+      </a>
+      <a href="privacidade.html#alteracoes" class="mega-drop-item">
+        <span class="mega-drop-num">06</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Alterações</span>
+          <span class="mega-drop-desc">Como avisamos sobre mudanças</span>
+        </span>
+      </a>
+    </div></div>
+    <div class="mobile-mega">
+      <a href="privacidade.html#quem-somos">Quem Somos</a>
+      <a href="privacidade.html#dados">Dados Coletados</a>
+      <a href="privacidade.html#uso">Uso dos Dados</a>
+      <a href="privacidade.html#armazenamento">Armazenamento</a>
+      <a href="privacidade.html#direitos">Seus Direitos</a>
+      <a href="privacidade.html#alteracoes">Alterações</a>
+    </div>
+  </div>
+</nav>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
 
@@ -1179,8 +1450,57 @@ mTog?.addEventListener('click',()=>{
   else{s.forEach(x=>{x.style.transform='';x.style.opacity='';})};
 });
 navMenu?.querySelectorAll('a').forEach(a=>{
-  a.addEventListener('click',()=>{navMenu.classList.remove('open');mTog?.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});});
+  a.addEventListener('click',()=>{
+    if(a.closest('.mobile-mega')) return;
+    navMenu.classList.remove('open');mTog?.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});
+  });
 });
+
+/* ── MOBILE MEGA TOGGLE ── */
+(function(){
+  const navEl = document.getElementById('navMenu');
+  if(!navEl) return;
+  navEl.querySelectorAll('.nav-item').forEach(item=>{
+    const link = item.querySelector(':scope>.nav-link');
+    const mega = item.querySelector(':scope>.mobile-mega');
+    if(!link || !mega) return;
+
+    // wrap .mobile-mega contents in .mobile-mega-inner
+    if(!mega.querySelector('.mobile-mega-inner')){
+      const inner = document.createElement('div');
+      inner.className = 'mobile-mega-inner';
+      while(mega.firstChild) inner.appendChild(mega.firstChild);
+      mega.appendChild(inner);
+    }
+
+    // wrap link + arrow in .nav-item-row (keeps them side-by-side)
+    if(!item.querySelector('.nav-item-row')){
+      link.querySelectorAll('.nav-chevron').forEach(c=>c.remove());
+
+      const row = document.createElement('div');
+      row.className = 'nav-item-row';
+
+      // insert row before link, then move link into row
+      item.insertBefore(row, link);
+      row.appendChild(link);
+
+      // independent arrow button
+      const btn = document.createElement('button');
+      btn.className = 'mob-arrow';
+      btn.setAttribute('aria-label', 'Expandir submenu');
+      btn.textContent = '▾';
+      row.appendChild(btn);
+
+      btn.addEventListener('click', e=>{
+        if(window.innerWidth > 900) return;
+        e.stopPropagation();
+        const opening = !item.classList.contains('mob-open');
+        navEl.querySelectorAll('.nav-item.mob-open').forEach(o=>o.classList.remove('mob-open'));
+        if(opening) item.classList.add('mob-open');
+      });
+    }
+  });
+})();
 
 // ── CURSOR ──
 const dot=document.getElementById('cur-dot');
