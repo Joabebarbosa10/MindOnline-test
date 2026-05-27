@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa 04 — Cyberbullying · MindOnline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080808;--fg:#f0ede6;--gold:#e8c84a;--gold2:#f5d76e;
+  --dim:rgba(240,237,230,.5);--border:rgba(240,237,230,.08);
+  --font-display:'Bebas Neue',sans-serif;
+  --font-serif:'Instrument Serif',serif;
+  --font-mono:'DM Mono',monospace;
+  --font-body:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;cursor:none;}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::selection{background:var(--gold);color:#000;}
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-thumb{background:var(--gold);}
+
+/* CURSOR */
+#cur-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;will-change:transform;transition:width .3s,height .3s;}
+#cur-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid rgba(232,200,74,.4);border-radius:50%;pointer-events:none;z-index:99998;will-change:transform;transition:width .35s cubic-bezier(.16,1,.3,1),height .35s cubic-bezier(.16,1,.3,1),border-color .35s;}
+body.ch #cur-ring{width:60px;height:60px;border-color:rgba(232,200,74,.18);}
+
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;z-index:9998;box-shadow:0 0 12px rgba(232,200,74,.7);}
+
+/* PAGE TRANSITION */
+#pt{position:fixed;inset:0;z-index:99997;display:grid;grid-template-columns:repeat(5,1fr);pointer-events:none;}
+.pt-col{background:var(--gold);transform:scaleY(0);transform-origin:bottom;}
+.pt-col:nth-child(1){transition:transform .5s cubic-bezier(.77,0,.175,1) 0s;}
+.pt-col:nth-child(2){transition:transform .5s cubic-bezier(.77,0,.175,1) .06s;}
+.pt-col:nth-child(3){transition:transform .5s cubic-bezier(.77,0,.175,1) .12s;}
+.pt-col:nth-child(4){transition:transform .5s cubic-bezier(.77,0,.175,1) .18s;}
+.pt-col:nth-child(5){transition:transform .5s cubic-bezier(.77,0,.175,1) .24s;}
+#pt.enter .pt-col{transform:scaleY(1);}
+#pt.leave .pt-col{transform:scaleY(0);transform-origin:top;}
+#pt.leave .pt-col:nth-child(1){transition:transform .5s cubic-bezier(.77,0,.175,1) .24s;}
+#pt.leave .pt-col:nth-child(2){transition:transform .5s cubic-bezier(.77,0,.175,1) .18s;}
+#pt.leave .pt-col:nth-child(3){transition:transform .5s cubic-bezier(.77,0,.175,1) .12s;}
+#pt.leave .pt-col:nth-child(4){transition:transform .5s cubic-bezier(.77,0,.175,1) .06s;}
+#pt.leave .pt-col:nth-child(5){transition:transform .5s cubic-bezier(.77,0,.175,1) 0s;}
+
+/* ── HEADER ── */
+header{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;}
+header.scrolled{background:rgba(8,8,8,.92);backdrop-filter:blur(24px);border-bottom-color:var(--border);}
+.logo{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:8px;}
+.logo-mark{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulseDot 2.5s ease-in-out infinite;}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,200,74,.4);}50%{opacity:.6;transform:scale(1.3);box-shadow:0 0 0 6px rgba(232,200,74,0);}}
+nav{display:flex;align-items:center;gap:24px;}
+.nav-link{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:8px 14px;position:relative;transition:color .25s;}
+.nav-link::after{content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.nav-link:hover{color:var(--fg);}.nav-link:hover::after,.nav-link.ativo::after{transform:scaleX(1);}.nav-link.ativo{color:var(--gold);}
+.menu-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:4px;}
+.menu-toggle span{width:24px;height:1px;background:var(--fg);transition:transform .3s,opacity .3s;display:block;}
+
+@media(max-width:900px){
+  header{padding:0 20px;}nav{display:none;}
+  nav.open{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);padding:80px 24px 40px;align-items:flex-start;justify-content:center;border-top:none;overflow:hidden;z-index:9999;}
+  nav.open .nav-link{font-family:var(--font-display);font-size:32px;letter-spacing:3px;text-transform:uppercase;color:var(--fg);padding:14px 0;border-bottom:1px solid var(--border);width:100%;}
+  nav.open .nav-link::after{display:none;}
+  .menu-toggle{display:flex;}
+  #cur-dot,#cur-ring{display:none;}html{cursor:auto;}body *{cursor:auto!important;}
+  footer{padding:28px 20px;}.footer-inner{flex-direction:column;align-items:flex-start;gap:10px;}
+}
+
+body.menu-open{overflow:hidden;position:fixed;width:100%;}
+
+/* ── MEGA MENU NAV ── */
+.nav-item{position:relative;}
+.nav-item>.nav-link{display:flex;align-items:center;gap:5px;}
+.nav-chevron{font-size:8px;opacity:.5;transition:transform .3s,opacity .3s;display:inline-block;line-height:1;}
+.nav-item:hover .nav-chevron,.nav-item.open .nav-chevron{transform:rotate(180deg);opacity:1;}
+
+.mega-drop{
+  position:absolute;top:100%;left:50%;
+  transform:translateX(-50%);
+  padding-top:12px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .18s;
+  z-index:9000;
+}
+.mega-drop::before{
+  content:'';
+  position:absolute;
+  top:-12px;
+  left:0;right:0;
+  height:12px;
+  background:transparent;
+  pointer-events:none;
+}
+.nav-item:hover .mega-drop::before,.nav-item.open .mega-drop::before{
+  pointer-events:auto;
+}
+.mega-drop-inner{
+  background:rgba(8,8,8,.97);
+  border:1px solid rgba(232,200,74,.15);
+  backdrop-filter:blur(24px);
+  padding:12px;
+  min-width:200px;
+  box-shadow:0 24px 60px rgba(0,0,0,.7);
+  position:relative;
+}
+.mega-drop-inner::before{
+  content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);
+  width:10px;height:5px;
+  background:rgba(232,200,74,.25);
+  clip-path:polygon(50% 0%,0% 100%,100% 100%);
+}
+.nav-item:hover .mega-drop,.nav-item.open .mega-drop{
+  opacity:1;pointer-events:auto;
+}
+.mega-drop-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 12px;text-decoration:none;
+  border:1px solid transparent;
+  transition:border-color .2s,background .2s,transform .2s cubic-bezier(.16,1,.3,1);
+  position:relative;
+}
+.mega-drop-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--gold);transform:scaleY(0);
+  transition:transform .2s cubic-bezier(.16,1,.3,1);
+}
+.mega-drop-item:hover{background:rgba(232,200,74,.05);border-color:rgba(232,200,74,.12);transform:translateX(4px);}
+.mega-drop-item:hover::before{transform:scaleY(1);}
+.mega-drop-num{font-family:var(--font-mono,'DM Mono',monospace);font-size:8px;letter-spacing:2px;color:rgba(232,200,74,.4);min-width:18px;padding-top:2px;flex-shrink:0;}
+.mega-drop-text{display:flex;flex-direction:column;gap:2px;}
+.mega-drop-name{font-family:var(--font-display,'Bebas Neue',sans-serif);font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(240,237,230,.85);line-height:1;}
+.mega-drop-desc{font-family:var(--font-body,'DM Sans',sans-serif);font-size:10px;color:rgba(240,237,230,.32);line-height:1.4;font-weight:300;}
+
+@media(max-width:900px){
+  .mega-drop{display:none;}
+  .nav-chevron{display:none;}
+  .nav-item>.nav-link{display:flex;align-items:center;flex:1;}
+  .nav-item-row{display:flex;align-items:center;gap:0;width:100%;}
+  .mob-arrow{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:36px;height:36px;flex-shrink:0;
+    background:none;border:1px solid rgba(232,200,74,.2);border-radius:2px;
+    font-size:11px;color:rgba(232,200,74,.6);
+    cursor:pointer;
+    transition:transform .35s cubic-bezier(.16,1,.3,1),
+               color .25s,border-color .25s,background .25s;
+  }
+  .nav-item.mob-open>.nav-item-row>.mob-arrow{
+    transform:rotate(180deg);
+    color:var(--gold);
+    border-color:rgba(232,200,74,.5);
+    background:rgba(232,200,74,.07);
+  }
+  .mobile-mega{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .4s cubic-bezier(.16,1,.3,1);
+    overflow:hidden;
+    margin-left:4px;
+  }
+  .nav-item.mob-open>.mobile-mega{grid-template-rows:1fr;}
+  .mobile-mega-inner{
+    overflow:hidden;
+    display:flex;flex-direction:column;gap:2px;
+    padding:0 0 0 16px;
+    border-left:1px solid transparent;
+    transition:border-color .3s,padding-top .4s,padding-bottom .4s;
+  }
+  .nav-item.mob-open>.mobile-mega .mobile-mega-inner{
+    padding-top:6px;
+    padding-bottom:14px;
+    border-left-color:rgba(232,200,74,.15);
+  }
+  .mobile-mega a{
+    font-family:var(--font-mono,'DM Mono',monospace);
+    font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+    color:rgba(240,237,230,.45);text-decoration:none;
+    padding:5px 0;display:block;
+    transition:color .2s,padding-left .2s;
+  }
+  .mobile-mega a:hover{color:var(--gold);padding-left:6px;}
+}
+@media(min-width:901px){.mobile-mega{display:none;}.mob-arrow{display:none;}}
+
+/* NOISE */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* AVISO SENSÍVEL */
+.aviso-sensivel{margin:0 60px 0;max-width:780px;padding:16px 20px;border:1px solid rgba(232,200,74,.2);background:rgba(232,200,74,.04);display:flex;align-items:flex-start;gap:14px;}
+.aviso-icon{font-size:16px;flex-shrink:0;margin-top:2px;}
+.aviso-text{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:rgba(240,237,230,.45);line-height:1.7;}
+.aviso-text strong{color:rgba(232,200,74,.7);font-weight:500;}
+
+/* HERO */
+.form-hero{position:relative;padding:140px 60px 60px;max-width:900px;margin:0 auto;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:28px;}
+.hero-eyebrow-line{width:0;height:1px;background:var(--gold);transition:width 1s cubic-bezier(.16,1,.3,1) .4s;}
+.hero-eyebrow.in .hero-eyebrow-line{width:40px;}
+.hero-eyebrow-text{font-family:var(--font-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:0;transform:translateX(-10px);transition:opacity .6s ease .6s,transform .6s ease .6s;}
+.hero-eyebrow.in .hero-eyebrow-text{opacity:1;transform:translateX(0);}
+.form-title{font-family:var(--font-display);font-size:clamp(44px,6.5vw,90px);line-height:.88;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
+.form-title em{font-family:var(--font-serif);font-style:italic;text-transform:none;color:var(--gold);}
+.form-desc{font-size:15px;color:var(--dim);line-height:1.85;max-width:600px;margin-bottom:40px;}
+.form-desc strong{color:var(--fg);font-weight:500;}
+.form-meta{display:flex;gap:0;border:1px solid var(--border);width:fit-content;margin-bottom:40px;}
+.meta-box{padding:14px 24px;border-right:1px solid var(--border);}
+.meta-box:last-child{border-right:none;}
+.meta-num{font-family:var(--font-display);font-size:28px;color:var(--gold);display:block;line-height:1;}
+.meta-label{font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);}
+
+/* FORM BODY */
+.form-wrap{max-width:900px;margin:0 auto;padding:0 60px 120px;}
+.form-section{margin-bottom:60px;}
+.section-divider{display:flex;align-items:center;gap:16px;margin-bottom:36px;padding-top:20px;}
+.sd-num{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:var(--gold);}
+.sd-line{flex:1;height:1px;background:var(--border);}
+.sd-text{font-family:var(--font-mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);}
+
+.q-block{margin-bottom:36px;opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.q-block.in{opacity:1;transform:translateY(0);}
+.q-num{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:rgba(232,200,74,.5);display:block;margin-bottom:10px;}
+.q-label{font-size:15px;color:var(--fg);line-height:1.6;margin-bottom:20px;font-weight:400;}
+.q-label span{color:var(--gold);font-style:italic;}
+.q-note{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;color:rgba(240,237,230,.3);margin-bottom:20px;margin-top:-12px;display:block;line-height:1.5;}
+
+/* RADIO OPTIONS */
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;border:1px solid var(--border);cursor:none;transition:border-color .25s,background .25s;position:relative;overflow:hidden;}
+.opt::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.opt:hover{border-color:rgba(232,200,74,.25);background:rgba(232,200,74,.03);}
+.opt:hover::before,.opt.selected::before{transform:scaleY(1);}
+.opt.selected{border-color:rgba(232,200,74,.4);background:rgba(232,200,74,.07);}
+.opt input{position:absolute;opacity:0;pointer-events:none;}
+.opt-marker{width:18px;height:18px;border:1px solid var(--border);border-radius:50%;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:border-color .25s,background .25s;}
+.opt.selected .opt-marker{border-color:var(--gold);background:var(--gold);}
+.opt.selected .opt-marker::after{content:'';width:6px;height:6px;background:#000;border-radius:50%;display:block;}
+.opt-text{font-size:13px;color:var(--dim);line-height:1.5;transition:color .25s;}
+.opt.selected .opt-text{color:var(--fg);}
+
+/* SCALE */
+.scale-wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
+.scale-btn{padding:14px 8px;border:1px solid var(--border);text-align:center;cursor:none;transition:border-color .25s;font-family:var(--font-display);font-size:20px;color:var(--dim);position:relative;overflow:hidden;}
+.scale-btn::before{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.scale-btn:hover{border-color:rgba(232,200,74,.4);}
+.scale-btn.active::before{transform:scaleY(1);}
+.scale-btn.active{border-color:var(--gold);}
+.scale-btn > span{position:relative;z-index:1;transition:color .3s;}
+.scale-btn.active > span{color:#000;}
+.scale-labels{display:flex;justify-content:space-between;margin-top:8px;}
+.scale-label{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;color:rgba(240,237,230,.25);}
+
+/* TEXT */
+.text-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);padding:12px 0;font-family:var(--font-body);font-size:14px;color:var(--fg);font-weight:300;outline:none;transition:border-color .3s;resize:none;cursor:none;}
+.text-input:focus{border-bottom-color:var(--gold);}
+.text-input::placeholder{color:rgba(240,237,230,.2);}
+
+/* APOIO */
+.apoio-box{margin-top:40px;padding:24px;border:1px solid rgba(232,200,74,.15);background:rgba(232,200,74,.03);position:relative;}
+.apoio-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.apoio-title{font-family:var(--font-mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.apoio-text{font-size:13px;color:var(--dim);line-height:1.75;}
+.apoio-text strong{color:var(--fg);}
+.apoio-links{margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;}
+.apoio-link{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(232,200,74,.3);padding-bottom:2px;transition:border-color .25s;}
+.apoio-link:hover{border-color:var(--gold);}
+
+/* SUBMIT */
+.form-footer{padding-top:60px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+.submit-btn{display:inline-flex;align-items:center;gap:14px;padding:18px 40px;background:var(--gold);color:#000;font-family:var(--font-display);font-size:16px;letter-spacing:3px;text-transform:uppercase;border:none;cursor:none;position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold2);transform:translateX(-100%);transition:transform .5s cubic-bezier(.16,1,.3,1);}
+.submit-btn:hover::before{transform:translateX(0);}
+.submit-btn:hover{transform:translate(2px,-2px);}
+.submit-btn > span{position:relative;z-index:1;}
+.submit-note{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:rgba(240,237,230,.25);}
+
+/* SUCCESS */
+.success-screen{position:fixed;inset:0;background:var(--bg);z-index:9990;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .5s;}
+.success-screen.show{opacity:1;pointer-events:all;}
+.success-icon{font-size:80px;margin-bottom:32px;animation:bounceIn .8s cubic-bezier(.16,1,.3,1) both;}
+@keyframes bounceIn{from{transform:scale(0) rotate(-15deg);opacity:0;}to{transform:scale(1) rotate(0deg);opacity:1;}}
+.success-title{font-family:var(--font-display);font-size:clamp(40px,6vw,80px);letter-spacing:2px;text-align:center;color:var(--gold);margin-bottom:16px;}
+.success-sub{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--dim);text-align:center;margin-bottom:48px;}
+.success-back{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border:1px solid rgba(232,200,74,.4);font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;transition:background .3s,color .3s;}
+.success-back:hover{background:var(--gold);color:#000;}
+
+/* FOOTER */
+footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:40px;}
+.footer-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.footer-logo{font-family:var(--font-display);font-size:20px;letter-spacing:4px;}
+.footer-copy,.footer-origin{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--dim);}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(50px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+.rv.in{opacity:1;transform:translateY(0);}
+.rv-d1{transition-delay:.1s;}.rv-d2{transition-delay:.22s;}.rv-d3{transition-delay:.34s;}.rv-d4{transition-delay:.46s;}
+
+/* MOBILE */
+@media(max-width:900px){
+  header{padding:0 20px;}
+  .form-hero,.form-wrap{padding-left:24px;padding-right:24px;}
+  .form-hero{padding-top:110px;}
+  .aviso-sensivel{margin-left:24px;margin-right:24px;}
+  footer{padding:28px 20px;}
+  #cur-dot,#cur-ring{display:none;}
+  html{cursor:auto;}
+  body *{cursor:auto!important;}
+}
+
+
+/* dropdown de Pesquisas: alinha à direita para não vazar da viewport */
+nav .nav-item--right>.mega-drop{
+  left:auto;
+  right:-14px;
+  transform:none;
+}
+nav .nav-item--right>.mega-drop>.mega-drop-inner::before{
+  left:unset;
+  right:24px;
+  transform:none;
+}
+
+</style>
+</head>
+<body>
+
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+<div id="progress"></div>
+<div id="pt">
+  <div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div>
+  <div class="pt-col"></div><div class="pt-col"></div>
+</div>
+
+<!-- TELA DE SUCESSO -->
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">💬</div>
+  <div class="success-title">Obrigado!</div>
+  <div class="success-sub">Suas respostas foram registradas com sucesso.</div>
+  <a href="pesquisas.html" class="success-back">← Voltar às pesquisas</a>
+</div>
+
+<!-- HEADER -->
+<header id="header">
+  <a href="index.html" class="logo"><span class="logo-mark"></span>MindOnline</a>
+  <nav id="navMenu">
+  <div class="nav-item">
+    <a href="index.html" class="nav-link">Início<span class="nav-chevron">▾</span></a>
+    <div class="mega-drop"><div class="mega-drop-inner">
+      <a href="index.html" class="mega-drop-item">
+        <span class="mega-drop-num">01</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Início</span>
+          <span class="mega-drop-desc">Apresentação do projeto</span>
+        </span>
+      </a>
+      <a href="index.html#sobre" class="mega-drop-item">
+        <span class="mega-drop-num">02</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Sobre</span>
+          <span class="mega-drop-desc">O que é o MindOnline</span>
+        </span>
+      </a>
+      <a href="index.html#dicas" class="mega-drop-item">
+        <span class="mega-drop-num">03</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Dicas</span>
+          <span class="mega-drop-desc">10 boas práticas digitais</span>
+        </span>
+      </a>
+      <a href="index.html#contato" class="mega-drop-item">
+        <span class="mega-drop-num">04</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Contato</span>
+          <span class="mega-drop-desc">Fale com a gente</span>
+        </span>
+      </a>
+    </div></div>
+    <div class="mobile-mega">
+      <a href="index.html">Início</a>
+      <a href="index.html#sobre">Sobre</a>
+      <a href="index.html#dicas">Dicas</a>
+      <a href="index.html#contato">Contato</a>
+    </div>
+  </div>
+  <div class="nav-item">
+    <a href="trabalhos.html" class="nav-link">Trabalhos<span class="nav-chevron">▾</span></a>
+    <div class="mega-drop"><div class="mega-drop-inner">
+      <a href="artigo1.html" class="mega-drop-item">
+        <span class="mega-drop-num">01</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Comunicação Digital</span>
+          <span class="mega-drop-desc">Palavras que constroem ou destroem</span>
+        </span>
+      </a>
+      <a href="artigo2.html" class="mega-drop-item">
+        <span class="mega-drop-num">02</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Fake News</span>
+          <span class="mega-drop-desc">Por que acreditamos no que queremos</span>
+        </span>
+      </a>
+      <a href="artigo3.html" class="mega-drop-item">
+        <span class="mega-drop-num">03</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Privacidade Digital</span>
+          <span class="mega-drop-desc">O que você entrega sem perceber</span>
+        </span>
+      </a>
+      <a href="artigo4.html" class="mega-drop-item">
+        <span class="mega-drop-num">04</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Cyberbullying</span>
+          <span class="mega-drop-desc">Violência que não aparece no espelho</span>
+        </span>
+      </a>
+      <a href="artigo5.html" class="mega-drop-item">
+        <span class="mega-drop-num">05</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Vício Digital</span>
+          <span class="mega-drop-desc">Quando a tela vira armadilha</span>
+        </span>
+      </a>
+      <a href="artigo6.html" class="mega-drop-item">
+        <span class="mega-drop-num">06</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Empatia Digital</span>
+          <span class="mega-drop-desc">Ser humano atrás de uma tela</span>
+        </span>
+      </a>
+    </div></div>
+    <div class="mobile-mega">
+      <a href="artigo1.html">Comunicação Digital</a>
+      <a href="artigo2.html">Fake News</a>
+      <a href="artigo3.html">Privacidade Digital</a>
+      <a href="artigo4.html">Cyberbullying</a>
+      <a href="artigo5.html">Vício Digital</a>
+      <a href="artigo6.html">Empatia Digital</a>
+    </div>
+  </div>
+  <div class="nav-item">
+    <a href="privacidade.html" class="nav-link">Privacidade<span class="nav-chevron">▾</span></a>
+    <div class="mega-drop"><div class="mega-drop-inner">
+      <a href="privacidade.html#quem-somos" class="mega-drop-item">
+        <span class="mega-drop-num">01</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Quem Somos</span>
+          <span class="mega-drop-desc">Sobre o projeto MindOnline</span>
+        </span>
+      </a>
+      <a href="privacidade.html#dados" class="mega-drop-item">
+        <span class="mega-drop-num">02</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Dados Coletados</span>
+          <span class="mega-drop-desc">O que coletamos e como</span>
+        </span>
+      </a>
+      <a href="privacidade.html#uso" class="mega-drop-item">
+        <span class="mega-drop-num">03</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Uso dos Dados</span>
+          <span class="mega-drop-desc">Para que usamos as informações</span>
+        </span>
+      </a>
+      <a href="privacidade.html#armazenamento" class="mega-drop-item">
+        <span class="mega-drop-num">04</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Armazenamento</span>
+          <span class="mega-drop-desc">Segurança e proteção</span>
+        </span>
+      </a>
+      <a href="privacidade.html#direitos" class="mega-drop-item">
+        <span class="mega-drop-num">05</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Seus Direitos</span>
+          <span class="mega-drop-desc">Controle sobre seus dados</span>
+        </span>
+      </a>
+      <a href="privacidade.html#alteracoes" class="mega-drop-item">
+        <span class="mega-drop-num">06</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Alterações</span>
+          <span class="mega-drop-desc">Como avisamos sobre mudanças</span>
+        </span>
+      </a>
+    </div></div>
+    <div class="mobile-mega">
+      <a href="privacidade.html#quem-somos">Quem Somos</a>
+      <a href="privacidade.html#dados">Dados Coletados</a>
+      <a href="privacidade.html#uso">Uso dos Dados</a>
+      <a href="privacidade.html#armazenamento">Armazenamento</a>
+      <a href="privacidade.html#direitos">Seus Direitos</a>
+      <a href="privacidade.html#alteracoes">Alterações</a>
+    </div>
+  </div>
+  <div class="nav-item nav-item--right">
+    <a href="pesquisas.html" class="nav-link ativo">Pesquisas<span class="nav-chevron">▾</span></a>
+    <div class="mega-drop"><div class="mega-drop-inner">
+      <a href="pesquisa1.html" class="mega-drop-item">
+        <span class="mega-drop-num">01</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Comunicação Online</span>
+          <span class="mega-drop-desc">Como você se comunica online?</span>
+        </span>
+      </a>
+      <a href="pesquisa2.html" class="mega-drop-item">
+        <span class="mega-drop-num">02</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Fake News</span>
+          <span class="mega-drop-desc">Você consegue identificar?</span>
+        </span>
+      </a>
+      <a href="pesquisa3.html" class="mega-drop-item">
+        <span class="mega-drop-num">03</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Privacidade Digital</span>
+          <span class="mega-drop-desc">O que você protege online?</span>
+        </span>
+      </a>
+      <a href="pesquisa4.html" class="mega-drop-item">
+        <span class="mega-drop-num">04</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Saúde Digital</span>
+          <span class="mega-drop-desc">Seu bem-estar na internet</span>
+        </span>
+      </a>
+    </div></div>
+    <div class="mobile-mega">
+      <a href="pesquisa1.html">Comunicação Online</a>
+      <a href="pesquisa2.html">Fake News</a>
+      <a href="pesquisa3.html">Privacidade Digital</a>
+      <a href="pesquisa4.html">Saúde Digital</a>
+    </div>
+  </div>
+</nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<!-- HERO -->
+<div class="form-hero">
+  <div class="hero-eyebrow rv" id="heroEyebrow">
+    <span class="hero-eyebrow-line"></span>
+    <span class="hero-eyebrow-text">Pesquisa 04 · Cyberbullying · 2026</span>
+  </div>
+  <h1 class="form-title rv rv-d1">Você Já Presenciou<br>ou Sofreu<br><em>Cyberbullying?</em></h1>
+  <p class="form-desc rv rv-d2">Uma pesquisa sensível e anônima sobre experiências com assédio online na adolescência, identificando <strong>padrões e formas de resposta</strong>. Não há respostas certas ou erradas.</p>
+  <div class="form-meta rv rv-d3">
+    <div class="meta-box"><span class="meta-num">8</span><span class="meta-label">Perguntas</span></div>
+    <div class="meta-box"><span class="meta-num">~3</span><span class="meta-label">Minutos</span></div>
+    <div class="meta-box"><span class="meta-num">100%</span><span class="meta-label">Anônimo</span></div>
+  </div>
+</div>
+
+<!-- AVISO SENSÍVEL -->
+<div class="aviso-sensivel rv rv-d4">
+  <span class="aviso-icon">⚠</span>
+  <p class="aviso-text"><strong>Conteúdo sensível.</strong> Esta pesquisa aborda temas como assédio, violência psicológica e experiências difíceis online. Participe somente se se sentir confortável. Todas as respostas são completamente anônimas.</p>
+</div>
+
+<!-- FORMULÁRIO -->
+<div class="form-wrap">
+  <form id="mainForm" novalidate>
+
+    <!-- BLOCO 1 -->
+    <div class="form-section">
+      <div class="section-divider">
+        <span class="sd-num">01 — 04</span>
+        <span class="sd-line"></span>
+        <span class="sd-text">Experiências Pessoais</span>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">01 / 08</span>
+        <p class="q-label">Você já foi vítima de <span>cyberbullying</span> — como mensagens ofensivas, exclusão intencional de grupos, humilhação ou exposição online?</p>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q1" value="a"><span class="opt-marker"></span><span class="opt-text">Sim, sofri isso de forma repetida e intensa</span></label>
+          <label class="opt"><input type="radio" name="q1" value="b"><span class="opt-marker"></span><span class="opt-text">Sim, aconteceu algumas vezes</span></label>
+          <label class="opt"><input type="radio" name="q1" value="c"><span class="opt-marker"></span><span class="opt-text">Aconteceu uma vez, mas não se repetiu</span></label>
+          <label class="opt"><input type="radio" name="q1" value="d"><span class="opt-marker"></span><span class="opt-text">Nunca fui vítima direta</span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">02 / 08</span>
+        <p class="q-label">Você já <span>presenciou</span> alguém sendo vítima de cyberbullying? Como reagiu?</p>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q2" value="a"><span class="opt-marker"></span><span class="opt-text">Sim, e tomei uma atitude para ajudar ou denunciar</span></label>
+          <label class="opt"><input type="radio" name="q2" value="b"><span class="opt-marker"></span><span class="opt-text">Sim, mas não sabia como agir e fiquei em silêncio</span></label>
+          <label class="opt"><input type="radio" name="q2" value="c"><span class="opt-marker"></span><span class="opt-text">Sim, e acabei participando sem perceber que era bullying</span></label>
+          <label class="opt"><input type="radio" name="q2" value="d"><span class="opt-marker"></span><span class="opt-text">Nunca presenciei esse tipo de situação</span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">03 / 08</span>
+        <p class="q-label">Se você já foi vítima, contou para alguém — um adulto de confiança, responsável ou escola?</p>
+        <span class="q-note">Se nunca foi vítima, responda considerando o que faria nessa situação.</span>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q3" value="a"><span class="opt-marker"></span><span class="opt-text">Sim, contei e fui ouvido(a) e apoiado(a)</span></label>
+          <label class="opt"><input type="radio" name="q3" value="b"><span class="opt-marker"></span><span class="opt-text">Contei, mas senti que não foi levado a sério</span></label>
+          <label class="opt"><input type="radio" name="q3" value="c"><span class="opt-marker"></span><span class="opt-text">Não contei — tive medo da reação ou de piorar a situação</span></label>
+          <label class="opt"><input type="radio" name="q3" value="d"><span class="opt-marker"></span><span class="opt-text">Não contaria — preferiria resolver sozinho(a)</span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">04 / 08</span>
+        <p class="q-label">O quanto o cyberbullying afetou (ou afetaria) seu bem-estar emocional?</p>
+        <div class="scale-wrap" data-name="q4">
+          <div class="scale-btn" data-val="1"><span>1</span></div>
+          <div class="scale-btn" data-val="2"><span>2</span></div>
+          <div class="scale-btn" data-val="3"><span>3</span></div>
+          <div class="scale-btn" data-val="4"><span>4</span></div>
+          <div class="scale-btn" data-val="5"><span>5</span></div>
+        </div>
+        <div class="scale-labels">
+          <span class="scale-label">Nenhum impacto</span>
+          <span class="scale-label">Impacto enorme</span>
+        </div>
+        <input type="hidden" name="q4" id="q4val">
+      </div>
+    </div>
+
+    <!-- BLOCO 2 -->
+    <div class="form-section">
+      <div class="section-divider">
+        <span class="sd-num">05 — 08</span>
+        <span class="sd-line"></span>
+        <span class="sd-text">Percepção e Mudança</span>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">05 / 08</span>
+        <p class="q-label">Onde você acredita que o cyberbullying acontece com mais frequência entre jovens?</p>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q5" value="a"><span class="opt-marker"></span><span class="opt-text">Em grupos de WhatsApp ou Telegram</span></label>
+          <label class="opt"><input type="radio" name="q5" value="b"><span class="opt-marker"></span><span class="opt-text">Nos comentários de postagens públicas (Instagram, TikTok)</span></label>
+          <label class="opt"><input type="radio" name="q5" value="c"><span class="opt-marker"></span><span class="opt-text">Em perfis ou contas anônimas</span></label>
+          <label class="opt"><input type="radio" name="q5" value="d"><span class="opt-marker"></span><span class="opt-text">Em jogos online e plataformas de stream</span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">06 / 08</span>
+        <p class="q-label">Você acha que as plataformas digitais fazem o suficiente para <span>combater o cyberbullying</span>?</p>
+        <div class="options">
+          <label class="opt"><input type="radio" name="q6" value="a"><span class="opt-marker"></span><span class="opt-text">Não — as ferramentas existem mas são ineficazes</span></label>
+          <label class="opt"><input type="radio" name="q6" value="b"><span class="opt-marker"></span><span class="opt-text">Em partes — há esforço, mas ainda é insuficiente</span></label>
+          <label class="opt"><input type="radio" name="q6" value="c"><span class="opt-marker"></span><span class="opt-text">Sim — as plataformas têm boas ferramentas de moderação</span></label>
+          <label class="opt"><input type="radio" name="q6" value="d"><span class="opt-marker"></span><span class="opt-text">Não sei — nunca usei os recursos de denúncia</span></label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">07 / 08</span>
+        <p class="q-label">O quanto você se sente responsável por <span>intervir</span> quando vê alguém sendo atacado online?</p>
+        <div class="scale-wrap" data-name="q7">
+          <div class="scale-btn" data-val="1"><span>1</span></div>
+          <div class="scale-btn" data-val="2"><span>2</span></div>
+          <div class="scale-btn" data-val="3"><span>3</span></div>
+          <div class="scale-btn" data-val="4"><span>4</span></div>
+          <div class="scale-btn" data-val="5"><span>5</span></div>
+        </div>
+        <div class="scale-labels">
+          <span class="scale-label">Não me sinto responsável</span>
+          <span class="scale-label">Me sinto muito responsável</span>
+        </div>
+        <input type="hidden" name="q7" id="q7val">
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">08 / 08</span>
+        <p class="q-label">O que você acredita que poderia mudar na cultura digital para que o cyberbullying fosse menos comum?</p>
+        <textarea class="text-input" name="q8" rows="3" placeholder="Compartilhe sua visão — cada perspectiva contribui para a pesquisa..."></textarea>
+      </div>
+    </div>
+
+    <!-- CAIXA DE APOIO -->
+    <div class="apoio-box rv">
+      <p class="apoio-title">Precisa de apoio?</p>
+      <p class="apoio-text">Se você está passando por uma situação difícil relacionada a assédio online, existem canais de escuta e apoio disponíveis. <strong>Você não está sozinho(a).</strong></p>
+      <div class="apoio-links">
+        <a href="https://www.cvv.org.br" target="_blank" rel="noopener" class="apoio-link">CVV — 188 (24h)</a>
+        <a href="https://www.safernet.org.br" target="_blank" rel="noopener" class="apoio-link">SaferNet Brasil</a>
+        <a href="https://www.disquedenuncia.org.br" target="_blank" rel="noopener" class="apoio-link">Disque Denúncia 181</a>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button type="submit" class="submit-btn"><span>Enviar respostas</span><span>↗</span></button>
+      <p class="submit-note">Anônimo · Apenas para fins acadêmicos · 2026</p>
+    </div>
+
+  </form>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">MindOnline</span>
+    <span class="footer-copy">© 2026 — Todos os direitos reservados</span>
+    <span class="footer-origin">Petrolina, PE — Brasil</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+
+  /* PAGE TRANSITION */
+  const PT = document.getElementById('pt');
+  function ptEnter(){ PT.classList.remove('leave'); PT.classList.add('enter'); setTimeout(()=> PT.classList.remove('enter'), 850); }
+  function ptLeave(cb){ PT.classList.add('leave'); setTimeout(cb, 850); }
+  window.addEventListener('load', ()=>{ ptEnter(); setTimeout(()=> document.getElementById('heroEyebrow').classList.add('in'), 200); });
+  document.querySelectorAll('a[href]').forEach(a => {
+    a.addEventListener('click', e => {
+      const h = a.getAttribute('href');
+      if (!h || h.startsWith('#') || h.startsWith('http') || h.startsWith('//')) return;
+      e.preventDefault(); ptLeave(()=> window.location.href = h);
+    });
+  });
+
+  /* CURSOR */
+  const isMob = ('ontouchstart' in window) || window.innerWidth <= 900;
+  const dot = document.getElementById('cur-dot');
+  const ring = document.getElementById('cur-ring');
+  let mx = window.innerWidth/2, my = window.innerHeight/2, rx = mx, ry = my;
+  if (!isMob){
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx-4}px,${my-4}px)`; });
+    (function loop(){ rx += (mx-rx)*.11; ry += (my-ry)*.11; ring.style.transform = `translate(${rx-18}px,${ry-18}px)`; requestAnimationFrame(loop); })();
+    document.querySelectorAll('a,button,label,.scale-btn').forEach(el => {
+      el.addEventListener('mouseenter', ()=> document.body.classList.add('ch'));
+      el.addEventListener('mouseleave', ()=> document.body.classList.remove('ch'));
+    });
+  }
+
+  /* SCROLL PROGRESS */
+  const hdr = document.getElementById('header');
+  const prog = document.getElementById('progress');
+  window.addEventListener('scroll', ()=>{
+    hdr.classList.toggle('scrolled', scrollY > 60);
+    prog.style.width = (scrollY / (document.body.scrollHeight - innerHeight) * 100) + '%';
+  }, { passive: true });
+
+  /* REVEAL OBSERVER */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.rv, .q-block').forEach(el => obs.observe(el));
+
+  /* OPTIONS */
+  document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', ()=>{
+      const name = opt.querySelector('input')?.name;
+      if (name) document.querySelectorAll(`[name="${name}"]`).forEach(i => i.closest('.opt')?.classList.remove('selected'));
+      opt.classList.add('selected');
+    });
+  });
+
+  /* SCALE */
+  document.querySelectorAll('.scale-wrap').forEach(wrap => {
+    wrap.querySelectorAll('.scale-btn').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        wrap.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const hidden = document.getElementById(wrap.dataset.name + 'val');
+        if (hidden) hidden.value = btn.dataset.val;
+      });
+    });
+  });
+
+  /* SUBMIT */
+  document.getElementById('mainForm').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('successScreen').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+})();
+
+/* ── MOBILE MENU ── */
+const toggle = document.getElementById('menuToggle');
+const nav = document.getElementById('navMenu');
+toggle?.addEventListener('click', ()=>{
+  const open = nav.classList.toggle('open');
+  document.body.classList.toggle('menu-open',open);
+  const s = toggle.querySelectorAll('span');
+  if(open){ s[0].style.transform='translateY(6px) rotate(45deg)'; s[1].style.opacity='0'; s[2].style.transform='translateY(-6px) rotate(-45deg)'; }
+  else{ s.forEach(x=>{ x.style.transform=''; x.style.opacity=''; }); }
+});
+nav?.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    if(a.closest('.mobile-mega')) return;
+    nav.classList.remove('open'); document.body.classList.remove('menu-open'); toggle?.querySelectorAll('span').forEach(s=>{ s.style.transform=''; s.style.opacity=''; });
+  });
+});
+
+</script>
+<script>
+/* ── MOBILE MEGA TOGGLE ── */
+(function(){
+  var navEl = document.getElementById('navMenu');
+  if(!navEl) return;
+  navEl.querySelectorAll('.nav-item').forEach(function(item){
+    var link = item.querySelector(':scope>.nav-link');
+    var mega = item.querySelector(':scope>.mobile-mega');
+    if(!link || !mega) return;
+
+    if(!mega.querySelector('.mobile-mega-inner')){
+      var inner = document.createElement('div');
+      inner.className = 'mobile-mega-inner';
+      while(mega.firstChild) inner.appendChild(mega.firstChild);
+      mega.appendChild(inner);
+    }
+
+    if(!item.querySelector('.nav-item-row')){
+      link.querySelectorAll('.nav-chevron').forEach(function(c){ c.remove(); });
+
+      var row = document.createElement('div');
+      row.className = 'nav-item-row';
+      item.insertBefore(row, link);
+      row.appendChild(link);
+
+      var btn = document.createElement('button');
+      btn.className = 'mob-arrow';
+      btn.setAttribute('aria-label', 'Expandir submenu');
+      btn.textContent = '\u25be';
+      row.appendChild(btn);
+
+      btn.addEventListener('click', function(e){
+        if(window.innerWidth > 900) return;
+        e.stopPropagation();
+        var opening = !item.classList.contains('mob-open');
+        navEl.querySelectorAll('.nav-item.mob-open').forEach(function(o){ o.classList.remove('mob-open'); });
+        if(opening) item.classList.add('mob-open');
+      });
+    }
+  });
+})();
+</script>
+</body>
+</html>

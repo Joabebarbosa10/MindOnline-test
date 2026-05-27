@@ -189,6 +189,9 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
   left:0;right:0;
   height:12px;
   background:transparent;
+  pointer-events:none;
+}
+.nav-item:hover .mega-drop::before,.nav-item.open .mega-drop::before{
   pointer-events:auto;
 }
 .mega-drop-inner{
@@ -293,6 +296,19 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
 }
 @media(min-width:901px){.mobile-mega{display:none;}.mob-arrow{display:none;}}
 
+
+/* dropdown de Pesquisas: alinha à direita para não vazar da viewport */
+nav .nav-item--right>.mega-drop{
+  left:auto;
+  right:-14px;
+  transform:none;
+}
+nav .nav-item--right>.mega-drop>.mega-drop-inner::before{
+  left:unset;
+  right:24px;
+  transform:none;
+}
+
 </style>
 </head>
 <body>
@@ -344,7 +360,7 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
     </div>
   </div>
   <div class="nav-item">
-    <a href="trabalhos.html" class="nav-link">Trabalhos<span class="nav-chevron">▾</span></a>
+    <a href="trabalhos.html" class="nav-link ativo">Trabalhos<span class="nav-chevron">▾</span></a>
     <div class="mega-drop"><div class="mega-drop-inner">
       <a href="artigo1.html" class="mega-drop-item">
         <span class="mega-drop-num">01</span>
@@ -451,6 +467,45 @@ body.menu-open{overflow:hidden;position:fixed;width:100%;}
       <a href="privacidade.html#armazenamento">Armazenamento</a>
       <a href="privacidade.html#direitos">Seus Direitos</a>
       <a href="privacidade.html#alteracoes">Alterações</a>
+    </div>
+  </div>
+  <div class="nav-item nav-item--right">
+    <a href="pesquisas.html" class="nav-link ">Pesquisas<span class="nav-chevron">▾</span></a>
+    <div class="mega-drop"><div class="mega-drop-inner">
+      <a href="pesquisa1.html" class="mega-drop-item">
+        <span class="mega-drop-num">01</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Comunicação Online</span>
+          <span class="mega-drop-desc">Como você se comunica online?</span>
+        </span>
+      </a>
+      <a href="pesquisa2.html" class="mega-drop-item">
+        <span class="mega-drop-num">02</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Fake News</span>
+          <span class="mega-drop-desc">Você consegue identificar?</span>
+        </span>
+      </a>
+      <a href="pesquisa3.html" class="mega-drop-item">
+        <span class="mega-drop-num">03</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Privacidade Digital</span>
+          <span class="mega-drop-desc">O que você protege online?</span>
+        </span>
+      </a>
+      <a href="pesquisa4.html" class="mega-drop-item">
+        <span class="mega-drop-num">04</span>
+        <span class="mega-drop-text">
+          <span class="mega-drop-name">Saúde Digital</span>
+          <span class="mega-drop-desc">Seu bem-estar na internet</span>
+        </span>
+      </a>
+    </div></div>
+    <div class="mobile-mega">
+      <a href="pesquisa1.html">Comunicação Online</a>
+      <a href="pesquisa2.html">Fake News</a>
+      <a href="pesquisa3.html">Privacidade Digital</a>
+      <a href="pesquisa4.html">Saúde Digital</a>
     </div>
   </div>
 </nav>
@@ -1353,6 +1408,43 @@ if(!isMob && dot && ring){
 })();
 
 
+</script>
+<script>
+/* ── MOBILE MEGA TOGGLE ── */
+(function(){
+  var navEl = document.getElementById('navMenu');
+  if(!navEl) return;
+  navEl.querySelectorAll('.nav-item').forEach(function(item){
+    var link = item.querySelector(':scope>.nav-link');
+    var mega = item.querySelector(':scope>.mobile-mega');
+    if(!link || !mega) return;
+    if(!mega.querySelector('.mobile-mega-inner')){
+      var inner = document.createElement('div');
+      inner.className = 'mobile-mega-inner';
+      while(mega.firstChild) inner.appendChild(mega.firstChild);
+      mega.appendChild(inner);
+    }
+    if(!item.querySelector('.nav-item-row')){
+      link.querySelectorAll('.nav-chevron').forEach(function(c){ c.remove(); });
+      var row = document.createElement('div');
+      row.className = 'nav-item-row';
+      item.insertBefore(row, link);
+      row.appendChild(link);
+      var btn = document.createElement('button');
+      btn.className = 'mob-arrow';
+      btn.setAttribute('aria-label', 'Expandir submenu');
+      btn.textContent = '▾';
+      row.appendChild(btn);
+      btn.addEventListener('click', function(e){
+        if(window.innerWidth > 900) return;
+        e.stopPropagation();
+        var opening = !item.classList.contains('mob-open');
+        navEl.querySelectorAll('.nav-item.mob-open').forEach(function(o){ o.classList.remove('mob-open'); });
+        if(opening) item.classList.add('mob-open');
+      });
+    }
+  });
+})();
 </script>
 </body>
 </html>
