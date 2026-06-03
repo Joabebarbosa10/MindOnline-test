@@ -751,11 +751,42 @@ nav .nav-item--right>.mega-drop>.mega-drop-inner::before{
     });
   });
 
-  /* SUBMIT */
-  document.getElementById('mainForm').addEventListener('submit', e => {
+/* SUBMIT — Formspree */
+  document.getElementById('mainForm').addEventListener('submit', async e => {
     e.preventDefault();
-    document.getElementById('successScreen').classList.add('show');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const form = e.target;
+    const btn = form.querySelector('.submit-btn');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span>Enviando...</span><span>↗</span>';
+    btn.disabled = true;
+
+    const data = new FormData(form);
+    data.append('_subject', 'Pesquisa 03 — Privacidade Digital · MindOnline');
+    data.append('pesquisa', 'Pesquisa 03 — Privacidade Digital');
+
+    try {
+      const res = await fetch('https://formspree.io/f/xeewjybo', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        document.getElementById('successScreen').classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        throw new Error('Erro no envio');
+      }
+    } catch {
+      btn.innerHTML = '<span>Erro — tente novamente</span><span>✕</span>';
+      btn.style.background = '#c0392b';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.disabled = false;
+      }, 3000);
+    }
   });
 
 })();
