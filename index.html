@@ -70,7 +70,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 @keyframes orbDrift1{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(-50px,40px) scale(1.06);}66%{transform:translate(30px,-30px) scale(.94);}}
 @keyframes orbDrift2{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,-50px);}}
 
-.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding-top:80px;display:grid;grid-template-columns:1fr 340px;gap:60px;align-items:center;}
+.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding-top:80px;display:grid;grid-template-columns:1fr;gap:60px;align-items:center;}
 
 /* tag */
 .hero-tag{display:inline-flex;align-items:center;gap:12px;margin-bottom:36px;overflow:hidden;}
@@ -1008,41 +1008,7 @@ nav .nav-item--right>.mega-drop>.mega-drop-inner::before{
         <a href="#dicas" class="btn-ghost">Ver as 10 dicas →</a>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="community-card" id="communityCard">
-        <div class="cc-orb"></div>
-        <div class="cc-top">
-          <div class="cc-live"><span class="cc-dot"></span>Comunidade ativa agora</div>
-          <h2 class="cc-title">Mind<br>Online<br>Community</h2>
-          <p class="cc-desc">O espaço onde alunos debatem comunicação ética, compartilham aprendizados e constroem juntos a internet que querem ver.</p>
-        </div>
-        <div class="cc-hint">
-          <span>Conheça a comunidade</span>
-          <span class="cc-hint-icon">&#8964;</span>
-        </div>
-        <div class="cc-body">
-          <div class="cc-body-inner">
-            <div class="cc-expand">
-              <div class="cc-stats">
-                <div class="cc-stat"><span class="cc-stat-n">24/7</span><span class="cc-stat-l">Sempre ativa</span></div>
-                <div class="cc-stat"><span class="cc-stat-n">100%</span><span class="cc-stat-l">Gratuita</span></div>
-                <div class="cc-stat"><span class="cc-stat-n">real</span><span class="cc-stat-l">Conteúdo</span></div>
-                <div class="cc-stat"><span class="cc-stat-n">ético</span><span class="cc-stat-l">Ambiente</span></div>
-              </div>
-              <div class="cc-features">
-                <div class="cc-feature"><span class="cc-feature-icon">✦</span><span>Debates sobre fake news, privacidade e comportamento digital</span></div>
-                <div class="cc-feature"><span class="cc-feature-icon">✦</span><span>Espaço seguro moderado por alunos e professores</span></div>
-                <div class="cc-feature"><span class="cc-feature-icon">✦</span><span>Publicações, artigos e reflexões da comunidade escolar</span></div>
-              </div>
-              <a href="https://mind-online-community.vercel.app" target="_blank" class="cc-cta" id="ccCta">
-                Entrar na comunidade
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
   </div>
   <button class="hero-close" id="heroClose" aria-label="Pular introdução"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>Pular</button>
   <div class="hero-scroll">
